@@ -22,6 +22,7 @@ function App() {
     initTodo = JSON.parse(localStorage.getItem("todos"));
   }
 
+  const [data, setData] = useState(null); 
 
   const onDelete = (todo) => {
     console.log("I am ondelete of todo", todo);
@@ -57,7 +58,25 @@ function App() {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos])
 
+  useEffect(() => {
+    fetch('/api/get_data')  // The URL for the flask API
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the response as JSON
+      })
+      .then(data => setData(data)) // Set the data in state
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+  
+
   return (
+    <>
+    <div>
+      <h1>Database Data</h1>
+      {data ? <p>{JSON.stringify(data,null,2)}</p> : <p>Loading...</p>}
+    </div>
     <div className="App">
       <Router>
         <Header title="My Todos List" searchBar={false} />
@@ -76,7 +95,7 @@ function App() {
         <Footer />
       </Router>
     </div>
-
+    </>
   );
 }
 
