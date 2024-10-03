@@ -10,6 +10,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import HomePage from './Components/Homepage';
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
           }} />
 
           <Route exact path="/about" element={<About />} />
+          <Route exact path ='/homepage' element = {<HomePage/>} />
         </Routes>
         <Footer />
       </Router>
