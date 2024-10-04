@@ -14,46 +14,7 @@ import HomePage from './Components/Homepage';
 
 function App() {
 
-  let initTodo;
-  if (localStorage.getItem("todos") === null) {
-    initTodo = [];
-  }
-  else {
-    initTodo = JSON.parse(localStorage.getItem("todos"));
-  }
-
-  const [data, setData] = useState(null); 
-
-  const onDelete = (todo) => {
-    console.log("I am ondelete of todo", todo);
-
-
-    setTodos(todos.filter((e) => {
-      return e !== todo;
-    }));
-    console.log("deleted", todos)
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }
-
-  const addTodo = (title, desc) => {
-    console.log("I am adding this todo", title, desc)
-    let sno;
-    if (todos.length === 0) {
-      sno = 0;
-    }
-    else {
-      sno = todos[todos.length - 1].sno + 1;
-    }
-    const myTodo = {
-      sno: sno,
-      title: title,
-      desc: desc,
-    }
-    setTodos([...todos, myTodo]);
-    console.log(myTodo);
-  }
-
-  const [todos, setTodos] = useState(initTodo);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/get_data")  // The URL for the flask API
@@ -66,32 +27,27 @@ function App() {
       .then(data => setData(data)) // Set the data in state
       .catch(error => console.error('Error fetching data:', error));
   }, []);
-  
 
   return (
     <>
-    <div>
-      <h1>Database Data</h1>
-      {data ? <p>{JSON.stringify(data)}</p> : <p>Loading...</p>}
-    </div>
-    <div className="App">
-      <Router>
-        <Header title="My Todos List" searchBar={false} />
-        <Routes>
-          <Route exact path="/" element={() => {
-            return (
-              <>
-                <AddTodo addTodo={addTodo} />
-                <Todos todos={todos} onDelete={onDelete} />
-              </>)
-          }} />
+      <div className="App">
+        <Router>
+          <Header title="My Todos List" searchBar={false} />
+          <Routes>
+            <Route exact path="/" element={() => {
+              return (
+                <>
+                  <h1>Database Data</h1>
+                  {data ? <p>{JSON.stringify(data)}</p> : <p>Loading...</p>}
+                </>)
+            }} />
 
-          <Route exact path="/about" element={<About />} />
-          <Route exact path ='/homepage' element = {<HomePage/>} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+            <Route exact path="/about" element={<About />} />
+            <Route exact path='/homepage' element={<HomePage />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </div>
     </>
   );
 }
