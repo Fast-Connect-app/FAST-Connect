@@ -30,7 +30,6 @@ function App() {
 
   return (
     <>
-<<<<<<< Updated upstream
       <div className="App">
         <Router>
           <Header title="My Todos List" searchBar={false} />
@@ -42,23 +41,6 @@ function App() {
                   {data ? <p>{JSON.stringify(data)}</p> : <p>Loading...</p>}
                 </>)
             }} />
-=======
-    <div>
-      <h1>Database Data</h1>
-      {data ? <p>{data}</p> : <p>Loading...</p>}
-    </div>
-    <div className="App">
-      <Router>
-        <Header title="My Todos List" searchBar={false} />
-        <Routes>
-          <Route exact path="/" element={() => {
-            return (
-              <>
-                <AddTodo addTodo={addTodo} />
-                <Todos todos={todos} onDelete={onDelete} />
-              </>)
-          }} />
->>>>>>> Stashed changes
 
             <Route exact path="/about" element={<About />} />
             <Route exact path='/homepage' element={<HomePage />} />
