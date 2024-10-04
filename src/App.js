@@ -54,12 +54,9 @@ function App() {
   }
 
   const [todos, setTodos] = useState(initTodo);
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos])
 
   useEffect(() => {
-    fetch('/api/get_data')  // The URL for the flask API
+    fetch("http://localhost:5000/api/get_data")  // The URL for the flask API
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -75,7 +72,7 @@ function App() {
     <>
     <div>
       <h1>Database Data</h1>
-      {data ? <p>{JSON.stringify(data,null,2)}</p> : <p>Loading...</p>}
+      {data ? <p>{JSON.stringify(data)}</p> : <p>Loading...</p>}
     </div>
     <div className="App">
       <Router>
