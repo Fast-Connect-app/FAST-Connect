@@ -1,5 +1,4 @@
 import './App.css';
-import Header from "./Components/Header";
 import { Footer } from "./Components/Footer";
 import { About } from "./Components/About";
 import React, { useState, useEffect } from 'react';
@@ -23,7 +22,7 @@ function App() {
         return response.json(); // Parse the response as JSON
       })
       .then(data => {
-        setData(JSON.stringify(data))
+        setData(data[0].name)
       }) // Set the data in state
       .catch(error => console.error('Error fetching data:', error));
   }, []);
@@ -32,16 +31,13 @@ function App() {
     <>
       <div className="App">
         <Router>
-          <Header title="My Todos List" searchBar={false} />
           <Routes>
-            <Route exact path="/" element={() => {
-              return (
+            <Route exact path="/" element={
                 <>
                   <h1>Database Data</h1>
-                  {data ? <p>{JSON.stringify(data)}</p> : <p>Loading...</p>}
-                </>)
-            }} />
-
+                  {data ? <p>{data}</p> : <p>Loading...</p>}
+                </>
+            } />
             <Route exact path="/about" element={<About />} />
             <Route exact path='/homepage' element={<HomePage />} />
           </Routes>
