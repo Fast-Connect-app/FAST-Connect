@@ -1,20 +1,7 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Container, Card, CardContent, Button, Box } from '@mui/material';
+import { Typography, Container, Card, CardContent, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-
-// Navbar Component
-const Navbar = () => {
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6">
-          FAST Connect
-        </Typography>
-      </Toolbar>
-    </AppBar>
-  );
-};
 
 // Event Card Component
 const EventCard = () => (
@@ -61,20 +48,11 @@ const JobCard = () => (
   </Card>
 );
 
-// Footer Component
-const Footer = () => (
-  <Box sx={{ bgcolor: 'text.secondary', p: 2, marginTop: '20px' }}>
-    <Typography variant="body2" color="white" align="center">
-      &copy; {new Date().getFullYear()} FAST Connect. All rights reserved.
-    </Typography>
-  </Box>
-);
 
 // Homepage Component
 const HomePage = () => {
   return (
     <>
-      <Navbar />
       <Container>
         {/* Events Section */}
         <Typography variant="h4" sx={{ my: 4 }}>Upcoming Events</Typography>
@@ -105,7 +83,6 @@ const HomePage = () => {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 };

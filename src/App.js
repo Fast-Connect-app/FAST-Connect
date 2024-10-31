@@ -1,13 +1,14 @@
 import './App.css';
-import { Footer } from "./Components/Footer";
-import { About } from "./Components/About";
+import { About } from "./Pages/About";
 import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from "react-router-dom";
-import HomePage from './Components/Homepage';
+import HomePage from './Pages/Homepage';
+import MainLayout from './Layouts/MainLayout';
+
 
 function App() {
 
@@ -29,21 +30,24 @@ function App() {
 
   return (
     <>
-      <div className="App">
-        <Router>
-          <Routes>
-            <Route exact path="/" element={
-                <>
-                  <h1>Database Data</h1>
-                  {data ? <p>{data}</p> : <p>Loading...</p>}
-                </>
-            } />
-            <Route exact path="/about" element={<About />} />
-            <Route exact path='/homepage' element={<HomePage />} />
-          </Routes>
-          <Footer />
-        </Router>
-      </div>
+    <Router>
+      <MainLayout>
+        <Routes>
+          <Route 
+            exact 
+            path="/" 
+            element={
+              <>
+                <h1>Database Data</h1>
+                {data ? <p>{data}</p> : <p>Loading...</p>}
+              </>
+            } 
+          />
+          <Route exact path="/about" element={<About />} />
+          <Route exact path="/homepage" element={<HomePage />} />
+        </Routes>
+      </MainLayout>
+    </Router>
     </>
   );
 }
