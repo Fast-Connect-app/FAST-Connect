@@ -10,24 +10,14 @@ const Navbar = () => {
                 </Typography>
 
                 <Box>
-                    <Button color="inherit" component={Link} to="/about">
-                        About
-                    </Button>
-                    <Button color="inherit" component={Link} to="/profile">
-                        Profile
-                    </Button>
-                    <Button color="inherit" component={Link} to="/messages">
-                        Messages
-                    </Button>
-                    <Button color="inherit" component={Link} to="/events">
-                        Events
-                    </Button>
-                    <Button color="inherit" component={Link} to="/job-listings">
-                        Job Listings
-                    </Button>
-                    <Button color="inherit" component={Link} to="/study-materials">
-                        Study Materials
-                    </Button>
+                    <Button color="inherit" component={Link} to="/about">About</Button>
+                    <Button color="inherit" component={Link} to="/profile">Profile</Button>
+                    <Button color="inherit" component={Link} to="/messages">Messages</Button>
+                    <Button color="inherit" component={Link} to="/events">Events</Button>
+                    <Button color="inherit" component={Link} to="/job-listings">Job Listings</Button>
+                    <Button color="inherit" component={Link} to="/study-materials">Study Materials</Button>
+                    <Button color="inherit" component={Link} to="/posts">Posts</Button> {/* Added Posts link */}
+                    <Button color="inherit" component={Link} to="/global-chat">Global Chat</Button> {/* Added Global Chat link */}
                 </Box>
             </Toolbar>
         </AppBar>

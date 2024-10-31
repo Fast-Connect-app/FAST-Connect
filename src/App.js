@@ -13,6 +13,8 @@ import Messages from './Pages/Messages';
 import Events from './Pages/Events';
 import JobListings from './Pages/JobListings';
 import StudyMaterials from './Pages/StudyMaterials';
+import Posts from './Pages/Posts';
+import GlobalChat from './Pages/GlobalChat';
 
 
 function App() {
@@ -53,6 +55,8 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/job-listings" element={<JobListings />} />
             <Route path="/study-materials" element={<StudyMaterials />} />
+            <Route path="/posts" element={<Posts />} />
+            <Route path="/global-chat" element={<GlobalChat />} />
           </Routes>
         </MainLayout>
       </Router>
