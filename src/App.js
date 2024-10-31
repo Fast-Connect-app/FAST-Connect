@@ -33,10 +33,8 @@ function App() {
     <Router>
       <MainLayout>
         <Routes>
-          <Route 
-            exact 
-            path="/" 
-            element={
+          <Route exact path="/" 
+          element={
               <>
                 <h1>Database Data</h1>
                 {data ? <p>{data}</p> : <p>Loading...</p>}
