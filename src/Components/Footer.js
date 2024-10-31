@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 
-
-export const Footer = () => { 
+export const Footer = () => {
     return (
-        <footer className="bg-dark text-light py-3">
-            <p className="text-center">
-            Copyright &copy; MyTodosList.com
-            </p>
-        </footer>
-    )
-}
+        <Box component="footer" className="bg-dark text-light" sx={{ py: 3, mt: 'auto' }}>
+            <Typography variant="body1" align="center">
+                Copyright &copy; MyTodosList.com
+            </Typography>
+        </Box>
+    );
+};

@@ -1,5 +1,5 @@
 import Navbar from '../Components/NavBar';
-import {Footer} from '../Components/Footer';
+import { Footer } from '../Components/Footer';
 
 const MainLayout = ({ children }) => {
   return (
@@ -8,6 +8,7 @@ const MainLayout = ({ children }) => {
       <div className="App">
         {children}
       </div>
+
       <Footer />
     </>
   );

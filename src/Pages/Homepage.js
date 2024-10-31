@@ -20,13 +20,13 @@ const EventCard = () => (
 
 // Post Card Component
 const PostCard = () => (
-    <Card sx={{ display: 'flex', margin: '10px', flexDirection: 'row', width: '95%' }}>
+  <Card sx={{ display: 'flex', margin: '10px', flexDirection: 'row', width: '95%' }}>
     {/* Text Content */}
-    <Box sx={{ display: 'flex', flexDirection: 'column', width:'49vw' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '49vw' }}>
       <CardContent>
         <Typography variant="h5">Post Title</Typography>
         <Typography variant="body2" color="text.secondary">
-          Post description or relevant text information goes here. 
+          Post description or relevant text information goes here.
         </Typography>
       </CardContent>
     </Box>
@@ -57,13 +57,13 @@ const HomePage = () => {
         {/* Events Section */}
         <Typography variant="h4" sx={{ my: 4 }}>Upcoming Events</Typography>
         <Grid container spacing={2}>
-          <Grid item size = {{xs:12, sm:6, md:4}} >
+          <Grid item size={{ xs: 12, sm: 6, md: 4 }} >
             <EventCard />
           </Grid>
-          <Grid item size = {{xs:12, sm:6, md:4}}>
+          <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
             <EventCard />
           </Grid>
-          <Grid item size = {{xs:12, sm:6, md:4}}>
+          <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
             <EventCard />
           </Grid>
         </Grid>
