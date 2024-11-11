@@ -22,28 +22,30 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchData();
-  }
+  // componentDidMount() {
+  //   this.fetchData();
+  // }
 
-  fetchData() {
-    fetch("http://localhost:5000/api/get_data")
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState({ data: data[0].name });
-      })
-      .catch(error => this.setState({ error: error.message }));
-  }
+  // fetchData() {
+  //   fetch("http://localhost:5000/api/get_data")
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then(data => {
+  //       this.setState({ data: data[0].name });
+  //     })
+  //     .catch(error => this.setState({ error: error.message }));
+  // }
 
   render() {
     const { data, error } = this.state;
+    const MemoizedEvents = React.memo(Events)
 
     return (
+      
       <Router>
         <MainLayout>
           <Routes>
@@ -56,7 +58,7 @@ class App extends Component {
             <Route exact path="/homepage" element={<HomePage data={data} error={error} />} />
             <Route path="/profile" element={<Profile data={data} error={error} />} />
             <Route path="/messages" element={<Messages data={data} error={error} />} />
-            <Route path="/events" element={<Events data={data} error={error} />} />
+            <Route path="/events" element={<MemoizedEvents />} />
             <Route path="/job-listings" element={<JobListings data={data} error={error} />} />
             <Route path="/study-materials" element={<StudyMaterials data={data} error={error} />} />
             <Route path="/posts" element={<Posts data={data} error={error} />} />

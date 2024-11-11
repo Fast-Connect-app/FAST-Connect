@@ -3,6 +3,13 @@ import React, { Component } from 'react';
 import { Box, Typography } from '@mui/material';
 
 class About extends Component {
+  fetchData(){
+    return(<>
+    <h1>fuck you</h1>
+    </>)
+  }
+
+
   render() {
     return (
       <Box sx={{ padding: 3 }}>

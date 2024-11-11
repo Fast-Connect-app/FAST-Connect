@@ -1,17 +1,32 @@
-// AbstractPage.js
 import React, { Component } from 'react';
 
 class AbstractPage extends Component {
-  // Abstract method: This must be implemented by the subclasses.
-  renderContent() {
-    throw new Error('renderContent method must be implemented by subclass');
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null,
+      error: null,
+    };
   }
 
-  render() {
-    const { data, error } = this.props;
+  // Abstract method to fetch data, implemented in subclasses.
+  fetchData() {
+    console.log("fetching data");
+    throw new Error('fetchData method must be implemented by subclass');
+  }
 
+  componentDidMount() {
+    if (!this.state.hasFetchedData) {
+      this.fetchData();
+    }
+  }
+  
+
+  render() {
+    const { data, error } = this.state;
     return (
       <div>
+        
         {error && <p>Error: {error}</p>}
         {data ? this.renderContent() : <p>Loading...</p>}
       </div>
