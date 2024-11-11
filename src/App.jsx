@@ -3,7 +3,7 @@ import './App.css';
 import About from "./Pages/About";
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from './Pages/HomePage';
+import HomePage from './Pages/Homepage';
 import MainLayout from './Layouts/MainLayout';
 import Profile from './Pages/Profile';
 import Messages from './Pages/Messages';
