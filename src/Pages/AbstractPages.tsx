@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 // Define types for the state
-interface AbstractPageState {
+export interface AbstractPageState {
   data: any;  // Adjust this type depending on the structure of the data
   error: string | null;
 }
 
 // Abstract Props interface (for potential subclass props)
-interface AbstractPageProps {
+export interface AbstractPageProps {
   // You can define common props for the abstract page here
   // For example:
   title?: string;
