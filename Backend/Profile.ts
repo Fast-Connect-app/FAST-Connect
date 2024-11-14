@@ -1,4 +1,4 @@
-class Profile{
+export class Profile{
     private rollNumber:string;
     private profilePic:ImageBitmap | null;
     private bio: string;

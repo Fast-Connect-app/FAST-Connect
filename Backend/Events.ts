@@ -1,4 +1,4 @@
-class Events{
+export class Events{
     private title:string;
     private dateOfOccurence:Date;
     private description:string;

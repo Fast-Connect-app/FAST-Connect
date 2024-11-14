@@ -1,4 +1,7 @@
-class Alumni extends User{
+import { User } from "./User.ts";
+import { AlumniProfile } from "./AlumniProfile.ts";
+
+export class Alumni extends User{
     private dateOfGraduation:Date;
     private profile:AlumniProfile;
 

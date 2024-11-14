@@ -1,4 +1,4 @@
-class Group{
+export class Group{
     private name:string;
     private description: string;
     private usersList:string[];
