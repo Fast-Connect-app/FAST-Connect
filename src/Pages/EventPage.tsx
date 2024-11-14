@@ -1,11 +1,10 @@
 import React from 'react';
-import AbstractPage from './AbstractPages';
+import AbstractPage, { AbstractPageState } from './AbstractPages';
 import { Box, Typography } from '@mui/material';
 
 // Define the state interface for the Events component
-interface EventsState {
-  data: string | null; // Assuming data is a string, you can change this type based on your actual data structure
-  error: string | null;
+interface EventsState extends AbstractPageState {
+  fetchdata: boolean;
 }
 
 class Events extends AbstractPage<{}, EventsState> {
@@ -14,6 +13,7 @@ class Events extends AbstractPage<{}, EventsState> {
     this.state = {
       data: null,
       error: null,
+      fetchdata:true
     };
   }
 

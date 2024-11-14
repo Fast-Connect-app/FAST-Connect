@@ -1,13 +1,13 @@
 // App.tsx
 import './App.css';
 //import About from "./Pages/About";
-import React, { Component } from 'react';
-//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Component } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MainLayout from './Layouts/MainLayout';
 //import HomePage from './Pages/HomePage';
-//import MainLayout from './Layouts/MainLayout';
 //import Profile from './Pages/Profile';
 //import Messages from './Pages/Messages';
-//import Events from './Pages/Events';
+import Events from './Pages/EventPage';
 //import JobListings from './Pages/JobListings';
 //import StudyMaterials from './Pages/StudyMaterials';
 //import Posts from './Pages/Posts';
@@ -53,33 +53,28 @@ class App extends Component<{}, AppState> {
   // }
 
   render() {
-    //const { data, error } = this.state;
-    //const MemoizedEvents = React.memo(Events); // Optional: Memoizing Events if needed
 
     return (
-      // <Router>
-      //   <MainLayout>
-      //     <Routes>
-      //       <Route
-      //         exact
-      //         path="/"
-      //         element={<HomePage data={data} error={error} />}
-      //       />
-      //       <Route exact path="/about" element={<About />} />
-      //       <Route exact path="/homepage" element={<HomePage data={data} error={error} />} />
-      //       <Route path="/profile" element={<Profile data={data} error={error} />} />
-      //       <Route path="/messages" element={<Messages data={data} error={error} />} />
-      //       <Route path="/events" element={<MemoizedEvents />} />
-      //       <Route path="/job-listings" element={<JobListings data={data} error={error} />} />
-      //       <Route path="/study-materials" element={<StudyMaterials data={data} error={error} />} />
-      //       <Route path="/posts" element={<Posts data={data} error={error} />} />
-      //       <Route path="/global-chat" element={<GlobalChat data={data} error={error} />} />
-      //     </Routes>
-      //   </MainLayout>
-      // </Router>
-      <div>
-        <h1 className='read-the-docs'>hi</h1>
-      </div>
+      <Router>
+        <MainLayout>
+          <Routes>
+            {/* <Route
+              exact
+              path="/"
+              element={<HomePage data={data} error={error} />}
+            />
+            <Route exact path="/about" element={<About />} />
+            <Route exact path="/homepage" element={<HomePage data={data} error={error} />} />
+            <Route path="/profile" element={<Profile data={data} error={error} />} />
+            <Route path="/messages" element={<Messages data={data} error={error} />} /> */}
+            <Route path="/events" element={<Events />} />
+            {/* <Route path="/job-listings" element={<JobListings data={data} error={error} />} />
+            <Route path="/study-materials" element={<StudyMaterials data={data} error={error} />} />
+            <Route path="/posts" element={<Posts data={data} error={error} />} />
+            <Route path="/global-chat" element={<GlobalChat data={data} error={error} />} /> */}
+          </Routes>
+        </MainLayout>
+      </Router>
     );
   }
 }
