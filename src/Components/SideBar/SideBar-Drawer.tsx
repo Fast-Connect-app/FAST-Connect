@@ -3,7 +3,6 @@ import NavButton from './SideBar-Button';
 import { navItems } from './SideBarItems';
 import React from 'react';
 import BaseDrawer, { BaseDrawerProps } from '../BaseDrawer';
-import EventSubDrawer from './SubDrawer/EventSubDrawer'; // Import EventSubDrawer
 
 interface SidebarDrawerState {
   openNestedDrawerIndex: number | null;
