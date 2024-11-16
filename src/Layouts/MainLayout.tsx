@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Navbar from '../Components/NavBar/NavBar';
+import SideBar from '../Components/SideBar/SideBar';
 import Footer from '../Components/Footer';
 
 // Define the type for props, where children is a required ReactNode
@@ -13,7 +13,7 @@ class MainLayout extends React.Component<MainLayoutProps> {
 
     return (
       <>
-        <Navbar />
+        <SideBar />
         <div className="App">
           {children}
         </div>

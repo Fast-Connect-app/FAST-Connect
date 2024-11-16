@@ -1,0 +1,86 @@
+/*Navbar*/
+.navBar{
+  /* background-color: rgb(34, 40, 49) !important; */
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+
+
+/* MenuButton.css */
+
+.menuButton {
+    transform: 'translateY(-50%)';
+    z-index: 1300;
+    margin-left: 0vw !important;
+    border-radius: 0 !important;
+    color: black !important;
+    background-color: aqua;
+    width: 100%; /* Responsive width (10% of viewport width) */
+    height: 5vw; /* Make height 100% of its container (app bar height) */
+    transition: background-color 0.3s, color 0.3s; /* Optional: smooth transition for hover */
+  }
+  
+  .menuButton:hover {
+    background-color: #EEEEEE !important; /* Change background color on hover */
+    color:#393E46; /* Change the icon color on hover */
+  }
+  
+  .menuButton:focus {
+    outline: none; /* Remove focus outline */
+    box-shadow: none; /* Remove the default box shadow for focused elements */
+  }
+  .listItemButton{
+    text-Decoration: 'none';
+    width: 100%; 
+    height:12vh !important;  
+    margin-top: 2vh !important;
+    transition: 0.2s ease;                                                                                                        
+  }
+  .listItemButton:hover{
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .navButtonLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align items to the center vertically */
+    justify-content: flex-start; /* Align to the left */
+    text-decoration: none; /* To remove the default underline from the Link */
+  }
+  
+  .navButtonIcon {
+    color: black !important;
+    font-size: 2vw !important; /* Icon size relative to viewport width */
+    transition: font-size 0.2s ease; /* Smooth transition for resizing */
+}
+
+.navButtonText {
+    color: black !important;
+    font-weight: normal;
+    line-height: 1.2;
+    transition: font-size 0.2s ease;
+}
+
+/* Optional: Fine-tune sizes based on breakpoints */
+@media (max-width: 768px) {
+    .navButtonIcon {
+        font-size: 3vw; /* Slightly larger on smaller screens */
+    }
+
+    .navButtonText {
+        font-size: 1vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .navButtonIcon {
+        font-size: 4vw; /* Even larger on very small screens */
+    }
+
+    .navButtonText {
+        font-size: 1.2vw;
+    }
+}
+
+  

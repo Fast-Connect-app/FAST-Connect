@@ -10,7 +10,7 @@ class Footer extends Component<FooterProps, FooterState> {
     return (
       <Box component="footer" className="bg-dark text-light" sx={{ py: 3, mt: 'auto' }}>
         <Typography variant="body1" align="center">
-          Copyright &copy; MyTodosList.com
+          {/* Copyright &copy; MyTodosList.com */}
         </Typography>
       </Box>
     );

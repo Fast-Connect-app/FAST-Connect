@@ -32,6 +32,7 @@ class MenuButton extends AbstractButton{
         color="inherit"
         aria-label="menu"
         onClick={this.handleClick}
+        disableRipple
         className='menuButton'
         {...this.props} // Pass any additional props
       >
