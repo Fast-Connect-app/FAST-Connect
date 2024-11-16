@@ -11,11 +11,6 @@ abstract class BaseSubDrawer extends BaseDrawer<BaseDrawerProps> {
   };
 
   // Abstract method for the content specific to the sub drawer
-  abstract renderinside(): React.ReactNode;
-
-  renderContent() {
-    return <>{this.renderinside()}</>;
-  }
 
   render() {
     const { isOpen, onClose, sx, ...restProps } = this.props; // Deconstruct props to get isOpen and onClose
