@@ -13,25 +13,33 @@ const Account = () => {
         <div style={styles.container}>
             <div style={styles.left}>
                 <Login />
-                {isLoginActive && (
-                    <div style={{ ...styles.box, opacity: isLoginActive ? 1 : 0 }}>
-                        <p>Don't have an account? Sign up now!</p>
-                        <button onClick={toggleActiveComponent} style={styles.button}>
-                            Go to Sign Up
-                        </button>
-                    </div>
-                )}
+                <div
+                    style={{
+                        ...styles.box,
+                        transform: isLoginActive ? 'translateX(0)' : 'translateX(-100%)', // Box moves left when switching
+                        opacity: isLoginActive ? 1 : 0, // Fade out when the box moves
+                    }}
+                >
+                    <p>Don't have an account? Sign up now!</p>
+                    <button onClick={toggleActiveComponent} style={styles.button}>
+                        Go to Sign Up
+                    </button>
+                </div>
             </div>
             <div style={styles.right}>
                 <Register />
-                {!isLoginActive && (
-                    <div style={{ ...styles.box, opacity: isLoginActive ? 0 : 1 }}>
-                        <p>Already have an account? Log in here!</p>
-                        <button onClick={toggleActiveComponent} style={styles.button}>
-                            Go to Login
-                        </button>
-                    </div>
-                )}
+                <div
+                    style={{
+                        ...styles.box,
+                        transform: !isLoginActive ? 'translateX(0)' : 'translateX(100%)', // Box moves right when switching
+                        opacity: !isLoginActive ? 1 : 0, // Fade out when the box moves
+                    }}
+                >
+                    <p>Already have an account? Log in here!</p>
+                    <button onClick={toggleActiveComponent} style={styles.button}>
+                        Go to Login
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -44,26 +52,28 @@ const styles = {
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '100vh',
+        position: 'relative' as 'relative',
+        overflow: 'hidden', // Prevent overflow when transitioning
     },
     left: {
         flex: 1,
         padding: '20px',
         textAlign: 'center' as 'center',
-        borderRight: '1px solid #ccc',
         position: 'relative' as 'relative',
-        height: '100vh', // Full height for the left section
+        height: '100vh',
     },
     right: {
         flex: 1,
         padding: '20px',
         textAlign: 'center' as 'center',
         position: 'relative' as 'relative',
-        height: '100vh', // Full height for the right section
+        height: '100vh',
     },
     box: {
         position: 'absolute' as 'absolute',
-        top: 0,
-        left: 0,
+        top: '0',
+        left: '0%',
+        transform: 'translateX(-50%)', // Center the box horizontally
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -71,12 +81,11 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         padding: '0 20px',
-        backgroundColor: 'rgba(255, 255, 255, 0.9)', // Semi-transparent background
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         borderRadius: '8px',
-        zIndex: 1, // Ensure the box is on top
-        transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out', // Smooth transition
-        transform: 'scale(1)', // Initial scale (no zoom)
+        zIndex: 1,
+        transition: 'transform 0.5s ease, opacity 0.5s ease', // Add transition for sliding and fading
     },
     button: {
         marginTop: '10px',
