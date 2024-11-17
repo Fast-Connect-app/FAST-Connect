@@ -12,6 +12,9 @@ import Events from "./Pages/EventPage";
 //import StudyMaterials from './Pages/StudyMaterials';
 //import Posts from './Pages/Posts';
 //import GlobalChat from './Pages/GlobalChat';
+import Register from './Pages/Signup';
+import Login from './Pages/Login';
+import Account from './Pages/Account';
 
 // Define types for the state
 interface AppState {
@@ -71,6 +74,9 @@ class App extends Component<{}, AppState> {
             <Route path="/study-materials" element={<StudyMaterials data={data} error={error} />} />
             <Route path="/posts" element={<Posts data={data} error={error} />} />
             <Route path="/global-chat" element={<GlobalChat data={data} error={error} />} /> */}
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/account" element={<Account />} />
           </Routes>
         </MainLayout>
       </Router>
