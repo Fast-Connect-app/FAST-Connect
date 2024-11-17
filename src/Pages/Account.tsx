@@ -61,7 +61,7 @@ const styles = {
         textAlign: 'center' as 'center',
         position: 'relative' as 'relative',
         height: '100vh',
-        transition: 'transform 0.5s ease, opacity 0.5s ease', // Add transition for sliding and fading
+        transition: 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out', // Add transition for sliding and fading
     },
     right: {
         flex: 1,
@@ -69,7 +69,7 @@ const styles = {
         textAlign: 'center' as 'center',
         position: 'relative' as 'relative',
         height: '100vh',
-        transition: 'transform 0.5s ease, opacity 0.5s ease', // Add transition for sliding and fading
+        transition: 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out', // Add transition for sliding and fading
     },
     box: {
         position: 'absolute' as 'absolute',
@@ -87,7 +87,7 @@ const styles = {
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         borderRadius: '8px',
         zIndex: 1,
-        transition: 'transform 0.5s ease, opacity 0.5s ease', // Add transition for sliding and fading
+        transition: 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out', // Add transition for sliding and fading
     },
     button: {
         marginTop: '10px',
