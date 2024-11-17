@@ -1,39 +1,22 @@
-import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EventSubDrawer from './SubDrawer/EventSubDrawer';
+import HomeIcon from "@mui/icons-material/Home";
+import EventSubDrawer from "./SubDrawer/EventSubDrawer";
+import { Event } from "@mui/icons-material";
 
-export const navItems = [
+interface NavItem {
+  label: string;
+  icon: React.ReactNode;
+  BaseSubDrawer?: React.ComponentType<{ isOpen: boolean; onClose: () => void }>;
+}
+
+export const navItems: NavItem[] = [
   {
-    label: 'Home',
-    path: '/',
+    label: "Home",
     icon: <HomeIcon />,
   },
   {
-    label: 'About',
-    path: '/about',
-    icon: <InfoIcon />,
-    BaseSubDrawer: EventSubDrawer,
-  },
-  {
-    label: 'Contact',
-    path: '/contact',
-    icon: <PhoneIcon />,
-  },
-  {
-    label: 'Contact',
-    path: '/contact',
-    icon: <PhoneIcon />,
-  },
-  {
-    label: 'Contact',
-    path: '/contact',
-    icon: <PhoneIcon />,
-  },
-  {
-    label: 'Contact',
-    path: '/contact',
-    icon: <PhoneIcon />,
+    label: "Event",
+    icon: <Event />,
+    BaseSubDrawer: EventSubDrawer, // Ensure the component is passed correctly
   },
   // Add more items as needed
 ];

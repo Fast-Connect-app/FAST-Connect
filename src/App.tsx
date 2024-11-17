@@ -1,13 +1,13 @@
 // App.tsx
-import './App.css';
+import "./App.css";
 //import About from "./Pages/About";
-import { Component } from 'react';
+import { Component } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainLayout from './Layouts/MainLayout';
+import MainLayout from "./Layouts/MainLayout";
 //import HomePage from './Pages/HomePage';
 //import Profile from './Pages/Profile';
 //import Messages from './Pages/Messages';
-import Events from './Pages/EventPage';
+import Events from "./Pages/EventPage";
 //import JobListings from './Pages/JobListings';
 //import StudyMaterials from './Pages/StudyMaterials';
 //import Posts from './Pages/Posts';
@@ -30,7 +30,7 @@ class App extends Component<{}, AppState> {
     super(props);
     this.state = {
       data: null,
-      error: null
+      error: null,
     };
   }
 
@@ -53,7 +53,6 @@ class App extends Component<{}, AppState> {
   // }
 
   render() {
-
     return (
       <Router>
         <MainLayout>

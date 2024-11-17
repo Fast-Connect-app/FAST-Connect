@@ -1,11 +1,10 @@
-import React from 'react';
-import { IconButton} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AbstractButton, { AbstractButtonProps } from '../AbstractButton';
-import './NavbarStyle.css'
+import React from "react";
+import { IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import AbstractButton, { AbstractButtonProps } from "../AbstractButton";
+import "./NavbarStyle.css";
 
-
-class MenuButton extends AbstractButton{
+class MenuButton extends AbstractButton {
   constructor(props: AbstractButtonProps) {
     super(props);
     this.state = {
@@ -33,7 +32,7 @@ class MenuButton extends AbstractButton{
         aria-label="menu"
         onClick={this.handleClick}
         disableRipple
-        className='menuButton'
+        className="menuButton"
         {...this.props} // Pass any additional props
       >
         {this.renderButton()}

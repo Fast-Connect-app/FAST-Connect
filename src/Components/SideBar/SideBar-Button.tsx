@@ -1,23 +1,30 @@
-import React from 'react';
-import AbstractButton, { AbstractButtonProps, AbstractButtonState } from '../AbstractButton';
-import { ListItemText } from '@mui/material';
-import { Link } from 'react-router-dom';
-import "./SideBarStyle.css"
+import React from "react";
+import AbstractButton, {
+  AbstractButtonProps,
+  AbstractButtonState,
+} from "../AbstractButton";
+import { ListItemText } from "@mui/material";
+import "./SideBarStyle.css";
 
 interface NavButtonProps extends AbstractButtonProps {
   label: string;
   icon: React.ReactNode;
-  to: string; // Route path for navigation
+  onClick: () => void; // Action when button is clicked
 }
 
 class NavButton extends AbstractButton<NavButtonProps, AbstractButtonState> {
   renderButton() {
-    const { icon, label, to } = this.props;
+    const { icon, label, onClick } = this.props;
     return (
-      <Link to={to} className="navButtonLink">
+      <div onClick={onClick}>
         <span className="navButtonIcon">{icon}</span>
-        <ListItemText primaryTypographyProps={{fontSize: '0.8vw'}} className="navButtonText">{label} </ListItemText>
-      </Link>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "0.8vw" }}
+          className="navButtonText"
+        >
+          {label}
+        </ListItemText>
+      </div>
     );
   }
 }

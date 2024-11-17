@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // Define types for the state
 export interface AbstractPageState {
-  data: any;  // Adjust this type depending on the structure of the data
+  data: any; // Adjust this type depending on the structure of the data
   error: string | null;
 }
 
@@ -14,7 +14,10 @@ export interface AbstractPageProps {
 }
 
 // Abstract class for the page components
-abstract class AbstractPage<P extends AbstractPageProps = AbstractPageProps, S extends AbstractPageState=AbstractPageState> extends Component<P, S> {
+abstract class AbstractPage<
+  P extends AbstractPageProps = AbstractPageProps,
+  S extends AbstractPageState = AbstractPageState
+> extends Component<P, S> {
   constructor(props: P) {
     super(props);
     this.state = {
@@ -27,7 +30,7 @@ abstract class AbstractPage<P extends AbstractPageProps = AbstractPageProps, S e
   abstract fetchData(): void;
 
   componentDidMount() {
-    this.fetchData()
+    this.fetchData();
   }
 
   renderContent(): JSX.Element {

@@ -1,6 +1,6 @@
-import React from 'react';
-import AbstractPage, { AbstractPageState } from './AbstractPages';
-import { Box, Typography } from '@mui/material';
+import React from "react";
+import AbstractPage, { AbstractPageState } from "./AbstractPages";
+import { Box, Typography } from "@mui/material";
 
 // Define the state interface for the Events component
 interface EventsState extends AbstractPageState {
@@ -13,23 +13,23 @@ class Events extends AbstractPage<{}, EventsState> {
     this.state = {
       data: null,
       error: null,
-      fetchdata:true
+      fetchdata: true,
     };
   }
 
   fetchData() {
-    console.log('Fetching data...');
-    fetch('http://localhost:5000/api/get_data')
+    console.log("Fetching data...");
+    fetch("http://localhost:5000/api/get_data")
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((data: { name: string }[]) => {
         // Update state with fetched data
         this.setState({ data: data[0].name });
-        sessionStorage.setItem('hasFetchedData', 'true');
+        sessionStorage.setItem("hasFetchedData", "true");
       })
       .catch((error: Error) => {
         this.setState({ error: error.message });
@@ -38,7 +38,7 @@ class Events extends AbstractPage<{}, EventsState> {
 
   renderContent() {
     const { data } = this.state; // Use state data here
-    console.log('Rendering data:', data);
+    console.log("Rendering data:", data);
 
     return (
       <Box sx={{ padding: 3 }}>
@@ -46,9 +46,11 @@ class Events extends AbstractPage<{}, EventsState> {
           Upcoming Events
         </Typography>
         <Typography variant="body1">
-          Here you can find all upcoming events and activities organized by FAST.
+          Here you can find all upcoming events and activities organized by
+          FAST.
         </Typography>
-        <Typography variant="body2">{data}</Typography> {/* Displaying fetched data */}
+        <Typography variant="body2">{data}</Typography>{" "}
+        {/* Displaying fetched data */}
       </Box>
     );
   }

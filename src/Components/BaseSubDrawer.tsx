@@ -1,41 +1,50 @@
-import React from 'react';
-import { Drawer, Box } from '@mui/material';
-import { BaseDrawerProps } from './BaseDrawer';
-import BaseDrawer from './BaseDrawer';
+import React from "react";
+import { Drawer, Box } from "@mui/material";
+import { BaseDrawerProps } from "./BaseDrawer";
+import BaseDrawer from "./BaseDrawer";
 
 abstract class BaseSubDrawer extends BaseDrawer<BaseDrawerProps> {
   static defaultProps = {
     ...BaseDrawer.defaultProps,
-    sx: { width: 300 },  // Set a default width for subdrawer
-    variant: 'temporary' as 'temporary', // Enforce 'temporary' variant for sub drawers
+    sx: {
+      width: 240, // Set subdrawer width
+      zIndex: 1300, // Ensure it's above the sidebar
+    },
+    variant: "persistent" as "persistent",
   };
 
-  // Abstract method for the content specific to the sub drawer
-
   render() {
-    const { isOpen, onClose, sx, ...restProps } = this.props; // Deconstruct props to get isOpen and onClose
-    const subDrawerSx = {
-      width: 300,  // Set your custom width for the subdrawer
-      ...sx,  // Apply any additional sx overrides
-    };
+    const { isOpen, onClose, sx, anchor = "left", ...restProps } = this.props;
 
     return (
       <Drawer
         {...restProps}
-        open={isOpen}   // Ensure open is set to isOpen
+        open={isOpen}
         onClose={onClose}
-        sx={subDrawerSx}
+        sx={{
+          ...sx, // Spread the sx prop to include other default styles
+          zIndex: 1300, // Ensure it's above the sidebar
+        }}
+        PaperProps={{
+          sx: {
+            left: 100,
+            width: "30vw",
+            outline: "2px solid black",
+            background: "rgba(255,255,255,0.2)",
+          },
+        }}
+        anchor={anchor} // Let the Drawer component handle the anchor prop positioning automatically
       >
-        {/* Wrap the content with a Box component */}
         <Box
           sx={{
             marginTop: 2,
-            overflowY: 'auto',  // Make the content scrollable if it's too long
-            height: '100%',  // Take full height inside the drawer
-            padding: 2,  // Add some padding inside the Box
+            overflowY: "auto",
+            height: "100%", // Ensure the content stretches to fill the height
+            padding: 2,
           }}
         >
-          {this.renderContent()}
+          {this.renderContent()}{" "}
+          {/* This will call the renderContent method from BaseDrawer */}
         </Box>
       </Drawer>
     );
