@@ -42,7 +42,7 @@ class SideBarDrawer extends BaseDrawer<{}, SidebarDrawerState> {
         </Box>
 
         {/* Divider */}
-        <Divider sx={{ marginBottom: -2 }} />
+        <Divider sx={{ marginBottom: 0 }} />
 
         {/* Navigation Items */}
         <List className={styles.sideList}>

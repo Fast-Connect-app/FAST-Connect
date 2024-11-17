@@ -33,7 +33,7 @@
 .mainDrawerContent {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: start;
   height: 100%;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .sideList {
-  flex-grow: 1;
+  flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -74,7 +74,7 @@
   text-decoration: "none";
   width: 100%;
   height: 12vh !important;
-  margin-top: 2vh !important;
+  margin-top: 0.5vh !important;
   transition: 0.2s ease;
   transition: background-color 0.3s ease;
 }
@@ -86,7 +86,9 @@
 .listItemButton.active {
   background-color: rgba(0, 0, 0, 0.2);
 }
-
+.listItemButton:focus {
+  outline: none;
+}
 /* BaseSubDrawer.module.css */
 
 /* Base drawer styles */
