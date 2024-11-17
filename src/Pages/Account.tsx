@@ -11,28 +11,28 @@ const Account = () => {
 
     return (
         <div style={styles.container}>
-            <div style={styles.left}>
+            <div style={{...styles.left,  transform : isLoginActive ? 'translateX(0)' : 'translateX(100%)', opacity : isLoginActive ? 1 : 0}}>
                 <Login />
                 <div
                     style={{
                         ...styles.box,
-                        transform: isLoginActive ? 'translateX(0)' : 'translateX(100%)', // Box moves right when switching
+                        transform: isLoginActive ? 'translateX(100%)' : 'translateX(0)', // Box moves right when switching
                         opacity: isLoginActive ? 1 : 0, // Fade out when the box moves
                     }}
                 >
                     <p>Don't have an account? Sign up now!</p>
                     <button onClick={toggleActiveComponent} style={styles.button}>
-                        Go to Sign Up
+                        Go to Sign up
                     </button>
                 </div>
             </div>
-            <div style={styles.right}>
+            <div style={{...styles.right, transform : isLoginActive ? 'translateX(-100%)' : 'translateX(0)', opacity : isLoginActive ? 0 : 1}}>
                 <Register />
                 <div
                     style={{
                         ...styles.box,
-                        transform: !isLoginActive ? 'translateX(0)' : 'translateX(-100%)', // Box moves left when switching
-                        opacity: !isLoginActive ? 1 : 0, // Fade out when the box moves
+                        transform: isLoginActive ? 'translateX(0)' : 'translateX(-100%)', // Box moves left when switching
+                        opacity: isLoginActive ? 0 : 1, // Fade out when the box moves
                     }}
                 >
                     <p>Already have an account? Log in here!</p>
@@ -61,6 +61,7 @@ const styles = {
         textAlign: 'center' as 'center',
         position: 'relative' as 'relative',
         height: '100vh',
+        transition: 'transform 0.5s ease, opacity 0.5s ease', // Add transition for sliding and fading
     },
     right: {
         flex: 1,
@@ -68,6 +69,7 @@ const styles = {
         textAlign: 'center' as 'center',
         position: 'relative' as 'relative',
         height: '100vh',
+        transition: 'transform 0.5s ease, opacity 0.5s ease', // Add transition for sliding and fading
     },
     box: {
         position: 'absolute' as 'absolute',
