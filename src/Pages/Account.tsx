@@ -16,7 +16,7 @@ const Account = () => {
                 <div
                     style={{
                         ...styles.box,
-                        transform: isLoginActive ? 'translateX(0)' : 'translateX(-100%)', // Box moves left when switching
+                        transform: isLoginActive ? 'translateX(0)' : 'translateX(100%)', // Box moves right when switching
                         opacity: isLoginActive ? 1 : 0, // Fade out when the box moves
                     }}
                 >
@@ -31,7 +31,7 @@ const Account = () => {
                 <div
                     style={{
                         ...styles.box,
-                        transform: !isLoginActive ? 'translateX(0)' : 'translateX(100%)', // Box moves right when switching
+                        transform: !isLoginActive ? 'translateX(0)' : 'translateX(-100%)', // Box moves left when switching
                         opacity: !isLoginActive ? 1 : 0, // Fade out when the box moves
                     }}
                 >
