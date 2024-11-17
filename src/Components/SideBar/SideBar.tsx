@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import SideBarDrawer from "./SideBar-Drawer";
-import "./SideBarStyle.css";
-import EventSubDrawer from "./SubDrawer/EventSubDrawer";
+import "./SideBarStyle.module.css";
 
 class SideBar extends Component {
   render() {
@@ -14,8 +13,11 @@ class SideBar extends Component {
           overflowY: "hidden",
           "& .MuiDrawer-paper": {
             width: {
-              md: "2vw", // 6vw on medium screens and up
+              xs: "1vw",
+              sm: "2vw",
+              md: "4vw", // 6vw on medium screens and up
               lg: "6vw", // 8vw on large screens and up
+              xl: "10vw",
             },
           },
         }}

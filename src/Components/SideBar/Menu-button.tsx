@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AbstractButton, { AbstractButtonProps } from "../AbstractButton";
-import "./NavbarStyle.css";
+import "./SideBarStyle.module.css";
 
 class MenuButton extends AbstractButton {
   constructor(props: AbstractButtonProps) {

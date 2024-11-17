@@ -4,7 +4,7 @@ import AbstractButton, {
   AbstractButtonState,
 } from "../AbstractButton";
 import { ListItemText } from "@mui/material";
-import "./SideBarStyle.css";
+import styles from "./SideBarStyle.module.css";
 
 interface NavButtonProps extends AbstractButtonProps {
   label: string;
@@ -17,10 +17,10 @@ class NavButton extends AbstractButton<NavButtonProps, AbstractButtonState> {
     const { icon, label, onClick } = this.props;
     return (
       <div onClick={onClick}>
-        <span className="navButtonIcon">{icon}</span>
+        <span className={styles.sideButtonIcon}>{icon}</span>
         <ListItemText
           primaryTypographyProps={{ fontSize: "0.8vw" }}
-          className="navButtonText"
+          className={styles.sideButtonText}
         >
           {label}
         </ListItemText>

@@ -1,20 +1,31 @@
 import React from "react";
 import { Drawer, Box } from "@mui/material";
-import { BaseDrawerProps } from "./BaseDrawer";
-import BaseDrawer from "./BaseDrawer";
+import BaseDrawer, { BaseDrawerProps } from "./BaseDrawer";
+import { Close } from "@mui/icons-material";
+import styles from "./SideBar/SideBarStyle.module.css"; // Import CSS module
 
-abstract class BaseSubDrawer extends BaseDrawer<BaseDrawerProps> {
+interface BaseSubDrawerProps extends BaseDrawerProps {
+  sidebarWidth: number | string | object; // Width of the sidebar to adjust the position
+}
+
+abstract class BaseSubDrawer extends BaseDrawer<BaseSubDrawerProps> {
   static defaultProps = {
     ...BaseDrawer.defaultProps,
     sx: {
-      width: 240, // Set subdrawer width
       zIndex: 1300, // Ensure it's above the sidebar
     },
     variant: "persistent" as "persistent",
   };
 
   render() {
-    const { isOpen, onClose, sx, anchor = "left", ...restProps } = this.props;
+    const {
+      isOpen,
+      onClose,
+      sx,
+      anchor = "left",
+      sidebarWidth,
+      ...restProps
+    } = this.props;
 
     return (
       <Drawer
@@ -22,29 +33,23 @@ abstract class BaseSubDrawer extends BaseDrawer<BaseDrawerProps> {
         open={isOpen}
         onClose={onClose}
         sx={{
-          ...sx, // Spread the sx prop to include other default styles
-          zIndex: 1300, // Ensure it's above the sidebar
+          ...sx, // Include other styles
         }}
         PaperProps={{
+          className: `${styles.subDrawerPaper}`,
           sx: {
-            left: 100,
-            width: "30vw",
-            outline: "2px solid black",
-            background: "rgba(255,255,255,0.2)",
+            marginLeft: "2px",
+            ...(anchor === "left"
+              ? { left: sidebarWidth }
+              : { right: sidebarWidth }),
           },
         }}
-        anchor={anchor} // Let the Drawer component handle the anchor prop positioning automatically
+        anchor={anchor} // Automatically handle the positioning
       >
-        <Box
-          sx={{
-            marginTop: 2,
-            overflowY: "auto",
-            height: "100%", // Ensure the content stretches to fill the height
-            padding: 2,
-          }}
-        >
-          {this.renderContent()}{" "}
-          {/* This will call the renderContent method from BaseDrawer */}
+        <Box className={styles.subDrawerContent}>
+          <Box sx={{ flexGrow: 1 }}>
+            {this.renderContent()} {/* Render the content from BaseDrawer */}
+          </Box>
         </Box>
       </Drawer>
     );
