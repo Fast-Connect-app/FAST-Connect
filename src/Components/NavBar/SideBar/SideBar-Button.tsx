@@ -2,7 +2,7 @@ import React from "react";
 import AbstractButton, {
   AbstractButtonProps,
   AbstractButtonState,
-} from "../../../AbstractButton";
+} from "../../AbstractButton";
 import { ListItemText } from "@mui/material";
 import styles from "./SideBarStyle.module.css";
 

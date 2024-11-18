@@ -1,7 +1,7 @@
 import HomeIcon from "@mui/icons-material/Home";
 import EventSubDrawer from "./SubDrawer/EventSubDrawer";
 import { Event } from "@mui/icons-material";
-import JobSubDrawer from "./SubDrawer/JobSubDrawe";
+import JobSubDrawer from "./SubDrawer/JobSubDrawer";
 
 interface NavItem {
   label: string;

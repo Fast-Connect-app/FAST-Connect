@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import SideBar from "../Components/NavBar/SideBar/Sidebar/SideBar";
+import SideBar from "../Components/NavBar/SideBar/SideBar";
 import Footer from "../Components/Footer";
 
 // Define the type for props, where children is a required ReactNode

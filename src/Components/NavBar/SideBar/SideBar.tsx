@@ -13,11 +13,11 @@ class SideBar extends Component {
           overflowY: "hidden",
           "& .MuiDrawer-paper": {
             width: {
-              xs: "1vw",
-              sm: "2vw",
-              md: "4vw", // 6vw on medium screens and up
+              xs: "60px", // small screen
+              sm: "60px", // small medium screen
+              md: "60px", // medium screens and up
               lg: "6vw", // 8vw on large screens and up
-              xl: "10vw",
+              xl: "6vw", // desktop screen
             },
           },
         }}

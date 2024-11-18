@@ -2,7 +2,7 @@ import React from "react";
 import { Drawer, Box } from "@mui/material";
 import BaseDrawer, { BaseDrawerProps } from "./BaseDrawer";
 import { Close } from "@mui/icons-material";
-import styles from "./SideBar/SideBarStyle.module.css"; // Import CSS module
+import styles from "./NavBar/SideBar/SideBarStyle.module.css"; // Import CSS module
 
 interface BaseSubDrawerProps extends BaseDrawerProps {
   sidebarWidth: number | string | object; // Width of the sidebar to adjust the position
