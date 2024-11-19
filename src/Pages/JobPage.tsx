@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Typography,
@@ -63,7 +63,7 @@ const JobPage = () => {
       {/* Filter Tabs */}
       <Tabs
         value={selectedCategory}
-        onChange={(e, value) => setSelectedCategory(value)}
+        onChange={(_, value) => setSelectedCategory(value)}
         centered
         sx={{ mb: 4 }}
       >
