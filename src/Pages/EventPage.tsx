@@ -43,7 +43,7 @@ const EventsPage: React.FC = () => {
     },
   ];
   const [filteredEvents, setFilteredEvents] = useState(events);
-  
+
   const handleEventTypeChange = (event: SelectChangeEvent<string>) => {
     setEventType(event.target.value as string);
   };
@@ -89,6 +89,8 @@ const EventsPage: React.FC = () => {
         padding: '2rem',
         backgroundColor: '#ffffff', // White background color
         minHeight: '100vh', // Ensures the page spans the full viewport height
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       {/* Filters Section */}
@@ -138,48 +140,62 @@ const EventsPage: React.FC = () => {
       </Box>
 
       {/* Events Grid */}
-      <Grid container spacing={3}>
-        {filteredEvents.map((event) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.id}>
-            <Card
-              sx={{
-                height: '300px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              {/* Card Media */}
-              <CardMedia
-                component="img"
-                height="140"
-                image={event.image}
-                alt={event.title}
-              />
+      <Box
+        sx={{
+          flexGrow: 1, // Ensures that the grid takes up all available space
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Grid container spacing={3}>
+          {filteredEvents.length === 0 ? (
+            <Box sx={{ width: '100vh', textAlign: 'center' }}>
+              <Typography variant="h6">No events found</Typography>
+            </Box>
+          ) : (
+            filteredEvents.map((event) => (
+              <Grid  size = {{ xs : 12 , sm : 6 , md : 4}} key={event.id}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  {/* Card Media */}
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={event.image}
+                    alt={event.title}
+                  />
 
-              {/* Card Content */}
-              <CardContent sx={{ flex: '1 1 auto', overflow: 'hidden' }}>
-                <Typography variant="h6" component="div" noWrap>
-                  {event.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {event.date}
-                </Typography>
-              </CardContent>
+                  {/* Card Content */}
+                  <CardContent sx={{ flex: '1 1 auto', overflow: 'hidden' }}>
+                    <Typography variant="h6" component="div" noWrap>
+                      {event.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {event.date}
+                    </Typography>
+                  </CardContent>
 
-              {/* Card Actions */}
-              <CardActions>
-                <Button size="small" color="primary">
-                  More Info
-                </Button>
-                <Button size="small" color="secondary">
-                  Book Now
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                  {/* Card Actions */}
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      More Info
+                    </Button>
+                    <Button size="small" color="secondary">
+                      Book Now
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          )}
+        </Grid>
+      </Box>
     </Box>
   );
 };
