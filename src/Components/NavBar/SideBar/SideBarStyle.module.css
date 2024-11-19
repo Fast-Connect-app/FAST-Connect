@@ -109,7 +109,7 @@
     0.9
   ) !important; /* Slightly transparent background */
   box-shadow: 30px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-  border-radius: 0 10px 10px 0; /* Rounded corners for smooth edges */
+  border-radius: 0 10px 0 0; /* Rounded corners for smooth edges */
 }
 
 /* Adjust position of the subdrawer based on anchor (left or right) */
