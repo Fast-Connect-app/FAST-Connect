@@ -45,7 +45,7 @@ const JobPage = () => {
   return (
     <Box sx={{ padding: 4, backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
       {/* Header */}
-      <Typography variant="h4" sx={{ textAlign: 'center', mb: 3 }}>
+      <Typography variant="h4" sx={{ textAlign: 'right', mb: 3 }}>
         Open positions in{' '}
         <Select
           value={selectedLocation}
