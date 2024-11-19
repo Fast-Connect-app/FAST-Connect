@@ -23,10 +23,10 @@ interface AppState {
 }
 
 // Define types for the props (optional, based on usage in individual page components)
-interface RouteProps {
-  data: string | null;
-  error: string | null;
-}
+// interface RouteProps {
+//   data: string | null;
+//   error: string | null;
+// }
 
 class App extends Component<{}, AppState> {
   constructor(props: {}) {
