@@ -33,13 +33,13 @@ const jobs: Job[] = [
 
 const JobPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All Positions');
-  const [selectedLocation, setSelectedLocation] = useState<string>('all locations');
+  const [selectedLocation, setSelectedLocation] = useState<string>('All locations');
 
   const categories = ['All Positions', 'Data Science', 'Engineering', 'Marketing'];
 
   const filteredJobs = jobs.filter((job) =>
     (selectedCategory === 'All Positions' || job.category === selectedCategory) &&
-    (selectedLocation === 'all locations' || job.location === selectedLocation)
+    (selectedLocation === 'All locations' || job.location === selectedLocation)
   );
 
   return (
@@ -52,7 +52,7 @@ const JobPage = () => {
           onChange={(e) => setSelectedLocation(e.target.value)}
           sx={{ fontWeight: 'bold', ml: 1 }}
         >
-          <MenuItem value="all locations">all locations</MenuItem>
+          <MenuItem value="All locations">All locations</MenuItem>
           <MenuItem value="Boston">Boston</MenuItem>
           <MenuItem value="Kiev">Kiev</MenuItem>
           <MenuItem value="Japan">Japan</MenuItem>
@@ -73,10 +73,10 @@ const JobPage = () => {
       </Tabs>
 
       {/* Job Grid */}
-      <Grid container spacing={3}>
+      <Grid container spacing={4}>
         {filteredJobs.map((job) => (
           <Grid size = {{ xs : 12 , sm : 6 , md : 4}} key={job.id}>
-            <Card sx={{ height: '150px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Card sx={{ height: '140px', width : '25.5vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <CardContent>
                 <Typography variant="h6" noWrap>
                   {job.title}
