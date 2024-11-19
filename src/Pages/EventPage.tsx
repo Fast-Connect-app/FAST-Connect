@@ -18,7 +18,7 @@ import Grid from '@mui/material/Grid2';
 const EventsPage: React.FC = () => {
   const [eventType, setEventType] = useState<string>('all');
   const [timeRange, setTimeRange] = useState<string>('any');
-
+  
   const events = [
     {
       id: 1,
@@ -42,13 +42,45 @@ const EventsPage: React.FC = () => {
       type: 'Music',
     },
   ];
-
+  const [filteredEvents, setFilteredEvents] = useState(events);
+  
   const handleEventTypeChange = (event: SelectChangeEvent<string>) => {
     setEventType(event.target.value as string);
   };
-  
+
   const handleTimeRangeChange = (event: SelectChangeEvent<string>) => {
     setTimeRange(event.target.value as string);
+  };
+
+  const filterEvents = () => {
+    let filtered = events;
+
+    // Filter by event type
+    if (eventType !== 'all') {
+      filtered = filtered.filter(event => event.type.toLowerCase() === eventType.toLowerCase());
+    }
+
+    // Filter by time range (for simplicity, assuming today, this-week, this-month)
+    if (timeRange !== 'any') {
+      const today = new Date();
+      filtered = filtered.filter(event => {
+        const eventDate = new Date(event.date.split(' ')[0]); // Extract the first date part for simplicity
+        if (timeRange === 'today') {
+          return eventDate.toDateString() === today.toDateString();
+        } else if (timeRange === 'this-week') {
+          const startOfWeek = new Date(today);
+          startOfWeek.setDate(today.getDate() - today.getDay());
+          const endOfWeek = new Date(today);
+          endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
+          return eventDate >= startOfWeek && eventDate <= endOfWeek;
+        } else if (timeRange === 'this-month') {
+          return eventDate.getMonth() === today.getMonth() && eventDate.getFullYear() === today.getFullYear();
+        }
+        return true;
+      });
+    }
+
+    setFilteredEvents(filtered);
   };
 
   return (
@@ -100,15 +132,14 @@ const EventsPage: React.FC = () => {
           </Select>
         </FormControl>
 
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={filterEvents}>
           Find Events
         </Button>
       </Box>
 
-
       {/* Events Grid */}
       <Grid container spacing={3}>
-        {events.map((event) => (
+        {filteredEvents.map((event) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.id}>
             <Card
               sx={{
@@ -149,7 +180,6 @@ const EventsPage: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-
     </Box>
   );
 };
