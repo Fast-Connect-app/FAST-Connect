@@ -147,7 +147,7 @@ const EventsPage: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          width : '150vh',
+          width : '155vh',
         }}
       >
         <Grid container spacing={3} >
