@@ -9,9 +9,9 @@ import {
   Button,
   Select,
   MenuItem,
-  TextField,
   FormControl,
   InputLabel,
+  SelectChangeEvent,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
@@ -43,11 +43,11 @@ const EventsPage: React.FC = () => {
     },
   ];
 
-  const handleEventTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleEventTypeChange = (event: SelectChangeEvent<string>) => {
     setEventType(event.target.value as string);
   };
-
-  const handleTimeRangeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  
+  const handleTimeRangeChange = (event: SelectChangeEvent<string>) => {
     setTimeRange(event.target.value as string);
   };
 
