@@ -90,6 +90,7 @@ const EventsPage: React.FC = () => {
         backgroundColor: '#ffffff', // White background color
         minHeight: '100vh', // Ensures the page spans the full viewport height
         display: 'flex',
+        width : '100%',
         flexDirection: 'column',
       }}
     >
@@ -145,11 +146,13 @@ const EventsPage: React.FC = () => {
           flexGrow: 1, // Ensures that the grid takes up all available space
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'space-between',
+          width : '155vh',
         }}
       >
-        <Grid container spacing={3}>
+        <Grid container spacing={3} >
           {filteredEvents.length === 0 ? (
-            <Box sx={{ width: '100vh', textAlign: 'center' }}>
+            <Box sx={{ width: '150vh', textAlign: 'center' }}>
               <Typography variant="h6">No events found</Typography>
             </Box>
           ) : (
@@ -158,6 +161,7 @@ const EventsPage: React.FC = () => {
                 <Card
                   sx={{
                     height: '100%',
+                    width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',

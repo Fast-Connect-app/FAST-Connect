@@ -15,6 +15,7 @@ import Events from "./Pages/EventPage";
 import Register from './Pages/Signup';
 import Login from './Pages/Login';
 import Account from './Pages/Account';
+import JobPage from "./Pages/JobPage";
 
 // Define types for the state
 interface AppState {
@@ -77,6 +78,7 @@ class App extends Component<{}, AppState> {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/jobs" element={<JobPage />} />
           </Routes>
         </MainLayout>
       </Router>
