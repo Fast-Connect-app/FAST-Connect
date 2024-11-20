@@ -1,11 +1,13 @@
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject"
-import { ISaveById as IModifyById, ISaveById } from "../DatabaseInterfaces/ISaveById"
+import { IModifyById } from "../DatabaseInterfaces/IModifyById"
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
 import { ILoadForUser } from "../DatabaseInterfaces/ILoadForUser";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { IDelete } from "../DatabaseInterfaces/IDelete";
 import {FirebaseAdapter} from "./FirebaseAdapter"
+
+import {User} from "../Classes/User"
 
 // Only implement interfaces that are required for each type
 

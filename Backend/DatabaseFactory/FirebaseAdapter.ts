@@ -3,10 +3,22 @@ import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
 import { ILoadForUser } from "../DatabaseInterfaces/ILoadForUser";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
-import { ISaveById } from "../DatabaseInterfaces/ISaveById";
+import { IModifyById } from "../DatabaseInterfaces/IModifyById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
 
-export class FirebaseAdapter<T> implements ILoadAll<T>,ILoadById<T>,ILoadOnChange<T>,ISaveById<T>,ISaveObject<T>,ILoadForUser<T>,IDelete<T>{
+//firebase imports
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore, Firestore } from 'firebase-admin/firestore';
+import * as serviceAccount from "../../credentials.json"
+
+// Authenticate the Firebase database
+const app = initializeApp({
+  credential: cert(serviceAccount as any),
+});
+
+const db: Firestore = getFirestore(app);
+
+export class FirebaseAdapter<T> implements ILoadAll<T>,ILoadById<T>,ILoadOnChange<T>,IModifyById<T>,ISaveObject<T>,ILoadForUser<T>,IDelete<T>{
     private collectionName : string;
 
     constructor(_collectionName:string){
@@ -33,11 +45,11 @@ export class FirebaseAdapter<T> implements ILoadAll<T>,ILoadById<T>,ILoadOnChang
         
     }
 
-    async SaveById(id: string,data): Promise<void> {
-    
+    async ModifyById(id: string,data): Promise<void> {
+        
     }
 
-    async SaveObject(entity: T,data): Promise<void> {   
-    
+    async SaveObject(data): Promise<void> {   
+        
     }
 }
