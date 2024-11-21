@@ -5,7 +5,7 @@ import { Component } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./Layouts/MainLayout";
 //import HomePage from './Pages/HomePage';
-//import Profile from './Pages/Profile';
+import Profile from './Pages/Profile';
 //import Messages from './Pages/Messages';
 import Events from "./Pages/EventPage";
 //import JobListings from './Pages/JobListings';
@@ -79,6 +79,7 @@ class App extends Component<{}, AppState> {
             <Route path="/login" element={<Login />} />
             <Route path="/account" element={<Account />} />
             <Route path="/jobs" element={<JobPage />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </MainLayout>
       </Router>
