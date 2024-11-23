@@ -12,6 +12,7 @@ import Events from "./Pages/EventPage";
 //import StudyMaterials from './Pages/StudyMaterials';
 //import Posts from './Pages/Posts';
 //import GlobalChat from './Pages/GlobalChat';
+
 import Register from './Pages/Signup';
 import Login from './Pages/Login';
 import Account from './Pages/Account';
@@ -60,6 +61,7 @@ class App extends Component<{}, AppState> {
     return (
       <Router>
         <MainLayout>
+          <HomePage></HomePage>
           <Routes>
             {/* <Route
               exact

@@ -1,25 +1,32 @@
-import React from "react";
-import { Drawer, Box, Divider, List, ListItem } from "@mui/material";
+import React, { Component } from "react";
+import {
+  Drawer,
+  Box,
+  Divider,
+  List,
+  ListItem,
+  DrawerProps,
+} from "@mui/material";
 import NavButton from "./SideBar-Button";
 import { navItems } from "./SideBarItems";
-import BaseDrawer, { BaseDrawerProps } from "../../BaseDrawer";
+// import BaseDrawer, { BaseDrawerProps } from "../../BaseDrawer";
 import styles from "./SideBarStyle.module.css"; // Import the CSS module or use a CSS file
 
 interface SidebarDrawerState {
   openNestedDrawerIndex: number | null;
 }
 
-class SideBarDrawer extends BaseDrawer<{}, SidebarDrawerState> {
-  static defaultProps: Partial<BaseDrawerProps> = {
-    variant: "persistent",
-    anchor: "left",
-    sx: {
-      width: 240,
-      zIndex: 1300,
-    },
-  };
+class SideBarDrawer extends Component<DrawerProps, SidebarDrawerState> {
+  // static defaultProps: Partial<BaseDrawerProps> = {
+  //   variant: "persistent",
+  //   anchor: "left",
+  //   sx: {
+  //     width: 240,
+  //     zIndex: 1300,
+  //   },
+  // };
 
-  constructor(props: BaseDrawerProps) {
+  constructor(props: DrawerProps) {
     super(props);
     this.state = {
       openNestedDrawerIndex: null,
@@ -67,7 +74,7 @@ class SideBarDrawer extends BaseDrawer<{}, SidebarDrawerState> {
   }
 
   render() {
-    const { variant, anchor, isOpen, sx } = this.props;
+    const { variant, anchor, open, sx } = this.props;
     const { openNestedDrawerIndex } = this.state;
 
     const SubDrawerComponent =
@@ -80,20 +87,29 @@ class SideBarDrawer extends BaseDrawer<{}, SidebarDrawerState> {
       )?.["& .MuiDrawer-paper"]?.width ?? 240;
 
     return (
-      <>
+      <div style={{ width: "fit-content" }}>
         {/* Main Sidebar Drawer */}
-        <Drawer variant={variant} anchor={anchor} open={isOpen} sx={sx}>
+        <Drawer variant={variant} anchor={anchor} open={open} sx={sx}>
           {this.renderContent()}
         </Drawer>
 
         {/* Subdrawer */}
         {SubDrawerComponent &&
           React.createElement(SubDrawerComponent, {
-            isOpen: true,
+            open: true,
             onClose: this.toggleNestedDrawer(null),
             sidebarWidth, // Pass the dynamically extracted sidebar width
+            variant: "persistent",
+            sx: {
+              marginLeft: sidebarWidth,
+              width: "20vw", // Pass the width in sx
+              "& .MuiDrawer-paper": {
+                left: sidebarWidth,
+                width: "20vw", // Reuse the same width for MuiDrawer-paper
+              },
+            },
           })}
-      </>
+      </div>
     );
   }
 }

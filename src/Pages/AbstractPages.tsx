@@ -27,11 +27,6 @@ abstract class AbstractPage<
   }
 
   // Abstract method to fetch data, to be implemented in subclasses
-  abstract fetchData(): void;
-
-  componentDidMount() {
-    this.fetchData();
-  }
 
   renderContent(): JSX.Element {
     // This method will be implemented in subclasses
@@ -39,13 +34,7 @@ abstract class AbstractPage<
   }
 
   render() {
-    const { data, error } = this.state;
-    return (
-      <div>
-        {error && <p>Error: {error}</p>}
-        {data ? this.renderContent() : <p>Loading...</p>}
-      </div>
-    );
+    return this.renderContent();
   }
 }
 

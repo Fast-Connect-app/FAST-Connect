@@ -4,21 +4,25 @@ import "./SideBarStyle.module.css";
 
 class SideBar extends Component {
   render() {
+    // Define the width once
+    const drawerWidth = {
+      xs: "60px", // small screen
+      sm: "60px", // small medium screen
+      md: "60px", // medium screens and up
+      lg: "6vw", // large screens and up
+      xl: "6vw", // desktop screen
+    };
+
     return (
       <SideBarDrawer
-        isOpen={true}
+        open={true}
         variant="permanent"
         anchor="left"
         sx={{
+          width: drawerWidth, // Use the same width for the drawer
           overflowY: "hidden",
           "& .MuiDrawer-paper": {
-            width: {
-              xs: "60px", // small screen
-              sm: "60px", // small medium screen
-              md: "60px", // medium screens and up
-              lg: "6vw", // 8vw on large screens and up
-              xl: "6vw", // desktop screen
-            },
+            width: drawerWidth, // Reuse the same width for MuiDrawer-paper
           },
         }}
       />
