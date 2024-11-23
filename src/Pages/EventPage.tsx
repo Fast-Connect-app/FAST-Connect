@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -12,34 +12,34 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
-} from '@mui/material';
-import Grid from '@mui/material/Grid2';
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 const EventsPage: React.FC = () => {
-  const [eventType, setEventType] = useState<string>('all');
-  const [timeRange, setTimeRange] = useState<string>('any');
-  
+  const [eventType, setEventType] = useState<string>("all");
+  const [timeRange, setTimeRange] = useState<string>("any");
+
   const events = [
     {
       id: 1,
-      title: 'Phil Collins: This Is The Day',
-      date: '10 Aug - 21 Oct 2018',
-      image: 'https://via.placeholder.com/300x200',
-      type: 'Exhibition',
+      title: "Phil Collins: This Is The Day",
+      date: "10 Aug - 21 Oct 2018",
+      image: "https://via.placeholder.com/300x200",
+      type: "Exhibition",
     },
     {
       id: 2,
-      title: 'Swing, Soul, and Showsongs',
-      date: '16 Oct 2018',
-      image: 'https://via.placeholder.com/300x200',
-      type: 'Music',
+      title: "Swing, Soul, and Showsongs",
+      date: "16 Oct 2018",
+      image: "https://via.placeholder.com/300x200",
+      type: "Music",
     },
     {
       id: 3,
-      title: 'Chapter & Verse (Chorus Verse)',
-      date: '17 Oct 2018',
-      image: 'https://via.placeholder.com/300x200',
-      type: 'Music',
+      title: "Chapter & Verse (Chorus Verse)",
+      date: "17 Oct 2018",
+      image: "https://via.placeholder.com/300x200",
+      type: "Music",
     },
   ];
   const [filteredEvents, setFilteredEvents] = useState(events);
@@ -56,25 +56,30 @@ const EventsPage: React.FC = () => {
     let filtered = events;
 
     // Filter by event type
-    if (eventType !== 'all') {
-      filtered = filtered.filter(event => event.type.toLowerCase() === eventType.toLowerCase());
+    if (eventType !== "all") {
+      filtered = filtered.filter(
+        (event) => event.type.toLowerCase() === eventType.toLowerCase()
+      );
     }
 
     // Filter by time range (for simplicity, assuming today, this-week, this-month)
-    if (timeRange !== 'any') {
+    if (timeRange !== "any") {
       const today = new Date();
-      filtered = filtered.filter(event => {
-        const eventDate = new Date(event.date.split(' ')[0]); // Extract the first date part for simplicity
-        if (timeRange === 'today') {
+      filtered = filtered.filter((event) => {
+        const eventDate = new Date(event.date.split(" ")[0]); // Extract the first date part for simplicity
+        if (timeRange === "today") {
           return eventDate.toDateString() === today.toDateString();
-        } else if (timeRange === 'this-week') {
+        } else if (timeRange === "this-week") {
           const startOfWeek = new Date(today);
           startOfWeek.setDate(today.getDate() - today.getDay());
           const endOfWeek = new Date(today);
           endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
           return eventDate >= startOfWeek && eventDate <= endOfWeek;
-        } else if (timeRange === 'this-month') {
-          return eventDate.getMonth() === today.getMonth() && eventDate.getFullYear() === today.getFullYear();
+        } else if (timeRange === "this-month") {
+          return (
+            eventDate.getMonth() === today.getMonth() &&
+            eventDate.getFullYear() === today.getFullYear()
+          );
         }
         return true;
       });
@@ -86,21 +91,21 @@ const EventsPage: React.FC = () => {
   return (
     <Box
       sx={{
-        padding: '2rem',
-        backgroundColor: '#ffffff', // White background color
-        minHeight: '100vh', // Ensures the page spans the full viewport height
-        display: 'flex',
-        width : '100%',
-        flexDirection: 'column',
+        padding: "2rem",
+        backgroundColor: "#ffffff", // White background color
+        minHeight: "100vh", // Ensures the page spans the full viewport height
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
       }}
     >
       {/* Filters Section */}
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '2rem',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "2rem",
         }}
       >
         <FormControl variant="outlined" sx={{ minWidth: 150 }}>
@@ -144,27 +149,27 @@ const EventsPage: React.FC = () => {
       <Box
         sx={{
           flexGrow: 1, // Ensures that the grid takes up all available space
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          width : '155vh',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          width: "155vh",
         }}
       >
-        <Grid container spacing={3} >
+        <Grid container spacing={3}>
           {filteredEvents.length === 0 ? (
-            <Box sx={{ width: '150vh', textAlign: 'center' }}>
+            <Box sx={{ width: "150vh", textAlign: "center" }}>
               <Typography variant="h6">No events found</Typography>
             </Box>
           ) : (
             filteredEvents.map((event) => (
-              <Grid  size = {{ xs : 12 , sm : 6 , md : 4}} key={event.id}>
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.id}>
                 <Card
                   sx={{
-                    height: '100%',
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    height: "100%",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                   }}
                 >
                   {/* Card Media */}
@@ -176,7 +181,7 @@ const EventsPage: React.FC = () => {
                   />
 
                   {/* Card Content */}
-                  <CardContent sx={{ flex: '1 1 auto', overflow: 'hidden' }}>
+                  <CardContent sx={{ flex: "1 1 auto", overflow: "hidden" }}>
                     <Typography variant="h6" component="div" noWrap>
                       {event.title}
                     </Typography>
