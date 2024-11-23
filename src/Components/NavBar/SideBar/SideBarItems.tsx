@@ -2,15 +2,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import EventSubDrawer from "./SubDrawer/EventSubDrawer";
 import { Event } from "@mui/icons-material";
 import JobSubDrawer from "./SubDrawer/JobSubDrawer";
+import { BaseSubDrawerProps } from "../../BaseSubDrawer";
 
 interface NavItem {
   label: string;
   icon: React.ReactNode;
-  BaseSubDrawer?: React.ComponentType<{
-    isOpen: boolean;
-    onClose: () => void;
-    sidebarWidth: number | string | object;
-  }>;
+  BaseSubDrawer?: React.ComponentType<BaseSubDrawerProps>;
 }
 
 export const navItems: NavItem[] = [

@@ -21,7 +21,7 @@ class HeaderBar extends Component {
       <div
         style={{
           top: 0,
-          height: "10vh",
+          height: "100%",
           background: "black",
         }}
       >

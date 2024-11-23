@@ -1,54 +1,34 @@
-import React from "react";
-import { Drawer, Box } from "@mui/material";
-import BaseDrawer, { BaseDrawerProps } from "./BaseDrawer";
+import React, { Component } from "react";
+import { Drawer, Box, Button, DrawerProps } from "@mui/material";
+// import BaseDrawer, { BaseDrawerProps } from "./BaseDrawer";
 import styles from "./NavBar/SideBar/SideBarStyle.module.css"; // Import CSS module
+import SideBar from "./NavBar/SideBar/SideBar";
 
-interface BaseSubDrawerProps extends BaseDrawerProps {
+export interface BaseSubDrawerProps extends DrawerProps {
   sidebarWidth: number | string | object; // Width of the sidebar to adjust the position
 }
 
-abstract class BaseSubDrawer extends BaseDrawer<BaseSubDrawerProps> {
-  static defaultProps = {
-    ...BaseDrawer.defaultProps,
-    sx: {
-      zIndex: 1300, // Ensure it's above the sidebar
-    },
-    variant: "persistent" as "persistent",
-  };
+abstract class BaseSubDrawer extends Component<BaseSubDrawerProps> {
+  abstract renderContent(): React.ReactNode;
 
   render() {
-    const {
-      isOpen,
-      onClose,
-      sx,
-      anchor = "left",
-      sidebarWidth,
-      ...restProps
-    } = this.props;
-
+    const { open, onClose, sx, variant, anchor = "left" } = this.props;
     return (
       <Drawer
-        {...restProps}
-        open={isOpen}
+        open={open}
         onClose={onClose}
-        sx={{
-          ...sx, // Include other styles
-        }}
-        PaperProps={{
-          className: `${styles.subDrawerPaper}`,
-          sx: {
-            marginLeft: "2px",
-            ...(anchor === "left"
-              ? { left: sidebarWidth }
-              : { right: sidebarWidth }),
-          },
-        }}
+        sx={sx}
+        variant={variant}
         anchor={anchor} // Automatically handle the positioning
+        PaperProps={{
+          className: styles.subDrawerPaper,
+        }}
       >
         <Box className={styles.subDrawerContent}>
           <Box sx={{ flexGrow: 1 }}>
             {this.renderContent()} {/* Render the content from BaseDrawer */}
           </Box>
+          <Button fullWidth>ShowMeMore</Button>
         </Box>
       </Drawer>
     );

@@ -12,9 +12,10 @@ import Events from "./Pages/EventPage";
 //import StudyMaterials from './Pages/StudyMaterials';
 //import Posts from './Pages/Posts';
 //import GlobalChat from './Pages/GlobalChat';
-import Register from './Pages/Signup';
-import Login from './Pages/Login';
-import Account from './Pages/Account';
+import Register from "./Pages/Signup";
+import Login from "./Pages/Login";
+import Account from "./Pages/Account";
+import HomePage from "./Pages/HomePage";
 
 // Define types for the state
 interface AppState {
@@ -59,6 +60,7 @@ class App extends Component<{}, AppState> {
     return (
       <Router>
         <MainLayout>
+          <HomePage></HomePage>
           <Routes>
             {/* <Route
               exact
