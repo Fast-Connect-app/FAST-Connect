@@ -112,9 +112,26 @@ const HomePage: React.FC = () => {
                 <IconButton
                   color={post.liked ? "primary" : "default"}
                   onClick={() => handleLike(post.id)}
+                  disableRipple
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    "&:focus": {
+                      outline: "none", // Remove the default focus outline
+                      boxShadow: "none", // Remove box shadow on focus
+                    },
+                    "&:active": {
+                      // Remove highlight when button is clicked
+                      backgroundColor: "transparent", // Customize as needed
+                    },
+                  }}
                 >
+                  <Typography variant="overline" padding={0}>
+                    {post.likes}
+                  </Typography>
                   <FavoriteIcon />
                 </IconButton>
+
                 <IconButton color="default">
                   <ShareIcon />
                 </IconButton>
@@ -122,11 +139,6 @@ const HomePage: React.FC = () => {
                   <ReplyIcon />
                 </IconButton>
               </Box>
-            </Box>
-
-            {/* Like Count */}
-            <Box paddingLeft={3} textAlign="left">
-              <Typography variant="body2">{post.likes} Likes</Typography>
             </Box>
 
             {/* Description */}
