@@ -5,17 +5,18 @@ import { Component } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./Layouts/MainLayout";
 //import HomePage from './Pages/HomePage';
-//import Profile from './Pages/Profile';
+import Profile from './Pages/Profile';
 //import Messages from './Pages/Messages';
 import Events from "./Pages/EventPage";
 //import JobListings from './Pages/JobListings';
 //import StudyMaterials from './Pages/StudyMaterials';
 //import Posts from './Pages/Posts';
 //import GlobalChat from './Pages/GlobalChat';
-import Register from "./Pages/Signup";
-import Login from "./Pages/Login";
-import Account from "./Pages/Account";
-import HomePage from "./Pages/HomePage";
+
+import Register from './Pages/Signup';
+import Login from './Pages/Login';
+import Account from './Pages/Account';
+import JobPage from "./Pages/JobPage";
 
 // Define types for the state
 interface AppState {
@@ -24,10 +25,10 @@ interface AppState {
 }
 
 // Define types for the props (optional, based on usage in individual page components)
-interface RouteProps {
-  data: string | null;
-  error: string | null;
-}
+// interface RouteProps {
+//   data: string | null;
+//   error: string | null;
+// }
 
 class App extends Component<{}, AppState> {
   constructor(props: {}) {
@@ -79,6 +80,8 @@ class App extends Component<{}, AppState> {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/jobs" element={<JobPage />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </MainLayout>
       </Router>
