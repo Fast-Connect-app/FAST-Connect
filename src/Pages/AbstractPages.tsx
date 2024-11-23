@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 // Define types for the state
 export interface AbstractPageState {

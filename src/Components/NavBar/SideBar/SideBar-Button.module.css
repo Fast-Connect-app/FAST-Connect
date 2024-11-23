@@ -1,0 +1,11 @@
+.sideButtonIcon {
+  color: var(--sidebar-icon-color);
+  transition: font-size 0.2s ease; /* Smooth transition for resizing */
+}
+
+.sideButtonText {
+  color: var(--text-color);
+  font-weight: normal;
+  line-height: 1.2;
+  transition: font-size 0.2s ease;
+}

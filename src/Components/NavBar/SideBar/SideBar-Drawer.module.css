@@ -1,0 +1,43 @@
+.mainDrawerContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  background-color: var(--background-color);
+}
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1rem; /* Adjust as necessary */
+}
+
+.logoContainer img {
+  width: 100px;
+}
+
+.sideList {
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+.listItemButton {
+  text-decoration: "none";
+  width: 100%;
+  height: 12vh !important;
+  margin-top: 0.5vh !important;
+  transition: 0.2s ease;
+  transition: background-color 0.3s ease;
+}
+
+.listItemButton:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.listItemButton.active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.listItemButton:focus {
+  outline: none;
+}

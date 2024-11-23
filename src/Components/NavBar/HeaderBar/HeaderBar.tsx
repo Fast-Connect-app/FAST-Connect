@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Box, Avatar, Menu, MenuItem, Typography } from "@mui/material";
+import styles from "./HeaderBar.module.css";
 
 class HeaderBar extends Component {
   state = {
@@ -19,26 +20,28 @@ class HeaderBar extends Component {
 
     return (
       <div
-        style={{
-          top: 0,
-          height: "100%",
-          background: "black",
-        }}
+        // style={{
+        //   top: 0,
+        //   height: "100%",
+        //   background: "black",
+        // }}
+        className={styles["header-bar"]}
       >
         {/* Profile section */}
         <Box
-          display="flex"
-          alignItems="center"
-          paddingLeft="20px"
-          height="100%"
+          // display="flex"
+          // alignItems="center"
+          // paddingLeft="20px"
+          // height="100%"
+          className={styles["header-bar-box"]}
         >
           <Avatar
             alt="User Profile"
             src="https://www.w3schools.com/w3images/avatar2.png" // Placeholder image URL
             onClick={this.handleMenuClick}
-            style={{ cursor: "pointer" }}
+            className={styles["header-bar-avatar"]}
           />
-          <Typography color="white" style={{ marginLeft: "10px" }}>
+          <Typography className={styles["header-bar-username"]}>
             John Doe {/* Replace with dynamic username */}
           </Typography>
         </Box>

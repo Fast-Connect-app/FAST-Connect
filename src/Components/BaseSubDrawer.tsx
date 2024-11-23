@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Drawer, Box, Button, DrawerProps } from "@mui/material";
-// import BaseDrawer, { BaseDrawerProps } from "./BaseDrawer";
-import styles from "./NavBar/SideBar/SideBarStyle.module.css"; // Import CSS module
-import SideBar from "./NavBar/SideBar/SideBar";
+import styles from "./BaseSubDrawer.module.css"; // Import CSS module
 
 export interface BaseSubDrawerProps extends DrawerProps {
   sidebarWidth: number | string | object; // Width of the sidebar to adjust the position

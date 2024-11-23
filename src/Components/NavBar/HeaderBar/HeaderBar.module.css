@@ -1,0 +1,22 @@
+/* HeaderBar.css */
+.header-bar {
+  top: 0;
+  height: 100%;
+  background-color: var(--background-color);
+}
+
+.header-bar-box {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  height: 100%;
+}
+
+.header-bar-avatar {
+  cursor: pointer;
+}
+
+.header-bar-username {
+  color: var(--text-color);
+  margin-left: 10px;
+}

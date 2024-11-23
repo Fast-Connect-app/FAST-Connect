@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import {
   Card,
   CardContent,
@@ -6,11 +5,13 @@ import {
   IconButton,
   Typography,
   Avatar,
+  CardMedia,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ReplyIcon from "@mui/icons-material/Reply";
-import AbstractPage from "./AbstractPages";
+import AbstractPage, { AbstractPageState } from "../AbstractPages";
+import styles from "./HomePage.module.css";
 
 // Define the Post interface
 interface Post {
@@ -23,9 +24,7 @@ interface Post {
   mediaUrl: string; // URL of the picture or video
 }
 
-interface HomePageState {
-  data: any; // Adjust this type depending on the structure of the data
-  error: string | null;
+interface HomePageState extends AbstractPageState {
   posts: Post[];
 }
 
@@ -95,75 +94,51 @@ class HomePage extends AbstractPage<{}, HomePageState> {
 
     return (
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
+        className={styles["homepage-container"]}
+        // style={{
+        //   display: "flex",
+        //   alignItems: "center",
+        //   flexDirection: "column",
+        // }}
       >
         {posts.map((post) => (
-          <Card sx={{ width: 400, marginBottom: "30px" }} key={post.id}>
-            <CardContent sx={{ padding: 0 }}>
-              {/* Media Area */}
-              <Box
-                sx={{
-                  position: "relative",
-                  height: 300,
-                  backgroundImage: `url(${post.mediaUrl})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <Box
-                  position="absolute"
-                  display="flex"
-                  padding={2}
-                  alignItems="center"
-                >
-                  <Avatar src={post.avatar} alt={post.author} />
-                  <Typography variant="subtitle1" marginLeft={2}>
-                    {post.author}
-                  </Typography>
-                </Box>
-                <Box
-                  position="absolute"
-                  right={0}
-                  bottom={0}
-                  display="flex"
-                  alignItems="flex-end"
-                  justifyContent="space-between"
-                >
-                  <IconButton
-                    color={post.liked ? "primary" : "default"}
-                    onClick={() => this.handleLike(post.id)}
-                    disableRipple
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      "&:focus": {
-                        outline: "none", // Remove the default focus outline
-                        boxShadow: "none", // Remove box shadow on focus
-                      },
-                      "&:active": {
-                        backgroundColor: "transparent", // Customize as needed
-                      },
-                    }}
-                  >
-                    <Typography variant="overline" padding={0}>
-                      {post.likes}
-                    </Typography>
-                    <FavoriteIcon />
-                  </IconButton>
-
-                  <IconButton color="default">
-                    <ShareIcon />
-                  </IconButton>
-                  <IconButton color="default">
-                    <ReplyIcon />
-                  </IconButton>
-                </Box>
+          <Card className={styles["homepage-card"]}>
+            <CardMedia
+              className={styles["homepage-card-media"]}
+              style={{
+                backgroundImage: `url(${post.mediaUrl})`,
+              }}
+            >
+              <Box className={styles["homepage-author-info"]}>
+                <Avatar
+                  src={post.avatar}
+                  alt={post.author}
+                  className={styles["homepage-author-avatar"]}
+                />
+                <Typography variant="subtitle1" marginLeft={2}>
+                  {post.author}
+                </Typography>
               </Box>
+              <Box className={styles["homepage-action-buttons"]}>
+                <IconButton
+                  color={post.liked ? "primary" : "default"}
+                  onClick={() => this.handleLike(post.id)}
+                  disableRipple
+                  className={styles["homepage-icon-button"]}
+                >
+                  <Typography variant="overline">{post.likes}</Typography>
+                  <FavoriteIcon />
+                </IconButton>
 
+                <IconButton color="default">
+                  <ShareIcon />
+                </IconButton>
+                <IconButton color="default">
+                  <ReplyIcon />
+                </IconButton>
+              </Box>
+            </CardMedia>
+            <CardContent className={styles["homepage-card-content"]}>
               {/* Description */}
               <Box padding={3} textAlign="left">
                 <Typography variant="body1">
@@ -175,8 +150,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                 {post.content.length > 100 && (
                   <Typography
                     variant="body2"
-                    color="primary"
-                    sx={{ cursor: "pointer" }}
+                    className={styles["homepage-read-more"]}
                     onClick={() => this.handleReadMore(post.id)}
                   >
                     Read More

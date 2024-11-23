@@ -1,30 +1,46 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  width: 100vw;
+  --primary-color-light: #006bd7;
+  --secondary-color-light: #1a1a1a;
+  --background-color-light: #ffffff;
+  --text-color-light: #213547;
 
-  color-scheme: light dark;
-  color: #ffffffde;
-  background-color: #191a1b;
+  --primary-color-dark: #ffffff;
+  --secondary-color-dark: #1a1a1a;
+  --background-color-dark: #1e1f1f;
+  --text-color-dark: #ffffff;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --link-color: #646cff;
+  --link-hover-color: #535bf2;
+
+  --button-background-light: #f9f9f9;
+  --button-background-dark: #1a1a1a;
+
+  --sidebar-icon-color-light: #000000;
+  --sidebar-icon-color-dark: #f7f7f7;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+html.light {
+  --primary-color: var(--primary-color-light);
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+  --button-background: var(--button-background-light);
+  --sidebar-icon-color: var(--sidebar-icon-color-light);
 }
 
+/* When 'dark' class is added to <html> */
+html.dark {
+  --primary-color: var(--primary-color-dark);
+  --background-color: var(--background-color-dark);
+  --text-color: var(--text-color-dark);
+  --button-background: var(--button-background-dark);
+  --sidebar-icon-color: var(--sidebar-icon-color-dark);
+}
 body {
   margin: 0;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -36,6 +52,16 @@ h1 {
   line-height: 1.1;
 }
 
+a {
+  font-weight: 500;
+  color: var(--link-color);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -43,27 +69,22 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-background);
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  border-color: var(--link-color);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+#root {
+  max-width: 1280px;
+  margin: 0 0;
+  text-align: center;
 }

@@ -4,7 +4,7 @@ import AbstractButton, {
   AbstractButtonState,
 } from "../../AbstractButton";
 import { ListItemText } from "@mui/material";
-import styles from "./SideBarStyle.module.css";
+import styles from "./SideBar-Button.module.css";
 
 interface NavButtonProps extends AbstractButtonProps {
   label: string;

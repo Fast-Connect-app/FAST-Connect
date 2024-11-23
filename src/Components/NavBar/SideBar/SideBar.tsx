@@ -1,6 +1,5 @@
 import { Component } from "react";
 import SideBarDrawer from "./SideBar-Drawer";
-import "./SideBarStyle.module.css";
 
 class SideBar extends Component {
   render() {

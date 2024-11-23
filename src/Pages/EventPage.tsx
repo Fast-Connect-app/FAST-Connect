@@ -95,7 +95,6 @@ const EventsPage: React.FC = () => {
         backgroundColor: "#ffffff", // White background color
         minHeight: "100vh", // Ensures the page spans the full viewport height
         display: "flex",
-        width: "100%",
         flexDirection: "column",
       }}
     >

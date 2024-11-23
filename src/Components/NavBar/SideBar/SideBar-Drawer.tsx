@@ -9,8 +9,7 @@ import {
 } from "@mui/material";
 import NavButton from "./SideBar-Button";
 import { navItems } from "./SideBarItems";
-// import BaseDrawer, { BaseDrawerProps } from "../../BaseDrawer";
-import styles from "./SideBarStyle.module.css"; // Import the CSS module or use a CSS file
+import styles from "./SideBar-Drawer.module.css"; // Import the CSS module or use a CSS file
 
 interface SidebarDrawerState {
   openNestedDrawerIndex: number | null;

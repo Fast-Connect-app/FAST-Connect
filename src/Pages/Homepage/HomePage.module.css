@@ -1,0 +1,63 @@
+.homepage-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.homepage-card {
+  width: 400px;
+  margin-bottom: 30px;
+}
+
+.homepage-card-media {
+  position: relative;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+
+.homepage-author-info {
+  position: absolute;
+  display: flex;
+  padding: 16px;
+  align-items: center;
+}
+
+.homepage-author-avatar {
+  margin-right: 16px;
+}
+
+.homepage-action-buttons {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.homepage-icon-button {
+  display: flex;
+  flex-direction: column;
+}
+
+.homepage-icon-button:focus {
+  outline: none; /* Remove the default focus outline */
+  box-shadow: none; /* Remove box shadow on focus */
+}
+
+.homepage-icon-button:active {
+  background-color: transparent; /* Customize as needed */
+}
+
+.homepage-card-content {
+  padding: 24px;
+  text-align: left;
+}
+
+.homepage-read-more {
+  cursor: pointer;
+  color: var(
+    --mui-palette-primary-main
+  ); /* Dynamic primary color from MUI theme */
+}
