@@ -1,0 +1,30 @@
+/* Login.module.css */
+
+.container {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  margin: 1rem;
+  background-color: var(--mui-palette-primary-light);
+}
+
+.title {
+  margin-top: 1rem;
+}
+
+.form {
+  margin-top: 1rem;
+}
+
+.loginButton {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.linkContainer {
+  justify-content: flex-end;
+}

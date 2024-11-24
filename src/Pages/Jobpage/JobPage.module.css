@@ -1,0 +1,40 @@
+/* JobPage.module.css */
+
+.pageContainer {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: right;
+  margin-bottom: 1.5rem;
+}
+
+.locationSelect {
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+.filterTabs {
+  margin-bottom: 2rem;
+}
+
+.jobGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+.jobCard {
+  height: 140px;
+  width: 25.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.applyButton {
+  background-color: #007bff;
+  color: white;
+  border-radius: 0px 0px 4px 4px;
+}

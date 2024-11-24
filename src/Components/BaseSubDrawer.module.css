@@ -8,12 +8,7 @@
   width: 20vw; /* Adjust width to fit next to the sidebar */
   max-width: 30vw; /* Limit maximum width */
   outline: none;
-  background: rgba(
-    175,
-    157,
-    157,
-    0.9
-  ) !important; /* Slightly transparent background */
+
   box-shadow: 30px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
   border-radius: 0 0 0 0; /* Rounded corners for smooth edges */
 }
@@ -22,6 +17,7 @@
 .subDrawerContent {
   display: flex;
   flex-direction: column;
+  background-color: var(--secondary-color);
   height: 100%; /* Ensure content stretches to fill the height */
   padding: 20px 10px 10px 10px;
   /* overflow-y: auto; */

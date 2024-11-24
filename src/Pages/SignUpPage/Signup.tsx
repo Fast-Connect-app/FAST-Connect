@@ -11,6 +11,7 @@ import Grid from "@mui/material/Grid2";
 import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import styles from "./Register.module.css"; // Import the CSS module
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -23,21 +24,16 @@ const Register = () => {
     <>
       <Container maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            mt: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
+        <Box className={styles.container}>
+          <Avatar className={styles.avatar}>
             <LockOutlined />
           </Avatar>
-          <Typography variant="h5">Register</Typography>
-          <Box sx={{ mt: 3 }}>
+          <Typography variant="h5" className={styles.title}>
+            Register
+          </Typography>
+          <Box className={styles.form}>
             <Grid container spacing={2}>
-              <Grid size = {{xs : 12}}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   name="name"
                   required
@@ -50,7 +46,7 @@ const Register = () => {
                 />
               </Grid>
 
-              <Grid size = {{xs : 12}}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   required
                   fullWidth
@@ -61,7 +57,7 @@ const Register = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
-              <Grid size = {{xs : 12}}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   required
                   fullWidth
@@ -77,13 +73,13 @@ const Register = () => {
             <Button
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              className={styles.registerButton}
               onClick={handleRegister}
             >
               Register
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid size = {{xs : 12}}>
+            <Grid container className={styles.linkContainer}>
+              <Grid size={{ xs: 12 }}>
                 <Link to="/login">Already have an account? Login</Link>
               </Grid>
             </Grid>

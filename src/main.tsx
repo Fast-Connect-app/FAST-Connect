@@ -9,7 +9,6 @@ const ThemeToggle = () => {
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light"
   );
-
   useEffect(() => {
     // Set the class on the <html> element based on the theme
     const rootElement = document.documentElement;

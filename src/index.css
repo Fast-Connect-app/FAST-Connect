@@ -21,6 +21,7 @@
 
 html.light {
   --primary-color: var(--primary-color-light);
+  --secondary-color: rgb(255, 255, 255);
   --background-color: var(--background-color-light);
   --text-color: var(--text-color-light);
   --button-background: var(--button-background-light);
@@ -30,6 +31,7 @@ html.light {
 /* When 'dark' class is added to <html> */
 html.dark {
   --primary-color: var(--primary-color-dark);
+  --secondary-color: var(--secondary-color-dark);
   --background-color: var(--background-color-dark);
   --text-color: var(--text-color-dark);
   --button-background: var(--button-background-dark);

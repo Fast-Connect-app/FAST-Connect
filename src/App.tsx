@@ -4,14 +4,16 @@ import { Component } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./Layouts/MainLayout";
 import HomePage from "./Pages/Homepage/HomePage";
-import Events from "./Pages/EventPage";
+import Events from "./Pages/Eventpage/EventPage";
+import JobPage from "./Pages/Jobpage/JobPage";
+import SignUP from "./Pages/SignUpPage/Account";
 
 class App extends Component {
   render() {
     return (
       <Router>
         <MainLayout>
-          <HomePage></HomePage>
+          <SignUP></SignUP>
           <Routes>
             <Route path="/Homepage" element={<HomePage />} />
             <Route path="/events" element={<Events />} />

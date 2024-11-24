@@ -11,6 +11,7 @@ import {
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import styles from "./Login.module.css"; // Import the CSS module
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,19 +23,14 @@ const Login = () => {
     <>
       <Container maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            mt: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
+        <Box className={styles.container}>
+          <Avatar className={styles.avatar}>
             <LockOutlined />
           </Avatar>
-          <Typography variant="h5">Login</Typography>
-          <Box sx={{ mt: 1 }}>
+          <Typography variant="h5" className={styles.title}>
+            Login
+          </Typography>
+          <Box className={styles.form}>
             <TextField
               margin="normal"
               required
@@ -64,13 +60,13 @@ const Login = () => {
             <Button
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              className={styles.loginButton}
               onClick={handleLogin}
             >
               Login
             </Button>
-            <Grid container justifyContent={"flex-end"}>
-              <Grid size = {{xs : 12}}>
+            <Grid container className={styles.linkContainer}>
+              <Grid size={{ xs: 12 }}>
                 <Link to="/register">Don't have an account? Register</Link>
               </Grid>
             </Grid>
