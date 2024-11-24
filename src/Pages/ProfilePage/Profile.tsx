@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Card,
@@ -9,50 +10,18 @@ import {
   Link,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import styles from "./Profile.module.css"; // Import the CSS module
 
 const ProfilePage = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f5f5f5",
-        padding: 2,
-      }}
-    >
+    <Box className={styles.pageContainer}>
       <Grid container spacing={1} sx={{ maxWidth: 1200, maxHeight: 1000 }}>
         {/* Profile Card */}
         <Grid size={{ xs: 12, md: 4 }}>
-          <Card
-            sx={{
-              height: "55vh",
-              width: "22vw",
-              boxShadow: "3",
-              marginTop: "2rem",
-              marginLeft: "4rem",
-            }}
-          >
+          <Card className={styles.profileCard}>
             <CardContent>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}
-              >
-                <Avatar
-                  sx={{
-                    width: 150,
-                    height: 170,
-                    marginBottom: 2,
-                    backgroundColor: "primary.main",
-                  }}
-                  alt="John Doe"
-                  src=""
-                />
+              <Box className={styles.profileCardContent}>
+                <Avatar className={styles.avatar} alt="John Doe" src="" />
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   John Doe
                 </Typography>
@@ -62,7 +31,7 @@ const ProfilePage = () => {
                 <Typography variant="body2" color="text.secondary">
                   Bay Area, San Francisco, CA
                 </Typography>
-                <Box sx={{ mt: 2, marginTop: "2rem" }}>
+                <Box className={styles.followMessageButtons}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -82,53 +51,41 @@ const ProfilePage = () => {
 
         {/* Contact Details Card */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card
-            sx={{
-              width: "50vw",
-              boxShadow: "3",
-              marginLeft: "2rem",
-              marginTop: "2rem",
-            }}
-          >
+          <Card className={styles.contactCard}>
             <CardContent>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "bold", alignSelf: "flex-start" }}
-                >
+              <Box className={styles.contactCardContent}>
+                <Typography variant="h6" className={styles.contactHeading}>
                   Full Name
                 </Typography>
                 <Typography>John Doe</Typography>
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: "bold", mt: 2, alignSelf: "flex-start" }}
+                  className={styles.contactHeading}
+                  sx={{ mt: 2 }}
                 >
                   Email
                 </Typography>
                 <Typography>fip@jukmuh.al</Typography>
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: "bold", mt: 2, alignSelf: "flex-start" }}
+                  className={styles.contactHeading}
+                  sx={{ mt: 2 }}
                 >
                   Phone
                 </Typography>
                 <Typography>(239) 816-9029</Typography>
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: "bold", mt: 2, alignSelf: "flex-start" }}
+                  className={styles.contactHeading}
+                  sx={{ mt: 2 }}
                 >
                   Mobile
                 </Typography>
                 <Typography>(320) 380-4539</Typography>
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: "bold", mt: 2, alignSelf: "flex-start" }}
+                  className={styles.contactHeading}
+                  sx={{ mt: 2 }}
                 >
                   Address
                 </Typography>
@@ -148,27 +105,12 @@ const ProfilePage = () => {
 
         {/* Social Links Card */}
         <Grid size={{ xs: 12, md: 4 }}>
-          <Card
-            sx={{
-              height: "50vh",
-              width: "22vw",
-              boxShadow: "3",
-              marginBottom: "3rem",
-              marginLeft: "4rem",
-            }}
-          >
+          <Card className={styles.socialLinksCard}>
             <CardContent>
               <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
                 Social Links
               </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  flexDirection: "column",
-                  mb: 2,
-                }}
-              >
+              <Box className={styles.socialLinksContent}>
                 {["Website", "Github", "Twitter", "Instagram", "Facebook"].map(
                   (platform) => (
                     <Link
@@ -195,15 +137,7 @@ const ProfilePage = () => {
 
         {/* Project Status Card */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <Card
-            sx={{
-              height: "45vh",
-              width: "50vw",
-              boxShadow: "3",
-              marginTop: "2rem",
-              marginLeft: "2rem",
-            }}
-          >
+          <Card className={styles.projectCard}>
             <CardContent>
               <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
                 Project Status
@@ -215,20 +149,8 @@ const ProfilePage = () => {
                 "Mobile Template",
                 "Backend API",
               ].map((project, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    mb: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    marginY: "1.5rem",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: "bold", alignSelf: "flex-start" }}
-                  >
+                <Box key={index} className={styles.projectCardContent}>
+                  <Typography variant="body2" className={styles.projectTitle}>
                     {project}
                   </Typography>
                   <LinearProgress
