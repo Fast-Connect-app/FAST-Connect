@@ -1,5 +1,3 @@
-import { BaseDatabase } from "./BaseDatabase";
-
-export interface IDelete<T> extends BaseDatabase<T>{
+export interface IDelete{
     Delete(id:string):Promise<void>;
 }

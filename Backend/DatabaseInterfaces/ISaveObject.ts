@@ -1,5 +1,3 @@
-import { BaseDatabase } from "./BaseDatabase";
-
-export interface ISaveObject<T> extends BaseDatabase<T>{
+export interface ISaveObject{
     SaveObject(data): Promise<void>;
 }
