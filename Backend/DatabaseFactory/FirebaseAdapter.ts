@@ -5,11 +5,15 @@ import { ILoadForUser } from "../DatabaseInterfaces/ILoadForUser";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { IModifyById } from "../DatabaseInterfaces/IModifyById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
+import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
+
 
 //firebase imports
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
 import * as serviceAccount from "../../credentials.json"
+import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
+import { BaseDatabaseAdapter } from "./BaseDatabaseAdapter";
 
 // Authenticate the Firebase database
 const app = initializeApp({
@@ -18,26 +22,29 @@ const app = initializeApp({
 
 const db: Firestore = getFirestore(app);
 
-export class FirebaseAdapter<T> implements ILoadAll<T>,ILoadById<T>,ILoadOnChange<T>,IModifyById<T>,ISaveObject<T>,ILoadForUser<T>,IDelete<T>{
-    private collectionName : string;
+export class FirebaseAdapter extends BaseDatabaseAdapter implements ILoadAll,ILoadById,ILoadOnChange,IModifyById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember{
+    private parentDocumentId ?: string;
+    private subCollectionName ?: string;
 
-    constructor(_collectionName:string){
-        this.collectionName = _collectionName;
+    constructor(_collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string){
+        super(_collectionName);
+        this.parentDocumentId = _parentDocumentId;
+        this.subCollectionName = _subCollectionName;
     }
 
-    async LoadAll(): Promise <T[] | null> {
+    async LoadAll(): Promise <string[] | null> {
         return null;
     }
 
-    async LoadById(id: string): Promise<T | null> {
+    async LoadById(id: string): Promise<string | null> {
         return null;
     }
 
-    async LoadOnChange(id: string): Promise<T | null> {
+    async LoadOnChange(id: string): Promise<string | null> {
         return null;
     }
 
-    async LoadForUser(uid: string): Promise<T | null> {
+    async LoadForUser(uid: string): Promise<string | null> {
         return null;
     }
     
@@ -51,5 +58,13 @@ export class FirebaseAdapter<T> implements ILoadAll<T>,ILoadById<T>,ILoadOnChang
 
     async SaveObject(data): Promise<void> {   
         
+    }
+
+    async LoadForMember(uid:string): Promise<string | null>{
+        return null;
+    }
+
+    async LoadLimited(maxLoads: number): Promise<string | null> {
+        return null;
     }
 }

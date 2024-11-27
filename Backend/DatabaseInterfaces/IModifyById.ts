@@ -1,5 +1,3 @@
-import { BaseDatabase } from "./BaseDatabase";
-
-export interface IModifyById<T> extends BaseDatabase<T>{
+export interface IModifyById{
     ModifyById(id:string,data):Promise<void>;
 }

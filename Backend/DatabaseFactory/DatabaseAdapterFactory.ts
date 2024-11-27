@@ -8,29 +8,32 @@ import { IDelete } from "../DatabaseInterfaces/IDelete";
 import {FirebaseAdapter} from "./FirebaseAdapter"
 
 import {User} from "../Classes/User"
+import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
+import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 
 // Only implement interfaces that are required for each type
 
-type InterfaceTypes<T> = {
-    User: ISaveObject<T>;
-    Profile: ISaveObject<T> & IModifyById<T>;
-    Events: ISaveObject<T> & ILoadById<T> & ILoadAll<T>;
-    Group: IModifyById<T> & ISaveObject<T> & ILoadForUser<T> & ILoadById<T> & IDelete<T>;
-    Post: ISaveObject<T> & ILoadAll<T> & ILoadById<T> & IDelete<T>;
-    DirectMessages: ILoadForUser<T> & IModifyById<T> & ISaveObject<T> & ILoadOnChange<T>;
-    GroupMessages: ISaveObject<T> & IModifyById<T> & ILoadForUser<T> & ILoadOnChange<T>;
-    GlobalMessages: ISaveObject<T> & IModifyById<T> & ILoadAll<T> & ILoadOnChange<T>;
-    UserSaveContact: ISaveObject<T> & IModifyById<T> & ILoadForUser<T>;
-    UserBlock: ISaveObject<T> & IModifyById<T> & IDelete<T> & ILoadForUser<T>;
-    Jobs: ISaveObject<T> & ILoadAll<T> & ILoadById<T> & IDelete<T>;
+type InterfaceTypes = {
+    User: ISaveObject;
+    Profile: ISaveObject & IModifyById;
+    Event: ISaveObject & ILoadById & ILoadAll;
+    Group: IModifyById & ISaveObject & ILoadForMember & ILoadById & IDelete;
+    Post: ISaveObject & ILoadAll & ILoadById & IDelete;
+    DirectMessage: ILoadForUser & IModifyById & ISaveObject & ILoadOnChange & ILoadLimited;
+    GroupMessage: ISaveObject & IModifyById & ILoadForMember & ILoadOnChange & ILoadLimited;
+    GlobalMessage: ISaveObject & IModifyById & ILoadOnChange  & ILoadLimited;
+    UserSaveContact: ISaveObject & IModifyById & ILoadForUser;
+    UserBlock: ISaveObject & IModifyById & IDelete & ILoadForUser;
+    Job: ISaveObject & ILoadAll & ILoadById & IDelete;
+    StudyMaterial: ISaveObject & ILoadById & ILoadAll;
 }
 
 
 export class DatabaseAdapterFactory{
-    static CreateAdapter<T,K extends keyof InterfaceTypes<T>>(dbType:"firebase", _collectionName:string): InterfaceTypes<T>[K]{
+    static CreateAdapter<K extends keyof InterfaceTypes>(dbType:"firebase", _collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string): InterfaceTypes[K]{
         switch (dbType){
             case 'firebase':
-                return new FirebaseAdapter<T>(_collectionName) as InterfaceTypes<T>[K];
+                return new FirebaseAdapter(_collectionName,_parentDocumentId,_subCollectionName) as InterfaceTypes[K];
                 
             default:
                 throw new Error("Unsupported Database type")
