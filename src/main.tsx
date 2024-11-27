@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 
 import { useState, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(
@@ -33,7 +34,8 @@ export default ThemeToggle;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeToggle></ThemeToggle>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>
 );
