@@ -8,7 +8,7 @@ export class DirectMessages implements IDatabaseAdapter{
     private messages:Message[];
     
     private static firebaseAdapter:any;
-
+    
     constructor(_userToUserId:string){
         this.userToUserId = _userToUserId;
 

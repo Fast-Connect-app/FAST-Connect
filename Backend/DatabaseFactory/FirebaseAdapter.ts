@@ -6,21 +6,13 @@ import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { IModifyById } from "../DatabaseInterfaces/IModifyById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
 import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
-
-
-//firebase imports
-import { initializeApp, cert } from 'firebase-admin/app';
-import { getFirestore, Firestore } from 'firebase-admin/firestore';
-import * as serviceAccount from "../../credentials.json"
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { BaseDatabaseAdapter } from "./BaseDatabaseAdapter";
 
-// Authenticate the Firebase database
-const app = initializeApp({
-  credential: cert(serviceAccount as any),
-});
 
-const db: Firestore = getFirestore(app);
+//firebase imports
+import { database } from "../FirebaseApp"
+const db = database;
 
 export class FirebaseAdapter extends BaseDatabaseAdapter implements ILoadAll,ILoadById,ILoadOnChange,IModifyById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember{
     private parentDocumentId ?: string;
