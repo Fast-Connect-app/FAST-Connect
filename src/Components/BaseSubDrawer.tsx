@@ -4,13 +4,23 @@ import styles from "./BaseSubDrawer.module.css"; // Import CSS module
 
 export interface BaseSubDrawerProps extends DrawerProps {
   sidebarWidth: number | string | object; // Width of the sidebar to adjust the position
+  handleMenuSelect: (route: string) => void;
+  route: string;
 }
 
 abstract class BaseSubDrawer extends Component<BaseSubDrawerProps> {
   abstract renderContent(): React.ReactNode;
 
   render() {
-    const { open, onClose, sx, variant, anchor = "left" } = this.props;
+    const {
+      open,
+      onClose,
+      sx,
+      variant,
+      anchor = "left",
+      route,
+      handleMenuSelect,
+    } = this.props;
     return (
       <Drawer
         open={open}
@@ -26,7 +36,15 @@ abstract class BaseSubDrawer extends Component<BaseSubDrawerProps> {
           <Box sx={{ flexGrow: 1 }}>
             {this.renderContent()} {/* Render the content from BaseDrawer */}
           </Box>
-          <Button fullWidth>ShowMeMore</Button>
+          <Button
+            onClick={() => {
+              handleMenuSelect(route); // Navigate to the selected route
+              if (onClose) onClose({}, "backdropClick"); // Close the Drawer
+            }}
+            fullWidth
+          >
+            ShowMeMore
+          </Button>
         </Box>
       </Drawer>
     );

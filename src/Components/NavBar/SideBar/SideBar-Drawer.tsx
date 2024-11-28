@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import NavButton from "./SideBar-Button";
 import { navItems } from "./SideBarItems";
+import { withMenuNavigation } from "../../../router";
 import styles from "./SideBar-Drawer.module.css"; // Import the CSS module or use a CSS file
 
 interface SidebarDrawerState {
@@ -80,6 +81,11 @@ class SideBarDrawer extends Component<DrawerProps, SidebarDrawerState> {
       openNestedDrawerIndex !== null &&
       navItems[openNestedDrawerIndex]?.BaseSubDrawer;
 
+    const route: string =
+      openNestedDrawerIndex !== null
+        ? navItems[openNestedDrawerIndex]?.route
+        : "/";
+
     const sidebarWidth =
       (
         sx as { ["& .MuiDrawer-paper"]?: { width?: string | number | object } }
@@ -94,9 +100,10 @@ class SideBarDrawer extends Component<DrawerProps, SidebarDrawerState> {
 
         {/* Subdrawer */}
         {SubDrawerComponent &&
-          React.createElement(SubDrawerComponent, {
+          React.createElement(withMenuNavigation(SubDrawerComponent), {
             open: true,
             onClose: this.toggleNestedDrawer(null),
+            route: route,
             sidebarWidth, // Pass the dynamically extracted sidebar width
             variant: "persistent",
             sx: {

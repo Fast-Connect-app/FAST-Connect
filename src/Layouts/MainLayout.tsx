@@ -3,6 +3,7 @@ import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar"; // Adjust impo
 import { Box } from "@mui/material";
 import SideBar from "../Components/NavBar/SideBar/SideBar";
 import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
+import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 
 interface MainLayoutProps {
@@ -22,7 +23,9 @@ class MainLayout extends Component<MainLayoutProps> {
         <Box className={styles.contentheader}>
           <h2>HomePage</h2>
         </Box>
-        <Box className={styles.content}>{this.props.children}</Box>
+        <Box className={styles.content}>
+          <Outlet />
+        </Box>
 
         {/* Header */}
         <Box className={styles.header}>

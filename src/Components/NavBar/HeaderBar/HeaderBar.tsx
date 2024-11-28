@@ -1,9 +1,20 @@
+// HeaderBar.tsx
 import React, { Component } from "react";
 import { Box, Avatar, Menu, MenuItem, Typography } from "@mui/material";
 import styles from "./HeaderBar.module.css";
+import { withMenuNavigation } from "../../../router";
 
-class HeaderBar extends Component {
-  state = {
+// Define props interface to include handleMenuSelect
+interface HeaderBarProps {
+  handleMenuSelect: (route: string) => void; // This is the function to navigate
+}
+
+interface HeaderBarState {
+  anchorEl: HTMLElement | null;
+}
+
+class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
+  state: HeaderBarState = {
     anchorEl: null, // Used to anchor the menu
   };
 
@@ -17,32 +28,20 @@ class HeaderBar extends Component {
 
   render() {
     const { anchorEl } = this.state;
+    const { handleMenuSelect } = this.props; // Access handleMenuSelect passed through props
 
     return (
-      <div
-        // style={{
-        //   top: 0,
-        //   height: "100%",
-        //   background: "black",
-        // }}
-        className={styles["header-bar"]}
-      >
+      <div className={styles["header-bar"]}>
         {/* Profile section */}
-        <Box
-          // display="flex"
-          // alignItems="center"
-          // paddingLeft="20px"
-          // height="100%"
-          className={styles["header-bar-box"]}
-        >
+        <Box className={styles["header-bar-box"]}>
           <Avatar
             alt="User Profile"
-            src="https://www.w3schools.com/w3images/avatar2.png" // Placeholder image URL
+            src="https://www.w3schools.com/w3images/avatar2.png"
             onClick={this.handleMenuClick}
             className={styles["header-bar-avatar"]}
           />
           <Typography className={styles["header-bar-username"]}>
-            John Doe {/* Replace with dynamic username */}
+            John Doe
           </Typography>
         </Box>
 
@@ -52,13 +51,34 @@ class HeaderBar extends Component {
           open={Boolean(anchorEl)}
           onClose={this.handleMenuClose}
         >
-          <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-          <MenuItem onClick={this.handleMenuClose}>Settings</MenuItem>
-          <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.handleMenuClose();
+              handleMenuSelect("/profile"); // Use handleMenuSelect from props
+            }}
+          >
+            Profile
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.handleMenuClose();
+              handleMenuSelect("/"); // Use handleMenuSelect from props
+            }}
+          >
+            Settings
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.handleMenuClose();
+              handleMenuSelect("/"); // Use handleMenuSelect from props
+            }}
+          >
+            Logout
+          </MenuItem>
         </Menu>
       </div>
     );
   }
 }
 
-export default HeaderBar;
+export default withMenuNavigation(HeaderBar);
