@@ -17,7 +17,7 @@ class ProfilePage extends AbstractPage {
   renderContent() {
     return (
       <Box className={styles.pageContainer}>
-        <Grid container spacing={3} sx={{ maxWidth: 1200, maxHeight: 1000 }}>
+        <Grid container spacing={3} sx={{ width: "100%", maxHeight: "100%" }}>
           {/* Profile Card */}
           <Grid size={{ xs: 12, md: 4 }}>
             <Card className={styles.profileCard}>
