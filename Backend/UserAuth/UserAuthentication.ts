@@ -1,6 +1,10 @@
-import { FirebaseAuthError } from "firebase-admin/auth";
 import {auth} from "../FirebaseApp"
-const userAuth = auth;
+
+let isUserSignedIn:boolean = false;
+
+auth.onAuthStateChanged(user=>{
+    isUserSignedIn = user != null;
+});
 
 export class UserAuthentication{
 
@@ -17,7 +21,7 @@ export class UserAuthentication{
 
     async CreateUser(_email:string, _password:string):Promise<void>{
         try{
-            let user = await userAuth.createUserWithEmailAndPassword(_email,_password);
+            let user = await auth.createUserWithEmailAndPassword(_email,_password);
             console.log(user.user?.uid);
         }
         catch(error:any){
@@ -27,7 +31,7 @@ export class UserAuthentication{
 
     async SignUserIn(_email:string, _password:string):Promise<void>{
         try{
-            let user = await userAuth.signInWithEmailAndPassword(_email,_password);
+            let user = await auth.signInWithEmailAndPassword(_email,_password);
             console.log(user.user?.uid);
         }
         catch(error:any){
@@ -37,7 +41,7 @@ export class UserAuthentication{
 
     async SignUserOut(){
         try{
-            await userAuth.signOut();
+            await auth.signOut();
         }
         catch(error:any){
             console.log(error);
@@ -45,12 +49,10 @@ export class UserAuthentication{
     }
 
     GetCurrentUserId():string | undefined{
-        return userAuth.currentUser?.uid;
+        return auth.currentUser?.uid;
+    }
+
+    IsUserSignedIn():boolean{
+        return isUserSignedIn;
     }
 }
-
-if(!UserAuthentication.HasInstance()){
-    UserAuthentication.CreateInstance();
-}
-
-UserAuthentication.Instance.CreateUser("muhammadArhamAli003@test.com","hello12345");
