@@ -1,5 +1,6 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapter } from "../DatabaseFactory/FirebaseAdapter";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
@@ -13,7 +14,7 @@ export class DirectMessages implements IDatabaseAdapter{
         this.userToUserId = _userToUserId;
 
         if(DirectMessages.firebaseAdapter == null)
-            DirectMessages.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"DirectMessage">("firebase","DirectMessages",this.userToUserId,"Messages");
+            DirectMessages.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"DirectMessage">("DirectMessages",this.userToUserId,"Messages");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

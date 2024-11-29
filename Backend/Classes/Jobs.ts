@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
 export class Jobs implements IDatabaseAdapter{
@@ -15,7 +15,7 @@ export class Jobs implements IDatabaseAdapter{
         this.ownerUserId = _ownerUserId;
 
         if(Jobs.firebaseAdapter == null)
-            Jobs.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"Job">("firebase","Jobs");
+            Jobs.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"Job">("Jobs");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

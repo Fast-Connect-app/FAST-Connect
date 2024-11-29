@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
 export class Post implements IDatabaseAdapter{
@@ -15,7 +15,7 @@ export class Post implements IDatabaseAdapter{
         this.title = _title;
 
         if(Post.firebaseAdpater == null)
-            Post.firebaseAdpater = DatabaseAdapterFactory.CreateAdapter<"Post">("firebase","Posts");
+            Post.firebaseAdpater = FirebaseAdapterFactory.CreateAdapter<"Post">("Posts");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

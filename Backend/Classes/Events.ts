@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
 export class Events implements IDatabaseAdapter{
@@ -19,7 +19,7 @@ export class Events implements IDatabaseAdapter{
         this.venue = _venue;
 
         if(Events.firebaseAdapter == null)
-            Events.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"Event">("firebase","Events");
+            Events.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"Event">("Events");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

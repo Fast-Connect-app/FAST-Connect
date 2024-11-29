@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
@@ -10,7 +10,7 @@ export class GlobalMessages implements IDatabaseAdapter{
 
     constructor(){
         if(GlobalMessages.firebaseAdapter == null)
-            GlobalMessages.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"GlobalMessage">("firebase","GlobalMessages");
+            GlobalMessages.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"GlobalMessage">("GlobalMessages");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

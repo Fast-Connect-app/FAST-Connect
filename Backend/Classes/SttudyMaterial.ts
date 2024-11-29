@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
 export class StudyMaterial implements IDatabaseAdapter{
@@ -13,7 +13,7 @@ export class StudyMaterial implements IDatabaseAdapter{
         this.senderUserId = _senderUserId;
     
         if(StudyMaterial.firebaseAdapter == null)
-            StudyMaterial.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"StudyMaterial">("firebase","StudyMaterials");
+            StudyMaterial.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"StudyMaterial">("StudyMaterials");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

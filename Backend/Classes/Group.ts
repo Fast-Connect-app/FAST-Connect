@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
 export class Group implements IDatabaseAdapter{
@@ -18,7 +18,7 @@ export class Group implements IDatabaseAdapter{
         this.groupAdminList.push(_originalAdmin)
 
         if(Group.firebaseAdapter == null)
-            Group.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"Group">("firebase","Groups");
+            Group.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"Group">("Groups");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

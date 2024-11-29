@@ -13,7 +13,7 @@ import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 
 // Only implement interfaces that are required for each type
 
-type InterfaceTypes = {
+export type InterfaceTypes = {
     User: ISaveObject;
     Profile: ISaveObject & IModifyById;
     Event: ISaveObject & ILoadById & ILoadAll;
@@ -29,14 +29,8 @@ type InterfaceTypes = {
 }
 
 
-export class DatabaseAdapterFactory{
-    static CreateAdapter<K extends keyof InterfaceTypes>(dbType:"firebase", _collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string): InterfaceTypes[K]{
-        switch (dbType){
-            case 'firebase':
-                return new FirebaseAdapter(_collectionName,_parentDocumentId,_subCollectionName) as InterfaceTypes[K];
-                
-            default:
-                throw new Error("Unsupported Database type")
-        }
+export class BaseDatabaseAdapterFactory{
+    public static CreateAdapter<K extends keyof InterfaceTypes>( _collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string): InterfaceTypes[K]{
+        throw new Error("CreateAdapter Method not implemented.");
     }
 }

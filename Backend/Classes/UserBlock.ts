@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
 export class UserBlock implements IDatabaseAdapter{
@@ -15,7 +15,7 @@ export class UserBlock implements IDatabaseAdapter{
         this.isBlocked = _isBlocked;
 
         if(UserBlock.firebaseAdapter == null)
-            UserBlock.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"UserBlock">("firebase","UserBlocks");
+            UserBlock.firebaseAdapter= FirebaseAdapterFactory.CreateAdapter<"UserBlock">("UserBlocks");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

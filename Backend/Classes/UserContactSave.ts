@@ -1,5 +1,5 @@
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 import { User } from "./User";
 
@@ -16,7 +16,7 @@ export class UserContactSave implements IDatabaseAdapter{
         this.savedUserName = _savedUserName;
 
         if(UserContactSave.firebaseAdapter == null)
-            UserContactSave.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"UserSaveContact">("firebase","UserSaveContacts");
+            UserContactSave.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"UserSaveContact">("UserSaveContacts");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

@@ -1,7 +1,7 @@
 import { User } from "./User.ts";
 import { StudentProfile } from "./StudentProfile.ts";
 import { IDatabaseAdapter } from "./IDatabaseAdapter.ts";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory.ts";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter.ts";
 
 export class Student extends User implements IDatabaseAdapter{
@@ -17,7 +17,7 @@ export class Student extends User implements IDatabaseAdapter{
         this.profile = new StudentProfile("", null, "", null);
 
         if(Student.firebaseAdapter == null)
-            Student.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"User">("firebase","Users");
+            Student.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"User">("Users");
     }
 
     GetDatabaseAdapter(): BaseDatabaseAdapter {

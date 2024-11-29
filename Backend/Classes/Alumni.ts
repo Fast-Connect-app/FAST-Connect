@@ -2,8 +2,8 @@ import { User } from "./User.ts";
 import { AlumniProfile } from "./AlumniProfile.ts";
 import { IDatabaseAdapter } from "./IDatabaseAdapter.ts";
 import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter.ts";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory.ts";
-
+import { BaseDatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory.ts";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory.ts";
 export class Alumni extends User implements IDatabaseAdapter{
     private dateOfGraduation:Date;
     private profile:AlumniProfile;
@@ -16,7 +16,7 @@ export class Alumni extends User implements IDatabaseAdapter{
         this.profile = new AlumniProfile("", null, "", "");
 
         if(Alumni.firebaseAdapter == null)
-            Alumni.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"User">("firebase","Users");
+            Alumni.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"User">("Users");
     }
 
 
