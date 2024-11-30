@@ -1,22 +1,18 @@
-import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
 export class DirectMessages implements IDatabaseAdapter{
     private userToUserId:string;
     private messages:Message[];
-    
-    private static firebaseAdapter:any;
 
-    constructor(_userToUserId:string){
+    constructor(_userToUserId:string, _message:Message){
         this.userToUserId = _userToUserId;
-
-        if(DirectMessages.firebaseAdapter == null)
-            DirectMessages.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"DirectMessage">("firebase","DirectMessages",this.userToUserId,"Messages");
+        this.messages.push(_message);
     }
 
-    GetDatabaseAdapter(): BaseDatabaseAdapter {
-        return DirectMessages.firebaseAdapter;
+    static GetDatabaseAdapter() {
+        return GetDatabaseAdapter<"DirectMessage">(FirebaseAdapterFactory,"DirectMessages");
     }
 }

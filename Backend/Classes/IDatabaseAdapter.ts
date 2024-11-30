@@ -1,5 +1,7 @@
-import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
+//interface so that all the classes can override to return their own types of adapter
 
-export interface IDatabaseAdapter{
-    GetDatabaseAdapter():BaseDatabaseAdapter;
+export class IDatabaseAdapter{
+    public static GetDatabaseAdapter(){
+        throw new Error("GetDatabaseAdapter not implemented");
+    };
 }

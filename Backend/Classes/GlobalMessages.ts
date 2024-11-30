@@ -1,19 +1,12 @@
-import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
 export class GlobalMessages implements IDatabaseAdapter{
     messages:Message[];
 
-    private static firebaseAdapter:any;
-
-    constructor(){
-        if(GlobalMessages.firebaseAdapter == null)
-            GlobalMessages.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"GlobalMessage">("firebase","GlobalMessages");
-    }
-
-    GetDatabaseAdapter(): BaseDatabaseAdapter {
-        return GlobalMessages.firebaseAdapter;
+    static GetDatabaseAdapter(){
+        return GetDatabaseAdapter<"GlobalMessage">(FirebaseAdapterFactory,"GlobalMessage");
     }
 }

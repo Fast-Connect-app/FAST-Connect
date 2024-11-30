@@ -1,5 +1,5 @@
-import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
-import { DatabaseAdapterFactory } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
@@ -11,12 +11,9 @@ export class GroupMessages implements IDatabaseAdapter{
 
     constructor(_groupID:string){
         this.groupID = _groupID;
-
-        if(GroupMessages.firebaseAdapter == null)
-            GroupMessages.firebaseAdapter = DatabaseAdapterFactory.CreateAdapter<"GroupMessage">("firebase","GroupMessages",this.groupID,"Messages");
     }
 
-    GetDatabaseAdapter(): BaseDatabaseAdapter {
-        return GroupMessages.firebaseAdapter;
+    static GetDatabaseAdapters() {
+        return GetDatabaseAdapter<"GroupMessage">(FirebaseAdapterFactory,"GroupMessages");
     }
 }
