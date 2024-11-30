@@ -17,7 +17,7 @@ export class Events implements IDatabaseAdapter,IJSONData{
         this.venue = _venue;
     }
 
-    static GetDatabaseAdapter() {
+    public GetDatabaseAdapter() {
         return GetDatabaseAdapter<"Event">(FirebaseAdapterFactory,"Events");
     }
     

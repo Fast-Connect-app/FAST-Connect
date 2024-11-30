@@ -13,8 +13,8 @@ export class GroupMessages implements IDatabaseAdapter,IJSONData{
         this.groupID = _groupID;
     }
 
-    static GetDatabaseAdapters() {
-        return GetDatabaseAdapter<"GroupMessage">(FirebaseAdapterFactory,"GroupMessages");
+    public GetDatabaseAdapter() {
+        return GetDatabaseAdapter<"GroupMessage">(FirebaseAdapterFactory,"GroupMessages",this.groupID,"Messages");
     }
 
     public GetJsonData(): string {

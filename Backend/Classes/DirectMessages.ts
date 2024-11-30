@@ -12,8 +12,8 @@ export class DirectMessages implements IDatabaseAdapter,IJSONData{
         this.messages.push(_message);
     }
 
-    static GetDatabaseAdapter() {
-        return GetDatabaseAdapter<"DirectMessage">(FirebaseAdapterFactory,"DirectMessages");
+    public GetDatabaseAdapter() {
+        return GetDatabaseAdapter<"DirectMessage">(FirebaseAdapterFactory,"DirectMessages",this.userToUserId,"Messages");
     }
 
     public GetJsonData(): string {

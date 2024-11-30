@@ -16,7 +16,7 @@ export class Group implements IDatabaseAdapter,IJSONData{
         this.groupAdminList.push(_originalAdmin)
     }
 
-    static GetDatabaseAdapter() {
+    public GetDatabaseAdapter() {
         return GetDatabaseAdapter<"Group">(FirebaseAdapterFactory,"Groups");
     }
 

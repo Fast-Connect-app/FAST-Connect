@@ -13,7 +13,7 @@ export class Jobs implements IDatabaseAdapter,IJSONData{
         this.ownerUserId = _ownerUserId;
     }
 
-    static GetDatabaseAdapter() {
+    public GetDatabaseAdapter() {
         return GetDatabaseAdapter<"Job">(FirebaseAdapterFactory,"Jobs");
     }
 

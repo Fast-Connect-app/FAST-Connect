@@ -13,7 +13,7 @@ export class UserBlock implements IDatabaseAdapter,IJSONData{
         this.isBlocked = _isBlocked;
     }
 
-    static GetDatabaseAdapter(){
+    public GetDatabaseAdapter(){
         return GetDatabaseAdapter<"UserBlock">(FirebaseAdapterFactory,"UserBlocks");
     }
 

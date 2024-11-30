@@ -11,7 +11,7 @@ export class StudyMaterial implements IDatabaseAdapter,IJSONData{
         this.senderUserId = _senderUserId;
     }
 
-    static GetDatabaseAdapter() {
+    public GetDatabaseAdapter() {
         return GetDatabaseAdapter<"StudyMaterial">(FirebaseAdapterFactory,"StudyMaterial");
     }
 

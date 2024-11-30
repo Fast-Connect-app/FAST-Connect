@@ -12,6 +12,7 @@ export class Message implements IJSONData{
         this.FileAttachment = _FileAttachment;
         this.TimeStamp = _TimeStamp;
     }
+    
     public GetJsonData():string{
         const data = {
             senderId: this.senderId,

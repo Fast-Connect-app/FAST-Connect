@@ -13,7 +13,7 @@ export class UserContactSave implements IDatabaseAdapter,IJSONData{
         this.savedUserName = _savedUserName;
     }
 
-    static GetDatabaseAdapter() {
+    public GetDatabaseAdapter() {
         return GetDatabaseAdapter<"UserContactSave">(FirebaseAdapterFactory,"UserContactSaves");
     }
 

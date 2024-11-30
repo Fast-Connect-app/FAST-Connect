@@ -13,7 +13,7 @@ export class Post implements IDatabaseAdapter,IJSONData{
         this.title = _title;
     }
 
-    static GetDatabaseAdapter(){
+    public GetDatabaseAdapter(){
         return GetDatabaseAdapter<"Post">(FirebaseAdapterFactory,"Posts");
     }
 

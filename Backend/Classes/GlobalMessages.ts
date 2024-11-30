@@ -6,7 +6,7 @@ import { Message } from "./Message";
 export class GlobalMessages implements IDatabaseAdapter,IJSONData{
     messages:Message[];
 
-    static GetDatabaseAdapter(){
+    public GetDatabaseAdapter(){
         return GetDatabaseAdapter<"GlobalMessage">(FirebaseAdapterFactory,"GlobalMessage");
     }
 

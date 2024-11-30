@@ -1,5 +1,7 @@
 import {InterfaceTypes} from "./InterfaceTypes"
 
+import { FirebaseAdapterFactory } from "./FirebaseAdapterFactory";
+
 export class BaseDatabaseAdapterFactory{
     public static CreateAdapter<K extends keyof InterfaceTypes>( _collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string): InterfaceTypes[K]{
         throw new Error("CreateAdapter Method not implemented.");
