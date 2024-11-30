@@ -1,19 +1,4 @@
-import React, { Component, ReactNode } from "react";
-import { SelectChangeEvent } from "@mui/material";
-import {
-  Box,
-  Typography,
-  Tabs,
-  Tab,
-  Card,
-  CardContent,
-  Select,
-  MenuItem,
-  Button,
-} from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import styles from "./StudyMaterial.module.css"; // Import the CSS module
-import AbstractPage, { AbstractPageState } from "../AbstractPages";
+import AbstractPage from "../AbstractPages";
 import {
     PageTitleContext,
     PageTitleContextType,

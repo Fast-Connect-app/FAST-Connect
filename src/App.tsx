@@ -15,7 +15,7 @@ class App extends Component {
         <Route path="/" element={<MainLayout />}>
           <Route path="HomePage" element={<HomePage />} />
           <Route path="EventPage" element={<Events />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="Profile" element={<ProfilePage />} />
           <Route path="JobPage" element={<JobPage />} />
           <Route path="StudyPage" element={<StudyPage />} />
         </Route>
