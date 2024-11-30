@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Box,
   Card,
@@ -12,10 +12,18 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
 import styles from "./EventPage.module.css"; // Import the CSS module
+import {
+  PageTitleContext,
+  PageTitleContextType,
+} from "../../Layouts/MainLayout"; // Import context correctly
 
 interface Event {
   id: number;
@@ -30,9 +38,14 @@ interface EventsPageState extends AbstractPageState {
   timeRange: string;
   events: Event[];
   filteredEvents: Event[];
+  openDialog: boolean; // Track dialog visibility
+  selectedEvent: Event | null; // Track selected event details
 }
 
 class Eventspage extends AbstractPage<{}, EventsPageState> {
+  // Correctly set the contextType to the actual context
+  static contextType = PageTitleContext; // Correct contextType assignment
+
   constructor(props: any) {
     super(props);
     this.state = {
@@ -64,12 +77,24 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
         },
       ],
       filteredEvents: [],
+      openDialog: false,
+      selectedEvent: null,
     };
   }
 
   componentDidMount() {
+    // Correctly access context here
+    const { setPageTitle } = this.context as PageTitleContextType;
+    setPageTitle("Events Page"); // Set the title when the component is mounted
     this.setState({ filteredEvents: this.state.events });
   }
+  handleDialogOpen = (event: Event) => {
+    this.setState({ openDialog: true, selectedEvent: event });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ openDialog: false, selectedEvent: null });
+  };
 
   handleEventTypeChange = (event: SelectChangeEvent<string>) => {
     this.setState({ eventType: event.target.value });
@@ -114,90 +139,135 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
     this.setState({ filteredEvents: filtered });
   };
 
+  renderDialog() {
+    const { openDialog, selectedEvent } = this.state;
+
+    return (
+      <Dialog
+        open={openDialog}
+        onClose={this.handleDialogClose}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>{selectedEvent?.title || "Event Details"}</DialogTitle>
+        <DialogContent>
+          {selectedEvent && (
+            <Box>
+              <Typography>
+                <strong>Date:</strong> {selectedEvent.date}
+              </Typography>
+              <Typography>
+                <strong>Type:</strong> {selectedEvent.type}
+              </Typography>
+              <Typography>
+                <strong>Description:</strong> This is a placeholder description
+                for the event.
+              </Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
   renderContent() {
     return (
-      <Box className={styles.pageContainer}>
-        <Box className={styles.filtersSection}>
-          <FormControl variant="outlined" sx={{ minWidth: 150 }}>
-            <InputLabel id="event-type-label">Show me</InputLabel>
-            <Select
-              labelId="event-type-label"
-              value={this.state.eventType}
-              onChange={this.handleEventTypeChange}
-              label="Show me"
+      <>
+        {" "}
+        <Box className={styles.pageContainer}>
+          <Box className={styles.filtersSection}>
+            <FormControl variant="outlined" sx={{ minWidth: 150 }}>
+              <InputLabel id="event-type-label">Show me</InputLabel>
+              <Select
+                labelId="event-type-label"
+                value={this.state.eventType}
+                onChange={this.handleEventTypeChange}
+                label="Show me"
+              >
+                <MenuItem value="all">All Events</MenuItem>
+                <MenuItem value="music">Music</MenuItem>
+                <MenuItem value="exhibition">Exhibition</MenuItem>
+                <MenuItem value="theatre">Theatre</MenuItem>
+                <MenuItem value="dance">Dance</MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl variant="outlined" sx={{ minWidth: 150 }}>
+              <InputLabel id="time-range-label">At any time</InputLabel>
+              <Select
+                labelId="time-range-label"
+                value={this.state.timeRange}
+                onChange={this.handleTimeRangeChange}
+                label="At any time"
+              >
+                <MenuItem value="any">At any time</MenuItem>
+                <MenuItem value="today">Today</MenuItem>
+                <MenuItem value="this-week">This Week</MenuItem>
+                <MenuItem value="this-month">This Month</MenuItem>
+                <MenuItem value="date-range">Date Range</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.filterEvents}
             >
-              <MenuItem value="all">All Events</MenuItem>
-              <MenuItem value="music">Music</MenuItem>
-              <MenuItem value="exhibition">Exhibition</MenuItem>
-              <MenuItem value="theatre">Theatre</MenuItem>
-              <MenuItem value="dance">Dance</MenuItem>
-            </Select>
-          </FormControl>
+              Find Events
+            </Button>
+          </Box>
 
-          <FormControl variant="outlined" sx={{ minWidth: 150 }}>
-            <InputLabel id="time-range-label">At any time</InputLabel>
-            <Select
-              labelId="time-range-label"
-              value={this.state.timeRange}
-              onChange={this.handleTimeRangeChange}
-              label="At any time"
-            >
-              <MenuItem value="any">At any time</MenuItem>
-              <MenuItem value="today">Today</MenuItem>
-              <MenuItem value="this-week">This Week</MenuItem>
-              <MenuItem value="this-month">This Month</MenuItem>
-              <MenuItem value="date-range">Date Range</MenuItem>
-            </Select>
-          </FormControl>
+          <Box className={styles.eventsGridContainer}>
+            <Grid container spacing={3}>
+              {this.state.filteredEvents.length === 0 ? (
+                <Box className={styles.noEventsBox}>
+                  <Typography variant="h6">No events found</Typography>
+                </Box>
+              ) : (
+                this.state.filteredEvents.map((event) => (
+                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.id}>
+                    <Card className={styles.card}>
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        image={event.image}
+                        alt={event.title}
+                      />
+                      <CardContent className={styles.cardContent}>
+                        <Typography variant="h6" component="div" noWrap>
+                          {event.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {event.date}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button
+                          size="small"
+                          color="primary"
+                          onClick={() => this.handleDialogOpen(event)} // Pass the event data
+                        >
+                          More Info
+                        </Button>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.filterEvents}
-          >
-            Find Events
-          </Button>
+                        <Button size="small" color="secondary">
+                          Book Now
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))
+              )}
+            </Grid>
+          </Box>
         </Box>
-
-        <Box className={styles.eventsGridContainer}>
-          <Grid container spacing={3}>
-            {this.state.filteredEvents.length === 0 ? (
-              <Box className={styles.noEventsBox}>
-                <Typography variant="h6">No events found</Typography>
-              </Box>
-            ) : (
-              this.state.filteredEvents.map((event) => (
-                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.id}>
-                  <Card className={styles.card}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={event.image}
-                      alt={event.title}
-                    />
-                    <CardContent className={styles.cardContent}>
-                      <Typography variant="h6" component="div" noWrap>
-                        {event.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {event.date}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small" color="primary">
-                        More Info
-                      </Button>
-                      <Button size="small" color="secondary">
-                        Book Now
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))
-            )}
-          </Grid>
-        </Box>
-      </Box>
+        {this.renderDialog()}
+      </>
     );
   }
 }

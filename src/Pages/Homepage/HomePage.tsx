@@ -11,6 +11,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
+import Comments from "./Comments";
 import styles from "./HomePage.module.css";
 
 // Define the Post interface
@@ -26,6 +27,7 @@ interface Post {
 
 interface HomePageState extends AbstractPageState {
   posts: Post[];
+  selectedPostId: number | null; // Track the post for which comments are open
 }
 
 class HomePage extends AbstractPage<{}, HomePageState> {
@@ -57,8 +59,15 @@ class HomePage extends AbstractPage<{}, HomePageState> {
           mediaUrl: "https://via.placeholder.com/600x300", // Example image
         },
       ],
+      selectedPostId: null,
     };
   }
+
+  handleReplyClick = (id: number) => {
+    this.setState((prevState) => ({
+      selectedPostId: prevState.selectedPostId === id ? null : id,
+    }));
+  };
 
   // Handle the like button click
   handleLike = (id: number) => {
@@ -90,75 +99,93 @@ class HomePage extends AbstractPage<{}, HomePageState> {
   };
 
   renderContent() {
-    const { posts } = this.state;
+    const { posts, selectedPostId } = this.state;
 
     return (
-      <div
-        className={styles["homepage-container"]}
-        // style={{
-        //   display: "flex",
-        //   alignItems: "center",
-        //   flexDirection: "column",
-        // }}
-      >
+      <div className={styles["homepage-container"]}>
         {posts.map((post) => (
-          <Card className={styles["homepage-card"]}>
-            <CardMedia
-              className={styles["homepage-card-media"]}
+          <Box
+            key={post.id}
+            display="flex"
+            justifyContent="center"
+            alignItems="flex-start"
+            marginBottom={4}
+            style={{ width: "100%" }}
+          >
+            {/* Post Section */}
+            <Card
+              className={styles["homepage-card"]}
               style={{
-                backgroundImage: `url(${post.mediaUrl})`,
+                flexBasis: selectedPostId === post.id ? "70%" : "50%",
+                maxWidth: "500px", // Keep the card size fixed
+                transition: "transform 0.3s ease",
+                transform:
+                  selectedPostId === post.id
+                    ? "translateX(-10%)"
+                    : "translateX(0)",
               }}
             >
-              <Box className={styles["homepage-author-info"]}>
-                <Avatar
-                  src={post.avatar}
-                  alt={post.author}
-                  className={styles["homepage-author-avatar"]}
-                />
-                <Typography variant="subtitle1" marginLeft={2}>
-                  {post.author}
-                </Typography>
-              </Box>
-              <Box className={styles["homepage-action-buttons"]}>
-                <IconButton
-                  color={post.liked ? "primary" : "default"}
-                  onClick={() => this.handleLike(post.id)}
-                  disableRipple
-                  className={styles["homepage-icon-button"]}
-                >
-                  <Typography variant="overline">{post.likes}</Typography>
-                  <FavoriteIcon />
-                </IconButton>
-
-                <IconButton color="default">
-                  <ShareIcon />
-                </IconButton>
-                <IconButton color="default">
-                  <ReplyIcon />
-                </IconButton>
-              </Box>
-            </CardMedia>
-            <CardContent className={styles["homepage-card-content"]}>
-              {/* Description */}
-              <Box padding={3} textAlign="left">
-                <Typography variant="body1">
-                  {post.content.length > 100
-                    ? `${post.content.slice(0, 100)}...`
-                    : post.content}
-                </Typography>
-
-                {post.content.length > 100 && (
-                  <Typography
-                    variant="body2"
-                    className={styles["homepage-read-more"]}
-                    onClick={() => this.handleReadMore(post.id)}
-                  >
-                    Read More
+              <CardMedia
+                className={styles["homepage-card-media"]}
+                style={{
+                  backgroundImage: `url(${post.mediaUrl})`,
+                }}
+              >
+                <Box className={styles["homepage-author-info"]}>
+                  <Avatar
+                    src={post.avatar}
+                    alt={post.author}
+                    className={styles["homepage-author-avatar"]}
+                  />
+                  <Typography variant="subtitle1" marginLeft={2}>
+                    {post.author}
                   </Typography>
-                )}
-              </Box>
-            </CardContent>
-          </Card>
+                </Box>
+                <Box className={styles["homepage-action-buttons"]}>
+                  <IconButton
+                    color={post.liked ? "primary" : "default"}
+                    onClick={() => this.handleLike(post.id)}
+                    disableRipple
+                    className={styles["homepage-icon-button"]}
+                  >
+                    <Typography variant="overline">{post.likes}</Typography>
+                    <FavoriteIcon />
+                  </IconButton>
+
+                  <IconButton color="default">
+                    <ShareIcon />
+                  </IconButton>
+                  <IconButton
+                    color="default"
+                    onClick={() => this.handleReplyClick(post.id)}
+                  >
+                    <ReplyIcon />
+                  </IconButton>
+                </Box>
+              </CardMedia>
+              <CardContent className={styles["homepage-card-content"]}>
+                <Box padding={3} textAlign="left">
+                  <Typography variant="body1">
+                    {post.content.length > 100
+                      ? `${post.content.slice(0, 100)}...`
+                      : post.content}
+                  </Typography>
+                  {post.content.length > 100 && (
+                    <Typography
+                      variant="body2"
+                      className={styles["homepage-read-more"]}
+                      onClick={() => this.handleReadMore(post.id)}
+                    >
+                      Read More
+                    </Typography>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
+
+            {/* Comments Section */}
+            {selectedPostId === post.id && <Comments postId={post.id} />}
+          </Box>
         ))}
       </div>
     );

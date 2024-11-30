@@ -5,16 +5,30 @@ import {
   Button,
   List,
   ListItem,
+  ListItemAvatar,
+  Avatar,
   ListItemText,
+  IconButton,
   Paper,
+  Collapse,
 } from "@mui/material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
-class GlobalChat extends Component {
-  state = {
-    messages: ["Welcome to the Global Chat!"], // Example initial messages
-    newMessage: "",
+type Message = {
+  text: string;
+  avatar: string;
+  isUserMessage: boolean;
+};
+interface GlobalChatState {
+  messages: Message[];
+  newMessage: string;
+}
+
+class GlobalChat extends Component<{}, GlobalChatState> {
+  state: GlobalChatState = {
+    messages: [], // Start with an empty list of messages
+    newMessage: "", // No initial input message
   };
-
   handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newMessage: event.target.value });
   };
@@ -23,9 +37,22 @@ class GlobalChat extends Component {
     const { newMessage, messages } = this.state;
     if (newMessage.trim() !== "") {
       this.setState({
-        messages: [...messages, newMessage],
-        newMessage: "", // Clear input after sending
+        messages: [
+          ...messages,
+          {
+            text: newMessage,
+            avatar: "U", // Example avatar for user
+            isUserMessage: true,
+          },
+        ],
+        newMessage: "",
       });
+    }
+  };
+  handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      this.handleSendMessage();
+      event.preventDefault(); // Prevents any unintended behavior like form submission
     }
   };
 
@@ -40,16 +67,16 @@ class GlobalChat extends Component {
         justifyContent="flex-start"
         bgcolor="#f9f9f9"
         height="100%"
-        width="100%" // Ensures it fills the allocated width in the grid
+        width="100%"
         sx={{
-          maxWidth: "100%", // Ensure no overflow
-          marginLeft: 0, // Remove left margin
-          marginRight: 0, // Remove right margin
+          maxWidth: "100%",
+          marginLeft: 0,
+          marginRight: 0,
         }}
       >
         <Paper
           style={{
-            width: "100%", // Ensures it respects the container width
+            width: "100%",
             height: "90%",
             overflowY: "auto",
           }}
@@ -57,8 +84,36 @@ class GlobalChat extends Component {
           <h4>Global Chat</h4>
           <List>
             {messages.map((message, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={message} />
+              <ListItem
+                key={index}
+                sx={{
+                  display: "flex",
+                  padding: "0px 16px", // Reduce overall padding
+                  alignItems: "center", // Align items vertically
+                  gap: 0,
+                  justifyContent: message.isUserMessage
+                    ? "flex-end"
+                    : "flex-start", // Align based on user message flag
+                }}
+              >
+                <Avatar
+                  sx={{
+                    width: 28, // Adjust the width of the avatar
+                    height: 28, // Adjust the height of the avatar
+                    fontSize: "0.75rem", // Adjust font size inside the avatar
+                    marginRight: message.isUserMessage ? 0 : 2, // Adjust margin for user message
+                    marginLeft: message.isUserMessage ? 2 : 0, // Adjust margin for other messages
+                  }}
+                >
+                  {message.avatar}
+                </Avatar>
+
+                <ListItemText
+                  sx={{
+                    textAlign: message.isUserMessage ? "right" : "left", // Align text based on sender
+                  }}
+                  primary={message.text}
+                />
               </ListItem>
             ))}
           </List>
@@ -76,30 +131,34 @@ class GlobalChat extends Component {
             variant="outlined"
             value={newMessage}
             onChange={this.handleMessageChange}
+            onKeyDown={this.handleKeyPress}
             fullWidth
             sx={{
               marginLeft: "10px",
-              height: 32, // Further reduce the height of the text field
               "& .MuiInputBase-root": {
-                height: "100%", // Ensures that the input field height is consistent
-                padding: "4px 6px", // Reduce the padding inside the input field
+                height: 32, // Set height for consistency
+                display: "flex",
+                alignItems: "center", // Ensure content is vertically aligned
+                padding: "4px 6px", // Reduce padding for a compact look
               },
               "& .MuiInputLabel-root": {
-                fontSize: "0.875rem", // Smaller label font
+                fontSize: "0.875rem", // Adjust label font size
+                top: "-10px", // Shift the label upward
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(0, 0, 0, 0.23)", // Ensure consistent outline color
               },
             }}
-            InputLabelProps={{
-              shrink: true, // Force the label to remain above the text field
-            }}
           />
+
           <Button
             variant="contained"
             color="primary"
             onClick={this.handleSendMessage}
             sx={{
-              height: 32, // Reduce button height to match the text field
-              fontSize: "0.75rem", // Smaller font size for the button
-              padding: "6px 10px", // Reduce padding to make the button smaller
+              height: 32,
+              fontSize: "0.75rem",
+              padding: "6px 10px",
             }}
           >
             Send

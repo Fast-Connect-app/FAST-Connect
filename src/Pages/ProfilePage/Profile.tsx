@@ -12,8 +12,17 @@ import {
 import Grid from "@mui/material/Grid2";
 import styles from "./Profile.module.css"; // Import the CSS module
 import AbstractPage from "../AbstractPages";
+import {
+  PageTitleContext,
+  PageTitleContextType,
+} from "../../Layouts/MainLayout";
 
 class ProfilePage extends AbstractPage {
+  static contextType = PageTitleContext; // Correct contextType assignment
+  componentDidMount() {
+    const { setPageTitle } = this.context as PageTitleContextType;
+    setPageTitle("Profile");
+  }
   renderContent() {
     return (
       <Box className={styles.pageContainer}>

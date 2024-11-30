@@ -14,6 +14,10 @@ import {
 import Grid from "@mui/material/Grid2";
 import styles from "./JobPage.module.css"; // Import the CSS module
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
+import {
+  PageTitleContext,
+  PageTitleContextType,
+} from "../../Layouts/MainLayout";
 
 interface Job {
   id: number;
@@ -94,6 +98,13 @@ class JobPage extends AbstractPage<{}, JobPageState> {
       selectedLocation: "All locations",
     };
   }
+  static contextType = PageTitleContext; // Correct contextType assignment
+
+  componentDidMount() {
+    // Correctly access context here
+    const { setPageTitle } = this.context as PageTitleContextType;
+    setPageTitle("Job Page");
+  }
 
   handleCategoryChange = (_: React.ChangeEvent<{}>, value: string) => {
     this.setState({ selectedCategory: value });
@@ -160,9 +171,7 @@ class JobPage extends AbstractPage<{}, JobPageState> {
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={job.id}>
               <Card className={styles.jobCard}>
                 <CardContent>
-                  <Typography variant="h6" noWrap>
-                    {job.title}
-                  </Typography>
+                  <Typography variant="h6">{job.title}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {job.location}
                   </Typography>

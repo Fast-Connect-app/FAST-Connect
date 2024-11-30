@@ -14,11 +14,10 @@ class App extends Component {
         <Route path="/" element={<MainLayout />}>
           <Route path="HomePage" element={<HomePage />} />
           <Route path="EventPage" element={<Events />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="JobPage" element={<JobPage />} />
         </Route>
-
         {/* Routes without MainLayout */}
-        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     );
   }

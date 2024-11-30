@@ -1,4 +1,4 @@
-import { Component, ReactNode } from "react";
+import React, { Component, ReactNode } from "react";
 import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar"; // Adjust import path if needed
 import { Box } from "@mui/material";
 import SideBar from "../Components/NavBar/SideBar/SideBar";
@@ -7,36 +7,61 @@ import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 
 interface MainLayoutProps {
-  children?: ReactNode; // Define children as ReactNode (or JSX.Element if you expect only JSX)
+  children?: ReactNode;
 }
 
-class MainLayout extends Component<MainLayoutProps> {
+interface MainLayoutState {
+  pageTitle: string;
+}
+
+export interface PageTitleContextType {
+  setPageTitle: (title: string) => void;
+}
+
+export const PageTitleContext = React.createContext<
+  PageTitleContextType | undefined
+>(undefined);
+
+class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
+  constructor(props: MainLayoutProps) {
+    super(props);
+    this.state = {
+      pageTitle: "HomePage", // Default title
+    };
+  }
+
+  setPageTitle = (title: string) => {
+    this.setState({ pageTitle: title });
+  };
+
   render() {
     return (
-      <Box className={styles["main-layout"]}>
-        {/* Sidebar */}
-        <Box className={styles.sidebar}>
-          <SideBar />
-        </Box>
+      <PageTitleContext.Provider value={{ setPageTitle: this.setPageTitle }}>
+        <Box className={styles["main-layout"]}>
+          {/* Sidebar */}
+          <Box className={styles.sidebar}>
+            <SideBar />
+          </Box>
 
-        {/* Main Content */}
-        <Box className={styles.contentheader}>
-          <h2>HomePage</h2>
-        </Box>
-        <Box className={styles.content}>
-          <Outlet />
-        </Box>
+          {/* Main Content */}
+          <Box className={styles.contentheader}>
+            <h2>{this.state.pageTitle}</h2>
+          </Box>
+          <Box className={styles.content}>
+            <Outlet context={{ setPageTitle: this.setPageTitle }} />
+          </Box>
 
-        {/* Header */}
-        <Box className={styles.header}>
-          <HeaderBar />
-        </Box>
+          {/* Header */}
+          <Box className={styles.header}>
+            <HeaderBar />
+          </Box>
 
-        {/* Global Chat */}
-        <Box className={styles["global-chat"]}>
-          <GlobalChat />
+          {/* Global Chat */}
+          <Box className={styles["global-chat"]}>
+            <GlobalChat />
+          </Box>
         </Box>
-      </Box>
+      </PageTitleContext.Provider>
     );
   }
 }
