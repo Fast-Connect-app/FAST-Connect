@@ -1,6 +1,6 @@
 import { BaseDatabaseAdapterFactory } from "./DatabaseAdapterFactory";
-import { InterfaceTypes } from "./DatabaseAdapterFactory";
 import { FirebaseAdapter } from "./FirebaseAdapter";
+import { InterfaceTypes } from "./InterfaceTypes";
 
 export class FirebaseAdapterFactory extends BaseDatabaseAdapterFactory {
     public static override CreateAdapter<K extends keyof InterfaceTypes>(_collectionName: string, _parentDocumentId?: string, _subCollectionName?: string): InterfaceTypes[K] {

@@ -7,19 +7,19 @@ import { IModifyById } from "../DatabaseInterfaces/IModifyById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
 import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
-import { BaseDatabaseAdapter } from "./BaseDatabaseAdapter";
 
 
 //firebase imports
 import { database } from "../FirebaseApp"
 const db = database;
 
-export class FirebaseAdapter extends BaseDatabaseAdapter implements ILoadAll,ILoadById,ILoadOnChange,IModifyById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember{
+export class FirebaseAdapter implements ILoadAll,ILoadById,ILoadOnChange,IModifyById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember{
+    private collectionName : string;
     private parentDocumentId ?: string;
     private subCollectionName ?: string;
 
     constructor(_collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string){
-        super(_collectionName);
+        this.collectionName = _collectionName;
         this.parentDocumentId = _parentDocumentId;
         this.subCollectionName = _subCollectionName;
     }
@@ -49,7 +49,7 @@ export class FirebaseAdapter extends BaseDatabaseAdapter implements ILoadAll,ILo
     }
 
     async SaveObject(data): Promise<void> {   
-        
+        console.log("Hello");
     }
 
     async LoadForMember(uid:string): Promise<string | null>{

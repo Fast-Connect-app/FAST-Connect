@@ -1,4 +1,4 @@
-import { BaseDatabaseAdapter } from "../DatabaseFactory/BaseDatabaseAdapter";
+import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter } from "./IDatabaseAdapter";
 
@@ -9,20 +9,15 @@ export class Events implements IDatabaseAdapter{
     private headUser:string;
     private venue:string;
 
-    private static firebaseAdapter:any;
-
     constructor(_title:string, _dateOfOccurence:Date, _description:string, _headUser:string, _venue:string){
         this.title = _title;
         this.dateOfOccurence = _dateOfOccurence;
         this.description = _description;
         this.headUser = _headUser;
         this.venue = _venue;
-
-        if(Events.firebaseAdapter == null)
-            Events.firebaseAdapter = FirebaseAdapterFactory.CreateAdapter<"Event">("Events");
     }
 
-    GetDatabaseAdapter(): BaseDatabaseAdapter {
-        return Events.firebaseAdapter;
+    static GetDatabaseAdapter() {
+        return GetDatabaseAdapter<"Event">(FirebaseAdapterFactory,"Events");
     }
 }
