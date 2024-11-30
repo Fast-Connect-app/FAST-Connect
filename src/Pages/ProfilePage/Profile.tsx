@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Card,
@@ -32,7 +31,7 @@ class ProfilePage extends AbstractPage {
             <Card className={styles.profileCard}>
               <CardContent>
                 <Box className={styles.profileCardContent}>
-                  <Avatar className={styles.avatar} alt="John Doe" src="" />
+                  <Avatar className={styles.avatar} alt="John Doe" src="/" sx={{ width: 100, height: 100 }} />
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     John Doe
                   </Typography>

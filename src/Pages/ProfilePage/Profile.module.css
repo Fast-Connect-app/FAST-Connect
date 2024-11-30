@@ -10,6 +10,7 @@
 
 .profileCard {
   box-shadow: 3;
+  height: 75%;
 }
 
 .profileCardContent {
@@ -21,6 +22,7 @@
 
 .avatar {
   background-color: var(--mui-primary-main);
+  margin-bottom: 10%;
 }
 
 .followMessageButtons {
