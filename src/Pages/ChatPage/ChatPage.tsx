@@ -267,17 +267,19 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
                 value={newMessage}
                 onChange={(e) => this.setState({ newMessage: e.target.value })}
                 placeholder="Type your message and press enter..."
-                onKeyPress={(e) => {
+                onKeyDown={(e) => {
                   if (e.key === "Enter") this.handleSendMessage();
                 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={this.handleSendMessage}>
-                        <Send />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={this.handleSendMessage}>
+                          <Send />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
             </Box>
