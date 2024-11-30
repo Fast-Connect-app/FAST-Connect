@@ -30,6 +30,8 @@ abstract class BaseSubDrawer extends Component<BaseSubDrawerProps> {
         anchor={anchor} // Automatically handle the positioning
         PaperProps={{
           className: styles.subDrawerPaper,
+          onMouseEnter: this.props.onMouseEnter, // Attach onMouseEnter here
+          onMouseLeave: this.props.onMouseLeave, // Attach onMouseLeave here
         }}
       >
         <Box className={styles.subDrawerContent}>

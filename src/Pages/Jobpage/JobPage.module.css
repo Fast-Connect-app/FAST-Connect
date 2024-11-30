@@ -7,7 +7,7 @@
 }
 
 .header {
-  text-align: right;
+  text-align: center;
   margin-bottom: 1.5rem;
 }
 
@@ -26,11 +26,10 @@
 }
 
 .jobCard {
-  height: 140px;
-  width: 25.5vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 30vh;
 }
 
 .applyButton {

@@ -5,6 +5,7 @@ import HomePage from "./Pages/Homepage/HomePage";
 import Events from "./Pages/Eventpage/EventPage";
 import ProfilePage from "./Pages/ProfilePage/Profile";
 import JobPage from "./Pages/Jobpage/JobPage";
+import StudyPage from "./Pages/StudyMaterial/StudyMaterialPage";
 
 class App extends Component {
   render() {
@@ -14,11 +15,11 @@ class App extends Component {
         <Route path="/" element={<MainLayout />}>
           <Route path="HomePage" element={<HomePage />} />
           <Route path="EventPage" element={<Events />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="JobPage" element={<JobPage />} />
+          <Route path="StudyPage" element={<StudyPage />} />
         </Route>
-
         {/* Routes without MainLayout */}
-        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     );
   }
