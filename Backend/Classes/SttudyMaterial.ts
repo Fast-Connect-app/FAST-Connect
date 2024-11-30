@@ -1,8 +1,8 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter } from "./IDatabaseAdapter";
+import { IDatabaseAdapter,IJSONData } from "./IDatabaseAdapter";
 
-export class StudyMaterial implements IDatabaseAdapter{
+export class StudyMaterial implements IDatabaseAdapter,IJSONData{
     private senderUserId:string;
     private fileMaterial:string;
 
@@ -13,5 +13,10 @@ export class StudyMaterial implements IDatabaseAdapter{
 
     static GetDatabaseAdapter() {
         return GetDatabaseAdapter<"StudyMaterial">(FirebaseAdapterFactory,"StudyMaterial");
+    }
+
+    public GetJsonData(): string {
+        const data = {...this};
+        return JSON.stringify(data);
     }
 }

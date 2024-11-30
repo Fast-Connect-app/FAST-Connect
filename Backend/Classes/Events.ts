@@ -1,8 +1,8 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter } from "./IDatabaseAdapter";
+import { IDatabaseAdapter,IJSONData } from "./IDatabaseAdapter";
 
-export class Events implements IDatabaseAdapter{
+export class Events implements IDatabaseAdapter,IJSONData{
     private title:string;
     private dateOfOccurence:Date;
     private description:string;
@@ -19,5 +19,14 @@ export class Events implements IDatabaseAdapter{
 
     static GetDatabaseAdapter() {
         return GetDatabaseAdapter<"Event">(FirebaseAdapterFactory,"Events");
+    }
+    
+    public GetJsonData(): string {
+        const data = {
+            ...this,
+            dateOfOccurence: this.dateOfOccurence.toISOString()
+        }
+
+        return JSON.stringify(data);
     }
 }

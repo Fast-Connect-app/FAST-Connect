@@ -1,8 +1,8 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter } from "./IDatabaseAdapter";
+import { IDatabaseAdapter,IJSONData } from "./IDatabaseAdapter";
 
-export class Jobs implements IDatabaseAdapter{
+export class Jobs implements IDatabaseAdapter,IJSONData{
     private title:string;
     private salary:number;
     private ownerUserId:string;
@@ -15,5 +15,10 @@ export class Jobs implements IDatabaseAdapter{
 
     static GetDatabaseAdapter() {
         return GetDatabaseAdapter<"Job">(FirebaseAdapterFactory,"Jobs");
+    }
+
+    public GetJsonData(): string {
+        const data = {...this};
+        return JSON.stringify(data);
     }
 }

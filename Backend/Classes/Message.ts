@@ -1,4 +1,6 @@
-export class Message{
+import { IJSONData } from "./IDatabaseAdapter";
+
+export class Message implements IJSONData{
     private senderId:string;
     private content:string;
     private FileAttachment : string | null;
@@ -9,5 +11,15 @@ export class Message{
         this.content = _content;
         this.FileAttachment = _FileAttachment;
         this.TimeStamp = _TimeStamp;
+    }
+    public GetJsonData():string{
+        const data = {
+            senderId: this.senderId,
+            content: this.content,
+            fileAttachment: this.FileAttachment,
+            timeStamp: this.TimeStamp.toISOString()
+        }
+
+        return JSON.stringify(data);
     }
 }

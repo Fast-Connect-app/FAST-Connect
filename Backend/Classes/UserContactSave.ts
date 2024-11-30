@@ -1,9 +1,8 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter } from "./IDatabaseAdapter";
-import { User } from "./User";
+import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
 
-export class UserContactSave implements IDatabaseAdapter{
+export class UserContactSave implements IDatabaseAdapter,IJSONData{
     private savingUserId:string;
     private savedUserId:string;
     private savedUserName:string;
@@ -16,5 +15,10 @@ export class UserContactSave implements IDatabaseAdapter{
 
     static GetDatabaseAdapter() {
         return GetDatabaseAdapter<"UserContactSave">(FirebaseAdapterFactory,"UserContactSaves");
+    }
+
+    public GetJsonData(): string {
+        const data = {...this};
+        return JSON.stringify(data);
     }
 }

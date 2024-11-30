@@ -1,7 +1,13 @@
 //interface so that all the classes can override to return their own types of adapter
 
-export class IDatabaseAdapter{
+class IDatabaseAdapter{
     public static GetDatabaseAdapter(){
         throw new Error("GetDatabaseAdapter not implemented");
     };
 }
+
+interface IJSONData{
+    GetJsonData():string;
+}
+
+export {IDatabaseAdapter,IJSONData}
