@@ -10,7 +10,6 @@
 
 .profileCard {
   box-shadow: 3;
-  height: 75%;
 }
 
 .profileCardContent {
@@ -47,6 +46,7 @@
 
 .socialLinksCard {
   box-shadow: 3;
+  height: 100%;
 }
 
 .socialLinksContent {
