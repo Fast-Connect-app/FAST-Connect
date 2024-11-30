@@ -34,5 +34,10 @@ export const navItems: NavItem[] = [
     icon: <Event />,
     route: "/StudyPage",
   },
+  {
+    label: "Chat",
+    icon: <Event />,
+    route: "/ChatPage",
+  },
   // Add more items as needed
 ];

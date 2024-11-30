@@ -54,7 +54,7 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
           <MenuItem
             onClick={() => {
               this.handleMenuClose();
-              handleMenuSelect("/profile"); // Use handleMenuSelect from props
+              handleMenuSelect("/Profile"); // Use handleMenuSelect from props
             }}
           >
             Profile

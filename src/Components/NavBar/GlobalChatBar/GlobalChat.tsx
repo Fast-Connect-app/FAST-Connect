@@ -5,14 +5,10 @@ import {
   Button,
   List,
   ListItem,
-  ListItemAvatar,
   Avatar,
   ListItemText,
-  IconButton,
   Paper,
-  Collapse,
 } from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 type Message = {
   text: string;

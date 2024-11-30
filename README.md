@@ -1,50 +1,91 @@
-# React + TypeScript + Vite
+# FAST Connect: A Centralized Online Community for FAST Students and Alumni
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Project Proposal
 
-Currently, two official plugins are available:
+### **Title**
+**FAST Connect**: A Centralized Online Community for FAST Students and Alumni
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+### **Scope**
+FAST Connect aims to develop an interactive online platform exclusively for students and alumni of FAST University. Currently, communication is fragmented across various platforms like WhatsApp, Discord, and subreddits. This platform seeks to centralize these interactions, offering features such as:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Job referrals and tips.
+- Skill development opportunities.
+- Query resolution.
+- A searchable repository of study materials.
 
-- Configure the top-level `parserOptions` property like this:
+While the platform is initially focused on FAST, it is designed with scalability in mind to include students and alumni from other universities in the future. The platform will focus on community interaction, professional networking, and knowledge sharing, excluding internal university-specific systems like grading portals.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### **Objective**
+The primary goal of this project is to build a unified online community where students and alumni can:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- Connect and interact across different campuses.
+- Share job referrals, enhancing career opportunities.
+- Provide and access a searchable repository of study materials.
+- Exchange knowledge via public threads and private messages (DMs).
+- Build a scalable platform to include other universities in the future.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+
+### **Problem Statement**
+Currently, students and alumni are scattered across multiple platforms such as WhatsApp, Discord, and subreddits, leading to:
+
+- Missed opportunities for collaboration and networking.
+- Limited avenues for alumni to offer mentorship or job referrals.
+- Difficulty in locating study materials and asking questions.
+
+**FAST Connect** solves these problems by consolidating all communication (public and private) into a single platform, fostering a stronger and more interactive university community.
+
+---
+
+## 🛠️ Technologies Used
+
+### **Frontend**
+- **React (TypeScript)**: For building the user interface.
+- **CSS**: For styling and UI enhancements.
+
+### **Backend**
+- **Firebase**:
+  - **Authentication**: Secure login with OAuth and email/password sign-in.
+  - **Firestore Database**: NoSQL database for storing user data, messages, and posts.
+  - **Cloud Functions**: For serverless backend functionality.
+  - **Hosting**: For deploying the application.
+
+---
+
+## 📂 Project Features
+
+1. **Public Threads and Private DMs**
+   - Facilitate knowledge exchange and private conversations.
+   
+2. **Searchable Repository**
+   - An easily accessible collection of study materials for students.
+
+3. **Job Referrals**
+   - Alumni can share job referrals and tips directly with students.
+
+4. **Real-time Communication**
+   - Chat functionality to enhance user interaction.
+
+5. **Scalable Design**
+   - Designed to accommodate other universities in the future.
+
+---
+
+## 🧑‍🤝‍🧑 Collaboration Tools
+- **GitHub**: For version control and code management.
+- **WhatsApp & Discord**: For team communication and collaboration.
+- **Figma**: For UI/UX design and prototyping.
+
+---
+
+## 🌟 How to Get Started?
+
+### Prerequisites:
+1. **Node.js**: Install the latest version from [Node.js](https://nodejs.org/).
+2. **Firebase CLI**: Install Firebase tools via:
+   ```bash
+   npm install -g firebase-tools

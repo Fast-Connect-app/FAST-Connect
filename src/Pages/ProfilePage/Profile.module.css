@@ -21,6 +21,7 @@
 
 .avatar {
   background-color: var(--mui-primary-main);
+  margin-bottom: 10%;
 }
 
 .followMessageButtons {
@@ -45,6 +46,7 @@
 
 .socialLinksCard {
   box-shadow: 3;
+  height: 100%;
 }
 
 .socialLinksContent {
