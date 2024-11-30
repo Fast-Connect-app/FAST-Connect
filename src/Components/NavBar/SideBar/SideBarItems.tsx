@@ -30,10 +30,9 @@ export const navItems: NavItem[] = [
     BaseSubDrawer: JobSubDrawer, // Ensure the component is passed correctly
   },
   {
-    label: "Event",
+    label: "Study Material",
     icon: <Event />,
-    route: "/HomePage",
-    BaseSubDrawer: EventSubDrawer, // Ensure the component is passed correctly
+    route: "/StudyPage",
   },
   // Add more items as needed
 ];

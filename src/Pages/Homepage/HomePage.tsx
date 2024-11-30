@@ -13,6 +13,10 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
 import Comments from "./Comments";
 import styles from "./HomePage.module.css";
+import {
+  PageTitleContext,
+  PageTitleContextType,
+} from "../../Layouts/MainLayout";
 
 // Define the Post interface
 interface Post {
@@ -31,6 +35,11 @@ interface HomePageState extends AbstractPageState {
 }
 
 class HomePage extends AbstractPage<{}, HomePageState> {
+  static contextType = PageTitleContext; // Correct contextType assignment
+    componentDidMount() {
+        const { setPageTitle } = this.context as PageTitleContextType;
+        setPageTitle("Home Page");
+    }
   // Initialize state in the constructor
   constructor(props: {}) {
     super(props);
