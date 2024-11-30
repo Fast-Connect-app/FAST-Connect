@@ -6,6 +6,7 @@ import Events from "./Pages/Eventpage/EventPage";
 import ProfilePage from "./Pages/ProfilePage/Profile";
 import JobPage from "./Pages/Jobpage/JobPage";
 import StudyPage from "./Pages/StudyMaterial/StudyMaterialPage";
+import ChatPage from "./Pages/ChatPage/ChatPage";
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
           <Route path="Profile" element={<ProfilePage />} />
           <Route path="JobPage" element={<JobPage />} />
           <Route path="StudyPage" element={<StudyPage />} />
+          <Route path="ChatPage" element={<ChatPage />} />
         </Route>
         {/* Routes without MainLayout */}
       </Routes>
