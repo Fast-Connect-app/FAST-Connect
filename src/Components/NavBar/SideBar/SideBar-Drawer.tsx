@@ -107,7 +107,7 @@ class SideBarDrawer extends Component<SideBarDrawerProps, SidebarDrawerState> {
       >
         {/* Logo Section */}
         <Box className={styles.logoContainer}>
-          <img src="your-logo.png" alt="Company Logo" />
+          <img src="vite.svg" alt="Company Logo" />
         </Box>
 
         {/* Divider */}
