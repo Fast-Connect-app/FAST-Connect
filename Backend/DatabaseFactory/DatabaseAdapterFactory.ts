@@ -1,7 +1,5 @@
 import {InterfaceTypes} from "./InterfaceTypes"
 
-import { FirebaseAdapterFactory } from "./FirebaseAdapterFactory";
-
 export class BaseDatabaseAdapterFactory{
     public static CreateAdapter<K extends keyof InterfaceTypes>( _collectionName:string, _parentDocumentId ?: string, _subCollectionName ?: string): InterfaceTypes[K]{
         throw new Error("CreateAdapter Method not implemented.");
@@ -10,7 +8,7 @@ export class BaseDatabaseAdapterFactory{
 
 export function GetDatabaseAdapter<K extends keyof InterfaceTypes>(
     adapterFactoryType: typeof BaseDatabaseAdapterFactory,_collectionName:string,
-    _parentDocumentId?:string,_subCollectionName?:string):InterfaceTypes[K]
+    _parentDocumentId?:string,_subCollectionName?:string) :InterfaceTypes[K]
     {
         return adapterFactoryType.CreateAdapter<K>(_collectionName,_parentDocumentId,_subCollectionName);
 }

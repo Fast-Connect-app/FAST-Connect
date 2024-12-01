@@ -207,7 +207,7 @@ export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,IL
 
             //Get Json Data
             let dataName = querySnapshotName.docs.map(doc =>({ id:doc.id, ...doc.data() }));
-            let dataTitle = querySnapshotName.docs.map(doc =>({ id:doc.id, ...doc.data() }));
+            let dataTitle = querySnapshotTitle.docs.map(doc =>({ id:doc.id, ...doc.data() }));
             
             //combine the 2 arrays
             let combined = dataName.concat(dataTitle);
@@ -221,8 +221,7 @@ export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,IL
     }
 
     async LoadOnChange(id: string): Promise<void> {
-        try{
-            
+        try{  
             if(this.parentDocumentId && this.subCollectionName){
                 //there is a sub collection
 
@@ -249,7 +248,7 @@ export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,IL
                         if (change.type === 'added') {
                             // New document added to the sub-collection
                             const newMessage = change.doc.data();
-                            
+
                             // Notify your subscribers with the new message
                             this.NotifySubscribers(newMessage);
                         }
