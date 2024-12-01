@@ -37,3 +37,15 @@
   color: white;
   border-radius: 0px 0px 4px 4px;
 }
+
+.infoButton {
+  border-color: #1976d2;
+  color: #1976d2;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+}
+
+.infoButton:hover {
+  border-color: #155a9d;
+  color: #155a9d;
+}
