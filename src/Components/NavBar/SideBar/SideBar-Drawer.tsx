@@ -18,9 +18,9 @@ interface SideBarDrawerProps extends DrawerProps {
 
 interface SidebarDrawerState {
   openNestedDrawerIndex: number | null;
-  hoverTimeout: NodeJS.Timeout | null; // Store timeout ID for hover
-  isSidebarHovered: boolean; // Track if sidebar is being hovered
-  isSubDrawerHovered: boolean; // Track if subdrawer is being hovered
+  hoverTimeout: NodeJS.Timeout | null;
+  isSidebarHovered: boolean;
+  isSubDrawerHovered: boolean;
 }
 
 class SideBarDrawer extends Component<SideBarDrawerProps, SidebarDrawerState> {
@@ -34,105 +34,79 @@ class SideBarDrawer extends Component<SideBarDrawerProps, SidebarDrawerState> {
     };
   }
 
-  // Handle hover on sidebar items (opens subdrawer after delay)
-  handleHover = (index: number | null) => () => {
-    if (this.state.hoverTimeout) {
-      clearTimeout(this.state.hoverTimeout); // Clear any existing timeout
-    }
+  // Manage hover events for main sidebar
+  handleSidebarHover = (index: number | null) => () => {
+    const { hoverTimeout } = this.state;
 
-    const hoverTimeout = setTimeout(() => {
-      // Open subdrawer only if the sidebar is still hovered
+    // Clear existing hover timeout
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+
+    const newTimeout = setTimeout(() => {
       if (this.state.isSidebarHovered) {
         this.setState({ openNestedDrawerIndex: index });
       }
-    }, 1000); // Delay for 0.5 seconds
+    }, 1000); // Hover delay for subdrawer opening
 
-    this.setState({ hoverTimeout, isSidebarHovered: true });
+    this.setState({ hoverTimeout: newTimeout, isSidebarHovered: true });
   };
 
-  // Handle mouse leave for sidebar (initiates closing of subdrawer with delay)
-  handleMouseLeaveSidebar = () => {
-    console.log("Mouse left the sidebar");
+  handleSidebarMouseLeave = () => {
+    const { hoverTimeout } = this.state;
 
-    // Clear hover timeout
-    if (this.state.hoverTimeout) {
-      clearTimeout(this.state.hoverTimeout);
-    }
+    if (hoverTimeout) clearTimeout(hoverTimeout);
 
-    // Reset hover states and close subdrawer if necessary
-    this.setState({ isSidebarHovered: false });
-
-    const hoverTimeout = setTimeout(() => {
+    const newTimeout = setTimeout(() => {
       if (!this.state.isSubDrawerHovered) {
         this.setState({ openNestedDrawerIndex: null });
       }
-    }, 500); // Delay for closing
-    this.setState({ hoverTimeout });
+    }, 500); // Delay before subdrawer closes
+
+    this.setState({ isSidebarHovered: false, hoverTimeout: newTimeout });
   };
 
-  // Handle mouse enter and leave for subdrawer
-  handleMouseEnterSubDrawer = () => {
-    console.log("inside the subbar");
-    // Clear any hover timeout when mouse enters subdrawer
-    if (this.state.hoverTimeout) {
-      clearTimeout(this.state.hoverTimeout);
+  // Manage hover events for subdrawer
+  handleSubDrawerHover = (isEntering: boolean) => () => {
+    const { hoverTimeout } = this.state;
+
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+
+    this.setState({ isSubDrawerHovered: isEntering });
+
+    if (!isEntering) {
+      const newTimeout = setTimeout(() => {
+        if (!this.state.isSidebarHovered) {
+          this.setState({ openNestedDrawerIndex: null });
+        }
+      }, 500); // Delay before subdrawer closes
+      this.setState({ hoverTimeout: newTimeout });
     }
-
-    this.setState({ isSubDrawerHovered: true });
   };
 
-  handleMouseLeaveSubDrawer = () => {
-    console.log("Mouse left the subdrawer");
-
-    // Set hover state to false
-    this.setState({ isSubDrawerHovered: false });
-
-    // Delay closing to account for hover transitions
-    const hoverTimeout = setTimeout(() => {
-      if (!this.state.isSidebarHovered) {
-        this.setState({ openNestedDrawerIndex: null });
-      }
-    }, 500); // Delay before closing
-
-    this.setState({ hoverTimeout });
-  };
-
-  renderContent() {
+  // Render navigation items
+  renderNavItems() {
+    const { handleMenuSelect } = this.props;
     const { openNestedDrawerIndex } = this.state;
 
     return (
-      <Box
-        className={styles.mainDrawerContent}
-        onMouseLeave={this.handleMouseLeaveSidebar} // Detect when the mouse leaves the main drawer area
-      >
-        {/* Logo Section */}
-        <Box className={styles.logoContainer}>
-          <img src="your-logo.png" alt="Company Logo" />
-        </Box>
+      <List className={styles.sideList}>
+        {navItems.map((item, index) => {
+          const isActive = openNestedDrawerIndex === index;
 
-        {/* Divider */}
-        <Divider sx={{ marginBottom: 0 }} />
-
-        {/* Navigation Items */}
-        <List className={styles.sideList}>
-          {navItems.map((item, index) => {
-            const isActive = openNestedDrawerIndex === index;
-            return (
-              <ListItem key={index} disablePadding>
-                <NavButton
-                  label={item.label}
-                  icon={item.icon}
-                  onClick={() => this.props.handleMenuSelect(item.route)} // onClick to open drawer
-                  onMouseEnter={this.handleHover(index)} // onHover to open drawer after delay
-                  className={`${styles.listItemButton} ${
-                    isActive ? styles.active : ""
-                  }`}
-                />
-              </ListItem>
-            );
-          })}
-        </List>
-      </Box>
+          return (
+            <ListItem key={index} disablePadding>
+              <NavButton
+                label={item.label}
+                icon={item.icon}
+                onClick={() => handleMenuSelect(item.route)}
+                onMouseEnter={this.handleSidebarHover(index)}
+                className={`${styles.listItemButton} ${
+                  isActive ? styles.active : ""
+                }`}
+              />
+            </ListItem>
+          );
+        })}
+      </List>
     );
   }
 
@@ -144,40 +118,52 @@ class SideBarDrawer extends Component<SideBarDrawerProps, SidebarDrawerState> {
       openNestedDrawerIndex !== null &&
       navItems[openNestedDrawerIndex]?.BaseSubDrawer;
 
-    const route: string =
-      openNestedDrawerIndex !== null
-        ? navItems[openNestedDrawerIndex]?.route
-        : "/";
-
     const sidebarWidth =
       (
         sx as { ["& .MuiDrawer-paper"]?: { width?: string | number | object } }
       )?.["& .MuiDrawer-paper"]?.width ?? 240;
 
+    const subDrawerRoute =
+      openNestedDrawerIndex !== null
+        ? navItems[openNestedDrawerIndex]?.route
+        : "/";
+
     return (
       <div style={{ width: "fit-content" }}>
-        {/* Main Sidebar Drawer */}
-        <Drawer variant={variant} anchor={anchor} open={open} sx={sx}>
-          {this.renderContent()}
+        {/* Main Sidebar */}
+        <Drawer
+          variant={variant}
+          anchor={anchor}
+          open={open}
+          sx={sx}
+          onMouseLeave={this.handleSidebarMouseLeave}
+        >
+          <Box className={styles.mainDrawerContent}>
+            <Box className={styles.logoContainer}>
+              <img src="your-logo.png" alt="Company Logo" />
+            </Box>
+            <Divider sx={{ marginBottom: 0 }} />
+            {this.renderNavItems()}
+          </Box>
         </Drawer>
 
         {/* Subdrawer */}
         {SubDrawerComponent &&
           React.createElement(withMenuNavigation(SubDrawerComponent), {
             open: true,
-            route: route,
-            sidebarWidth, // Pass the dynamically extracted sidebar width
+            route: subDrawerRoute,
+            sidebarWidth,
             variant: "persistent",
             sx: {
               marginLeft: sidebarWidth,
-              width: "20vw", // Pass the width in sx
+              width: "20vw",
               "& .MuiDrawer-paper": {
                 left: sidebarWidth,
-                width: "20vw", // Reuse the same width for MuiDrawer-paper
+                width: "20vw",
               },
             },
-            onMouseEnter: this.handleMouseEnterSubDrawer, // Make sure mouse enter works for subdrawer
-            onMouseLeave: this.handleMouseLeaveSubDrawer, // Make sure mouse leave works for subdrawer as well
+            onMouseEnter: this.handleSubDrawerHover(true),
+            onMouseLeave: this.handleSubDrawerHover(false),
           })}
       </div>
     );

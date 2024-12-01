@@ -17,6 +17,7 @@ import {
   PageTitleContext,
   PageTitleContextType,
 } from "../../Layouts/MainLayout";
+import AddPostDialog from "./AddPostDialog";
 
 // Define the Post interface
 interface Post {
@@ -32,6 +33,7 @@ interface Post {
 interface HomePageState extends AbstractPageState {
   posts: Post[];
   selectedPostId: number | null; // Track the post for which comments are open
+  isAddPostOpen: boolean;
 }
 
 class HomePage extends AbstractPage<{}, HomePageState> {
@@ -69,6 +71,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
         },
       ],
       selectedPostId: null,
+      isAddPostOpen: false,
     };
   }
 
@@ -107,112 +110,177 @@ class HomePage extends AbstractPage<{}, HomePageState> {
     }));
   };
 
+  // Open the Add Post dialog
+  handleOpenAddPost = () => {
+    console.log("open");
+    this.setState({ isAddPostOpen: true });
+  };
+
+  // Close the Add Post dialog
+  handleCloseAddPost = () => {
+    this.setState({ isAddPostOpen: false });
+  };
+
+  // Add a new post
+  handleAddPost = (mediaFile: File | null, content: string) => {
+    if (mediaFile) {
+      const newPost: Post = {
+        id: this.state.posts.length + 1,
+        author: "New User",
+        avatar: "https://i.pravatar.cc/150?img=3",
+        content,
+        likes: 0,
+        liked: false,
+        mediaUrl: URL.createObjectURL(mediaFile), // Convert file to local URL for preview
+      };
+
+      this.setState((prevState) => ({
+        posts: [newPost, ...prevState.posts],
+        isAddPostOpen: false,
+      }));
+    }
+  };
+
   renderContent() {
-    const { posts, selectedPostId } = this.state;
+    const { posts, selectedPostId, isAddPostOpen } = this.state;
 
     return (
-      <div className={styles["homepage-container"]}>
-        {posts.map((post) => (
-          <Box
-            key={post.id}
-            display="flex"
-            justifyContent="center"
-            alignItems="stretch" // Ensure both children (Post and Comments) match height
-            marginBottom={4}
-            style={{ width: "100%" }}
+      <Box position="relative" width="100%">
+        {/* Add Post Button */}
+        <Box
+          position="sticky"
+          top="24x" // Adjust this value to control vertical placement
+          right="24px" // Adjust this value to control horizontal placement
+          style={{
+            zIndex: 1000, // Ensure it stays on top
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <IconButton
+            color="primary"
+            style={{
+              backgroundColor: "#1976d2",
+              color: "#fff",
+              width: "24px",
+              height: "24px",
+              borderRadius: "50%", // Make it circular
+            }}
+            onClick={this.handleOpenAddPost}
           >
-            {/* Post Section */}
-            <Card
-              className={styles["homepage-card"]}
-              style={{
-                flexBasis: selectedPostId === post.id ? "70%" : "50%",
-                maxWidth: "500px",
-                transition: "transform 0.3s ease",
-                transform:
-                  selectedPostId === post.id
-                    ? "translateX(-10%)"
-                    : "translateX(0)",
-                display: "flex",
-                flexDirection: "column",
-              }}
+            +
+          </IconButton>
+        </Box>
+        {/* Add Post Dialog */}
+        <AddPostDialog
+          open={isAddPostOpen}
+          onClose={this.handleCloseAddPost}
+          onSubmit={this.handleAddPost}
+        />
+        {/* Existing Posts */}
+        <div className={styles["homepage-container"]}>
+          {posts.map((post) => (
+            <Box
+              key={post.id}
+              display="flex"
+              justifyContent="center"
+              alignItems="stretch" // Ensure both children (Post and Comments) match height
+              marginBottom={4}
+              style={{ width: "100%" }}
             >
-              <CardMedia
-                className={styles["homepage-card-media"]}
+              {/* Post Section */}
+              <Card
+                className={styles["homepage-card"]}
                 style={{
-                  backgroundImage: `url(${post.mediaUrl})`,
-                  height: "200px", // Adjust as needed for media height
-                }}
-              >
-                <Box className={styles["homepage-author-info"]}>
-                  <Avatar
-                    src={post.avatar}
-                    alt={post.author}
-                    className={styles["homepage-author-avatar"]}
-                  />
-                  <Typography variant="subtitle1" marginLeft={2}>
-                    {post.author}
-                  </Typography>
-                </Box>
-                <Box className={styles["homepage-action-buttons"]}>
-                  <IconButton
-                    color={post.liked ? "primary" : "default"}
-                    onClick={() => this.handleLike(post.id)}
-                    disableRipple
-                    className={styles["homepage-icon-button"]}
-                  >
-                    <Typography variant="overline">{post.likes}</Typography>
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton color="default">
-                    <ShareIcon />
-                  </IconButton>
-                  <IconButton
-                    color="default"
-                    onClick={() => this.handleReplyClick(post.id)}
-                  >
-                    <ReplyIcon />
-                  </IconButton>
-                </Box>
-              </CardMedia>
-              <CardContent className={styles["homepage-card-content"]}>
-                <Box padding={3} textAlign="left">
-                  <Typography variant="body1">
-                    {post.content.length > 100
-                      ? `${post.content.slice(0, 100)}...`
-                      : post.content}
-                  </Typography>
-                  {post.content.length > 100 && (
-                    <Typography
-                      variant="body2"
-                      className={styles["homepage-read-more"]}
-                      onClick={() => this.handleReadMore(post.id)}
-                    >
-                      Read More
-                    </Typography>
-                  )}
-                </Box>
-              </CardContent>
-            </Card>
-
-            {/* Comments Section */}
-            {selectedPostId === post.id && (
-              <Box
-                style={{
-                  flexBasis: "30%",
-                  marginLeft: "16px",
+                  flexBasis: selectedPostId === post.id ? "70%" : "50%",
+                  maxWidth: "500px",
+                  transition: "transform 0.3s ease",
+                  transform:
+                    selectedPostId === post.id
+                      ? "translateX(-10%)"
+                      : "translateX(0)",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between",
-                  maxHeight: "100%", // Match parent height
-                  overflow: "hidden", // Prevent overflow
                 }}
               >
-                <Comments postId={post.id} />
-              </Box>
-            )}
-          </Box>
-        ))}
-      </div>
+                <CardMedia
+                  className={styles["homepage-card-media"]}
+                  style={{
+                    backgroundImage: `url(${post.mediaUrl})`,
+                    height: "200px", // Adjust as needed for media height
+                  }}
+                >
+                  <Box className={styles["homepage-author-info"]}>
+                    <Avatar
+                      src={post.avatar}
+                      alt={post.author}
+                      className={styles["homepage-author-avatar"]}
+                    />
+                    <Typography variant="subtitle1" marginLeft={2}>
+                      {post.author}
+                    </Typography>
+                  </Box>
+                  <Box className={styles["homepage-action-buttons"]}>
+                    <IconButton
+                      color={post.liked ? "primary" : "default"}
+                      onClick={() => this.handleLike(post.id)}
+                      disableRipple
+                      className={styles["homepage-icon-button"]}
+                    >
+                      <Typography variant="overline">{post.likes}</Typography>
+                      <FavoriteIcon />
+                    </IconButton>
+                    <IconButton color="default">
+                      <ShareIcon />
+                    </IconButton>
+                    <IconButton
+                      color="default"
+                      onClick={() => this.handleReplyClick(post.id)}
+                    >
+                      <ReplyIcon />
+                    </IconButton>
+                  </Box>
+                </CardMedia>
+                <CardContent className={styles["homepage-card-content"]}>
+                  <Box padding={3} textAlign="left">
+                    <Typography variant="body1">
+                      {post.content.length > 100
+                        ? `${post.content.slice(0, 100)}...`
+                        : post.content}
+                    </Typography>
+                    {post.content.length > 100 && (
+                      <Typography
+                        variant="body2"
+                        className={styles["homepage-read-more"]}
+                        onClick={() => this.handleReadMore(post.id)}
+                      >
+                        Read More
+                      </Typography>
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
+
+              {/* Comments Section */}
+              {selectedPostId === post.id && (
+                <Box
+                  style={{
+                    flexBasis: "30%",
+                    marginLeft: "16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    maxHeight: "100%", // Match parent height
+                    overflow: "hidden", // Prevent overflow
+                  }}
+                >
+                  <Comments postId={post.id} />
+                </Box>
+              )}
+            </Box>
+          ))}
+        </div>
+      </Box>
     );
   }
 }
