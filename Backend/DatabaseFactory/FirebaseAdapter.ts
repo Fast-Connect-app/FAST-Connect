@@ -8,18 +8,16 @@ import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
 import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { IModify } from "../DatabaseInterfaces/IModify";
-
 import { ISubscriber } from "../Classes/ISubscriber";
-import { IPublisher } from "./IPublisher";
+import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
 
 //Loading Max Number
 let maxLoads:number = 10;
 
 //firebase imports
 import { db } from "../FirebaseApp"
-import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
 
-export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,ILoadOnChange,ISaveById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember,ILoadByName{
+export class FirebaseAdapter implements IModify,ILoadAll,ILoadById,ILoadOnChange,ISaveById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember,ILoadByName{
     private collectionName : string;
     private parentDocumentId ?: string;
     private subCollectionName ?: string;
@@ -179,10 +177,9 @@ export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,IL
         }
     }
 
-    async LoadByName(name: string): Promise<string | null> {
+    async LoadByName(field:string ,name: string): Promise<string | null> {
         try{
             let querySnapshotName;
-            let querySnapshotTitle;
             if(this.parentDocumentId && this.subCollectionName){
                 //sub collection exists
                 
@@ -190,29 +187,17 @@ export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,IL
                 querySnapshotName = await db.collection(this.collectionName)
                 .doc(this.parentDocumentId)
                 .collection(this.subCollectionName)
-                .where( "name" ,"==", name).get()
-
-                querySnapshotTitle = await db.collection(this.collectionName)
-                .doc(this.parentDocumentId)
-                .collection(this.subCollectionName)
-                .where( "title" ,"==", name).get()
+                .where( field ,"==", name).get()
             }
             else{
                 querySnapshotName = await db.collection(this.collectionName)
-                .where("name","==",name).get();
-
-                querySnapshotTitle = await db.collection(this.collectionName)
-                .where("title","==",name).get()
+                .where(field,"==",name).get();
             }
 
             //Get Json Data
-            let dataName = querySnapshotName.docs.map(doc =>({ id:doc.id, ...doc.data() }));
-            let dataTitle = querySnapshotTitle.docs.map(doc =>({ id:doc.id, ...doc.data() }));
+            let data = querySnapshotName.docs.map(doc =>({ id:doc.id, ...doc.data() }));
             
-            //combine the 2 arrays
-            let combined = dataName.concat(dataTitle);
-            
-            return JSON.stringify(combined);
+            return JSON.stringify(data);
         }
         catch(error:any){
             console.error("Couldnt delete due to:", error);

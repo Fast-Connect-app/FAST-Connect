@@ -11,7 +11,7 @@ export class AlumniProfile extends Profile implements IDatabaseAdapter, IJSONDat
         super(_userId,_userName,_dateOfBirth,_gender,_rollNumber,_profilePic,_bio);
         this.jobHistory = _jobHistory;
         this.dateOfGraduation = _dateOfGraduation;
-        this.type = "AlumniProfile";
+        this.type = "Alumni";
     }
 
     public GetDatabaseAdapter() {

@@ -12,12 +12,12 @@ export class UserAuthentication{
     //Singleton
     public static Instance:UserAuthentication;
 
-    static CreateInstance():void{
-        UserAuthentication.Instance = new UserAuthentication();
-    }
+    public GetInstance(){
+        if (UserAuthentication.Instance == null){
+            UserAuthentication.Instance = new UserAuthentication();
+        }
 
-    static HasInstance():boolean{
-        return UserAuthentication.Instance != null;
+        return UserAuthentication.Instance;
     }
 
     async CreateUser(_email:string, _password:string):Promise<string>{
@@ -64,7 +64,7 @@ export class UserAuthentication{
     async GetCurrentUserType():Promise<string | null> {
         try {
             // Fetch the document
-            const userDoc = await db.collection("Users").doc(auth.currentUser?.uid).get();
+            const userDoc = await db.collection("Profiles").doc(auth.currentUser?.uid).get();
     
             if (userDoc.exists) {
                 const userData = userDoc.data(); // Retrieve the data

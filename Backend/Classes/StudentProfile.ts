@@ -11,7 +11,7 @@ export class StudentProfile extends Profile implements IDatabaseAdapter,IJSONDat
         super(_userId,_userName,_dateOfBirth,_gender,_rollNumber,_profilePic,_bio);
         this.resume = _resume;
         this.dateOfAdmission = _dateOfAdmission;
-        this.type = "AlumniProfile";
+        this.type = "Student";
     }
 
     public GetDatabaseAdapter() {
