@@ -1,9 +1,10 @@
 import React, { Component, ReactNode } from "react";
-import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar"; // Adjust import path if needed
-import { Box } from "@mui/material";
+import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar";
+import { Box, IconButton } from "@mui/material";
 import SideBar from "../Components/NavBar/SideBar/SideBar";
 import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
 import { Outlet } from "react-router-dom";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import styles from "./MainLayout.module.css";
 
 interface MainLayoutProps {
@@ -12,6 +13,7 @@ interface MainLayoutProps {
 
 interface MainLayoutState {
   pageTitle: string;
+  isChatOpen: boolean;
 }
 
 export interface PageTitleContextType {
@@ -26,7 +28,8 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
   constructor(props: MainLayoutProps) {
     super(props);
     this.state = {
-      pageTitle: "HomePage", // Default title
+      pageTitle: "HomePage",
+      isChatOpen: false, // Chat is initially closed
     };
   }
 
@@ -34,20 +37,39 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
     this.setState({ pageTitle: title });
   };
 
+  toggleChat = () => {
+    this.setState((prevState) => ({ isChatOpen: !prevState.isChatOpen }));
+  };
+
   render() {
+    const { isChatOpen } = this.state;
+
     return (
       <PageTitleContext.Provider value={{ setPageTitle: this.setPageTitle }}>
-        <Box className={styles["main-layout"]}>
+        <Box
+          className={`${styles["main-layout"]} ${
+            isChatOpen
+              ? styles["chat-open-layout"]
+              : styles["chat-closed-layout"]
+          }`}
+        >
           {/* Sidebar */}
           <Box className={styles.sidebar}>
             <SideBar />
           </Box>
 
-          {/* Main Content */}
+          {/* Content Header */}
           <Box className={styles.contentheader}>
             <h2>{this.state.pageTitle}</h2>
           </Box>
-          <Box className={styles.content}>
+
+          {/* Main Content */}
+          <Box
+            className={styles.content}
+            sx={{
+              transition: "grid-column 0.3s ease", // Smooth transition for resizing
+            }}
+          >
             <Outlet context={{ setPageTitle: this.setPageTitle }} />
           </Box>
 
@@ -57,9 +79,26 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           </Box>
 
           {/* Global Chat */}
-          <Box className={styles["global-chat"]}>
-            <GlobalChat />
-          </Box>
+          {isChatOpen && (
+            <Box className={styles["global-chat"]}>
+              <GlobalChat />
+            </Box>
+          )}
+
+          {/* Chat Toggle Button */}
+          <IconButton
+            onClick={this.toggleChat}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              right: isChatOpen ? "20vw" : "0", // Adjust toggle button based on chat state
+              transform: "translateY(-50%)",
+              color: "black",
+              zIndex: 1000,
+            }}
+          >
+            {isChatOpen ? <ChevronRight /> : <ChevronLeft />}
+          </IconButton>
         </Box>
       </PageTitleContext.Provider>
     );

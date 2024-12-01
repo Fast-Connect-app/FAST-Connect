@@ -7,6 +7,7 @@ import ProfilePage from "./Pages/ProfilePage/Profile";
 import JobPage from "./Pages/Jobpage/JobPage";
 import StudyPage from "./Pages/StudyMaterial/StudyMaterialPage";
 import ChatPage from "./Pages/ChatPage/ChatPage";
+import Account from "./Pages/SignUpPage/Account";
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
           <Route path="StudyPage" element={<StudyPage />} />
           <Route path="ChatPage" element={<ChatPage />} />
         </Route>
+        <Route path="/Login" element={<Account />} />
         {/* Routes without MainLayout */}
       </Routes>
     );

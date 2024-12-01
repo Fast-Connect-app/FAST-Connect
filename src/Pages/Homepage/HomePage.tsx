@@ -36,10 +36,10 @@ interface HomePageState extends AbstractPageState {
 
 class HomePage extends AbstractPage<{}, HomePageState> {
   static contextType = PageTitleContext; // Correct contextType assignment
-    componentDidMount() {
-        const { setPageTitle } = this.context as PageTitleContextType;
-        setPageTitle("Home Page");
-    }
+  componentDidMount() {
+    const { setPageTitle } = this.context as PageTitleContextType;
+    setPageTitle("Home Page");
+  }
   // Initialize state in the constructor
   constructor(props: {}) {
     super(props);
@@ -117,7 +117,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
             key={post.id}
             display="flex"
             justifyContent="center"
-            alignItems="flex-start"
+            alignItems="stretch" // Ensure both children (Post and Comments) match height
             marginBottom={4}
             style={{ width: "100%" }}
           >
@@ -126,18 +126,21 @@ class HomePage extends AbstractPage<{}, HomePageState> {
               className={styles["homepage-card"]}
               style={{
                 flexBasis: selectedPostId === post.id ? "70%" : "50%",
-                maxWidth: "500px", // Keep the card size fixed
+                maxWidth: "500px",
                 transition: "transform 0.3s ease",
                 transform:
                   selectedPostId === post.id
                     ? "translateX(-10%)"
                     : "translateX(0)",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
               <CardMedia
                 className={styles["homepage-card-media"]}
                 style={{
                   backgroundImage: `url(${post.mediaUrl})`,
+                  height: "200px", // Adjust as needed for media height
                 }}
               >
                 <Box className={styles["homepage-author-info"]}>
@@ -160,7 +163,6 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                     <Typography variant="overline">{post.likes}</Typography>
                     <FavoriteIcon />
                   </IconButton>
-
                   <IconButton color="default">
                     <ShareIcon />
                   </IconButton>
@@ -193,7 +195,21 @@ class HomePage extends AbstractPage<{}, HomePageState> {
             </Card>
 
             {/* Comments Section */}
-            {selectedPostId === post.id && <Comments postId={post.id} />}
+            {selectedPostId === post.id && (
+              <Box
+                style={{
+                  flexBasis: "30%",
+                  marginLeft: "16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  maxHeight: "100%", // Match parent height
+                  overflow: "hidden", // Prevent overflow
+                }}
+              >
+                <Comments postId={post.id} />
+              </Box>
+            )}
           </Box>
         ))}
       </div>
