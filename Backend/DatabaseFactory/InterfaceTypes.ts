@@ -9,6 +9,7 @@ import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
 import { IModify } from "../DatabaseInterfaces/IModify";
+import { IPublisher } from "../DatabaseInterfaces/IPublisher"
 
 
 // Only implement interfaces that are required for each type
@@ -22,11 +23,11 @@ export type InterfaceTypes = {
     
     Post: ISaveObject & ILoadAll & ILoadById & IDelete;
     
-    DirectMessage: ILoadForUser & ISaveById & ILoadOnChange & ILoadLimited;
+    DirectMessage: ILoadForUser & ISaveById & ILoadOnChange & ILoadLimited & IPublisher;
     
-    GroupMessage: ISaveObject & ISaveById & ILoadOnChange & ILoadLimited & IDelete;
+    GroupMessage: ISaveObject & ISaveById & ILoadOnChange & ILoadLimited & IDelete & IPublisher;
     
-    GlobalMessage: ISaveById & ILoadOnChange & ILoadLimited;
+    GlobalMessage: ISaveById & ILoadOnChange & ILoadLimited & IPublisher;
     
     PostMessage: ISaveById & ILoadAll & IDelete;
 
