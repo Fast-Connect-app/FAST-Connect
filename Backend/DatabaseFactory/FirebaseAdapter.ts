@@ -9,7 +9,6 @@ import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { IModify } from "../DatabaseInterfaces/IModify";
 import { ISubscriber } from "../Classes/ISubscriber";
-import { IPublisher } from "../DatabaseInterfaces/IPublisher";
 import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
 
 //Loading Max Number
@@ -18,7 +17,7 @@ let maxLoads:number = 10;
 //firebase imports
 import { db } from "../FirebaseApp"
 
-export class FirebaseAdapter implements IPublisher,IModify,ILoadAll,ILoadById,ILoadOnChange,ISaveById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember,ILoadByName{
+export class FirebaseAdapter implements IModify,ILoadAll,ILoadById,ILoadOnChange,ISaveById,ISaveObject,ILoadForUser,IDelete,ILoadLimited,ILoadForMember,ILoadByName{
     private collectionName : string;
     private parentDocumentId ?: string;
     private subCollectionName ?: string;
