@@ -1,13 +1,12 @@
 import React, { Component, ReactNode } from "react";
 import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar";
 import { Box } from "@mui/material";
-import {UserAuthentication} from "../../Backend/UserAuth/UserAuthentication";
+import { UserAuthentication } from "../../Backend/UserAuth/UserAuthentication";
 import SideBar from "../Components/NavBar/SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 import { Profile } from "../../Backend/Classes/Profile";
-
-
+import { auth } from "../../Backend/FirebaseApp";
 
 interface MainLayoutProps {
   children?: ReactNode;
@@ -16,17 +15,15 @@ interface MainLayoutProps {
 interface MainLayoutState {
   pageTitle: string;
   isChatOpen: boolean;
-  username: string|null;
-  profilePic: string|null;
+  username: string | null;
+  profilePic: string | null;
 }
 
 export interface PageTitleContextType {
   setPageTitle: (title: string) => void;
 }
 
-export const PageTitleContext = React.createContext<
-  PageTitleContextType | undefined
->(undefined);
+export const PageTitleContext = React.createContext<PageTitleContextType | undefined>(undefined);
 
 class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
   constructor(props: MainLayoutProps) {
@@ -35,21 +32,27 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
       pageTitle: "HomePage",
       isChatOpen: false, // Chat is initially closed
       username: null,
-      profilePic:null,
+      profilePic: null,
     };
   }
   async componentDidMount() {
-    const userAuth=UserAuthentication.GetInstance();
-    let userProfile: Profile | null= await userAuth.GetCurrentUserProfile();
-    if (userProfile!=null){
-      userProfile = userProfile as Profile;
-    this.setState({
-      username:userProfile.GetUserName(),
-      profilePic: userProfile.GetProfilePic()
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userAuth = UserAuthentication.GetInstance();
+        let userProfile: Profile | null = await userAuth.GetCurrentUserProfile();
+        if (userProfile != null) {
+          userProfile = userProfile as Profile;
+          this.setState({
+            username: userProfile.GetUserName(),
+            profilePic: userProfile.GetProfilePic(),
+          });
+        }
+      } else {
+        console.log("No user is signed in.");
+      }
     });
   }
 
-  }
   setPageTitle = (title: string) => {
     this.setState({ pageTitle: title });
   };
@@ -60,21 +63,13 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
 
   render() {
     const { isChatOpen } = this.state;
-    let{username,profilePic}=this.state;
-    if(username===null)
-      username="";
-    if(profilePic===null)
-      profilePic="https://www.w3schools.com/w3images/avatar2.png";
-      
+    let { username, profilePic } = this.state;
+    if (username === null) username = "";
+    if (profilePic === null) profilePic = "https://www.w3schools.com/w3images/avatar2.png";
+
     return (
       <PageTitleContext.Provider value={{ setPageTitle: this.setPageTitle }}>
-        <Box
-          className={`${styles["main-layout"]} ${
-            isChatOpen
-              ? styles["chat-open-layout"]
-              : styles["chat-closed-layout"]
-          }`}
-        >
+        <Box className={`${styles["main-layout"]} ${isChatOpen ? styles["chat-open-layout"] : styles["chat-closed-layout"]}`}>
           {/* Sidebar */}
           <Box className={styles.sidebar}>
             <SideBar />
@@ -97,12 +92,8 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
 
           {/* Header */}
           <Box className={styles.header}>
-            <HeaderBar  
-            name={username} 
-            picURL={profilePic}/>
+            <HeaderBar name={username} picURL={profilePic} />
           </Box>
-
-         
         </Box>
       </PageTitleContext.Provider>
     );

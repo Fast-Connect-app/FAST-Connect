@@ -7,8 +7,8 @@ export class StudentProfile extends Profile implements IDatabaseAdapter, IJSONDa
   private resume: string | null;
   private dateOfAdmission: Date | null;
 
-  constructor(_userId: string, _userName: string, _dateOfBirth: Date, _gender: string, _rollNumber: string, _profilePic: string | null, _bio: string, _resume: string | null, _dateOfAdmission: Date | null) {
-    super(_userId, _userName, _dateOfBirth, _gender, _rollNumber, _profilePic, _bio);
+  constructor(_userId: string, _email: string, _userName: string, _dateOfBirth: Date, _gender: string, _rollNumber: string, _profilePic: string | null, _bio: string, _resume: string | null, _dateOfAdmission: Date | null) {
+    super(_userId, _email, _userName, _dateOfBirth, _gender, _rollNumber, _profilePic, _bio);
     this.resume = _resume;
     this.dateOfAdmission = _dateOfAdmission;
     this.type = "Student";
@@ -16,10 +16,5 @@ export class StudentProfile extends Profile implements IDatabaseAdapter, IJSONDa
 
   public GetDatabaseAdapter() {
     return GetDatabaseAdapter<"Profile">(FirebaseAdapterFactory, "Profiles");
-  }
-
-  public GetJsonData(): object {
-    const data = { ...this };
-    return data;
   }
 }

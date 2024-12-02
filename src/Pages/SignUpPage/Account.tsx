@@ -1,4 +1,3 @@
-
 import Login from "./Login";
 import Register from "./Signup";
 import styles from "./Account.module.css"; // Import the CSS module
@@ -31,13 +30,11 @@ class Account extends AbstractPage<object, AccountState> {
       <div className={styles.container}>
         {/* Left Section */}
         <div
-          className={`${styles.left} ${
-            isLoginActive ? styles.active : styles.inactive
-          }`}
+          className={`${styles.left} ${isLoginActive ? styles.active : styles.inactive}`}
           style={{
             transform: isLoginActive ? "translateX(0)" : "translateX(100%)",
             opacity: isLoginActive ? 1 : 0,
-            pointerEvents: isLoginActive? "auto":"none"
+            pointerEvents: isLoginActive ? "auto" : "none",
           }}
         >
           <Login />
@@ -46,14 +43,11 @@ class Account extends AbstractPage<object, AccountState> {
             style={{
               transform: isLoginActive ? "translateX(100%)" : "translateX(0)",
               opacity: isLoginActive ? 1 : 0,
-              zIndex: 2
+              zIndex: 2,
             }}
           >
             <p>Don't have an account? Sign up now!</p>
-            <button
-              onClick={this.toggleActiveComponent}
-              className={styles.button}
-            >
+            <button onClick={this.toggleActiveComponent} className={styles.button}>
               Go to Sign up
             </button>
           </div>
@@ -61,13 +55,11 @@ class Account extends AbstractPage<object, AccountState> {
 
         {/* Right Section */}
         <div
-          className={`${styles.right} ${
-            isLoginActive ? styles.inactive : styles.active
-          }`}
+          className={`${styles.right} ${isLoginActive ? styles.inactive : styles.active}`}
           style={{
             transform: isLoginActive ? "translateX(-100%)" : "translateX(0)",
             opacity: isLoginActive ? 0 : 1,
-            pointerEvents: isLoginActive? "none":"auto"
+            pointerEvents: isLoginActive ? "none" : "auto",
           }}
         >
           <Register />
@@ -79,10 +71,7 @@ class Account extends AbstractPage<object, AccountState> {
             }}
           >
             <p>Already have an account? Log in here!</p>
-            <button
-              onClick={this.toggleActiveComponent}
-              className={styles.button}
-            >
+            <button onClick={this.toggleActiveComponent} className={styles.button}>
               Go to Login
             </button>
           </div>

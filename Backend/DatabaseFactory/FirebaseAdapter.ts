@@ -210,10 +210,10 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
   }
   /**
    * Sets up a listener for changes in the collection or sub-collection and notifies subscribers.
-   * @param id - The ID of the document to be monitored.
+   * @param _id - The ID of the document to be monitored.
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async LoadOnChange(id: string): Promise<void> {
+  async LoadOnChange(_id: string): Promise<void> {
     try {
       if (this.parentDocumentId && this.subCollectionName) {
         //there is a sub collection
@@ -348,17 +348,15 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
    * @param data - The data to be updated.
    * @returns A promise that resolves to true if the document is modified successfully, otherwise false.
    */
-  async Modify(id: string, data: DocumentData): Promise<boolean> {
+  async Modify(id: string, data: object): Promise<boolean> {
     try {
       let docRef;
       if (this.parentDocumentId && this.subCollectionName) {
-        //there is a sub collection
-
+        //there is a sub collectiom
         docRef = db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).doc(id);
       } else {
         docRef = db.collection(this.collectionName).doc(id);
       }
-
       await docRef.update(data);
       return true;
     } catch (error) {

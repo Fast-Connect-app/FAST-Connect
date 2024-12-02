@@ -25,7 +25,7 @@ export class UserAuthentication {
       const user = await auth.createUserWithEmailAndPassword(_email, _password);
       const profileAdapter = Profile.GetDatabaseAdapter();
       //Map a sample profile to DocumentData
-      const saveProfile: Profile = new Profile("", _name, new Date(), "", "", "", "");
+      const saveProfile: Profile = new Profile("", _email, _name, new Date(), "", "", "", "");
       if (user.user != null) profileAdapter.SaveById(user.user?.uid, saveProfile.GetJsonData());
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -79,8 +79,7 @@ export class UserAuthentication {
         return null;
       }
       const parsedJSON = JSON.parse(userProfileData);
-      const userProfile: Profile = Profile.fromJson(parsedJSON);
-      console.log(parsedJSON);
+      const userProfile: Profile = Profile.fromFirebaseJson(parsedJSON);
       return userProfile;
     } catch (error) {
       if (error instanceof Error) {
