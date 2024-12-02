@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Box, Typography, Avatar, Button, TextField } from "@mui/material";
+import { Box, Typography, Avatar, Button } from "@mui/material";
+import styles from "./Comments.module.css";
 
 interface CommentsProps {
   postId: number;
@@ -22,7 +23,7 @@ interface Comment {
 interface CommentsState {
   comments: Comment[];
   newComment: string;
-  replyIndex: number | null; // Tracks which comment the user is replying to
+  replyIndex: number | null;
 }
 
 class Comments extends Component<CommentsProps, CommentsState> {
@@ -64,7 +65,6 @@ class Comments extends Component<CommentsProps, CommentsState> {
     const { newComment, comments, replyIndex } = this.state;
     if (!newComment.trim()) return;
 
-    // Check if the input starts with @username and if replyIndex is set
     if (
       replyIndex !== null &&
       newComment.startsWith(`@${comments[replyIndex].username}`)
@@ -84,7 +84,6 @@ class Comments extends Component<CommentsProps, CommentsState> {
         replyIndex: null,
       });
     } else {
-      // Add as a new comment
       this.setState({
         comments: [
           ...comments,
@@ -116,139 +115,71 @@ class Comments extends Component<CommentsProps, CommentsState> {
     }));
   };
 
-  render() {
-    const { comments, newComment } = this.state;
+  renderReplies = (replies: Reply[]) => (
+    <Box className={styles.repliesContainer}>
+      {replies.map((reply, replyIndex) => (
+        <Box key={replyIndex} className={styles.commentHeader}>
+          <Avatar src={reply.avatar} alt="avatar" className={styles.avatar} />
+          <Typography variant="body2">
+            <strong>{reply.username}:</strong> {reply.text}
+          </Typography>
+        </Box>
+      ))}
+    </Box>
+  );
 
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          padding: 2,
-          borderLeft: "1px solid #ddd",
-        }}
+  renderCommentInput = () => (
+    <Box className={styles.inputSection}>
+      <input
+        type="text"
+        value={this.state.newComment}
+        onChange={this.handleInputChange}
+        placeholder="Add a comment..."
+        className={styles.inputField}
+      />
+      <button
+        onClick={this.handleAddCommentOrReply}
+        className={styles.postButton}
       >
-        {/* Comments Section */}
-        <Box
-          sx={{
-            flex: 1,
-            maxHeight: "260px", // Restrict height of the comments section
-            overflowY: "auto", // Enable scrolling when content exceeds maxHeight
-            marginBottom: 2,
-          }}
-        >
-          {comments.map((comment, index) => (
-            <Box key={index} sx={{ marginBottom: 2 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: 1,
-                }}
-              >
-                <Avatar
-                  src={comment.avatar}
-                  alt="avatar"
-                  sx={{ marginRight: 1.5, width: "24px", height: "24px" }}
-                />
-                <Typography variant="body2" gutterBottom>
-                  <strong>{comment.username}:</strong> {comment.text}
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", gap: 1, marginLeft: "30px" }}>
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={() => this.startReply(index)}
-                  sx={{ fontSize: "0.75rem" }}
-                >
-                  Reply
-                </Button>
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={() => this.toggleReplies(index)}
-                  sx={{ fontSize: "0.75rem" }}
-                >
-                  {comment.expanded ? "Hide Replies" : "View Replies"}
-                </Button>
-              </Box>
-              {comment.expanded && (
-                <Box
-                  sx={{
-                    marginLeft: 4,
-                    marginTop: 1,
-                    borderLeft: "1px solid #ddd",
-                    paddingLeft: 2,
-                  }}
-                >
-                  {comment.replies.map((reply, replyIndex) => (
-                    <Box
-                      key={replyIndex}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: 1,
-                      }}
-                    >
-                      <Avatar
-                        src={reply.avatar}
-                        alt="avatar"
-                        sx={{
-                          marginRight: 1.5,
-                          width: "24px",
-                          height: "24px",
-                        }}
-                      />
-                      <Typography variant="body2">
-                        <strong>{reply.username}:</strong> {reply.text}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              )}
-            </Box>
-          ))}
-        </Box>
+        Post
+      </button>
+    </Box>
+  );
 
-        {/* Input Section */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: "auto",
-            paddingTop: 2,
-            borderTop: "1px solid #ddd",
-          }}
-        >
-          <input
-            type="text"
-            value={newComment}
-            onChange={this.handleInputChange}
-            placeholder="Add a comment..."
-            style={{
-              flex: 1,
-              padding: "8px",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-            }}
-          />
-          <button
-            onClick={this.handleAddCommentOrReply}
-            style={{
-              marginLeft: "8px",
-              padding: "8px",
-              backgroundColor: "#1976d2",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Post
-          </button>
+  renderComments = () =>
+    this.state.comments.map((comment, index) => (
+      <Box key={index} className={styles.commentContainer}>
+        <Box className={styles.commentHeader}>
+          <Avatar src={comment.avatar} alt="avatar" className={styles.avatar} />
+          <Typography variant="body2">
+            <strong>{comment.username}:</strong> {comment.text}
+          </Typography>
         </Box>
+        <Box className={styles.actions}>
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => this.startReply(index)}
+          >
+            Reply
+          </Button>
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => this.toggleReplies(index)}
+          >
+            {comment.expanded ? "Hide Replies" : "View Replies"}
+          </Button>
+        </Box>
+        {comment.expanded && this.renderReplies(comment.replies)}
+      </Box>
+    ));
+
+  render() {
+    return (
+      <Box className={styles.container}>
+        <Box className={styles.commentsSection}>{this.renderComments()}</Box>
+        {this.renderCommentInput()}
       </Box>
     );
   }

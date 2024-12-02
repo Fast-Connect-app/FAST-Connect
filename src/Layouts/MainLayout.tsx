@@ -77,8 +77,27 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           <Box className={styles.header}>
             <HeaderBar />
           </Box>
+          {/* Global Chat */}
+          {isChatOpen && (
+            <Box className={styles["global-chat"]}>
+              <GlobalChat />
+            </Box>
+          )}
 
-         
+          {/* Chat Toggle Button */}
+          <IconButton
+            onClick={this.toggleChat}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              right: isChatOpen ? "20vw" : "0", // Adjust toggle button based on chat state
+              transform: "translateY(-50%)",
+              color: "black",
+              zIndex: 1000,
+            }}
+          >
+            {isChatOpen ? <ChevronRight /> : <ChevronLeft />}
+          </IconButton>
         </Box>
       </PageTitleContext.Provider>
     );
