@@ -1,12 +1,14 @@
 import React, { Component, ReactNode } from "react";
 import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { UserAuthentication } from "../../Backend/UserAuth/UserAuthentication";
 import SideBar from "../Components/NavBar/SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 import { Profile } from "../../Backend/Classes/Profile";
 import { auth } from "../../Backend/FirebaseApp";
+import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 interface MainLayoutProps {
   children?: ReactNode;
