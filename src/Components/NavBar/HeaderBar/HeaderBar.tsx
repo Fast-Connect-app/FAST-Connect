@@ -10,7 +10,7 @@ interface HeaderBarProps {
 }
 
 interface HeaderBarState {
-  anchorEl: HTMLElement | null;
+  anchorEl: HTMLElement | null; //
 }
 
 class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
@@ -40,12 +40,17 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
             onClick={this.handleMenuClick}
             className={styles["header-bar-avatar"]}
           />
-          <Typography className={styles["header-bar-username"]}>
+          <Typography
+          
+          onClick={this.handleMenuClick} 
+          className={styles["header-bar-username"]}>
             John Doe
+          
           </Typography>
         </Box>
 
         {/* Menu for Profile, Settings, and Logout */}
+        <Box>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -76,6 +81,7 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
             Logout
           </MenuItem>
         </Menu>
+        </Box>
       </div>
     );
   }
