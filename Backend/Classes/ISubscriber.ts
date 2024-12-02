@@ -1,3 +1,3 @@
-export interface ISubscriber{
-    ReceiveData(data):void;
+export interface ISubscriber {
+  ReceiveData(data: string): void;
 }

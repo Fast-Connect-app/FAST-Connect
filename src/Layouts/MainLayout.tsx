@@ -1,11 +1,13 @@
 import React, { Component, ReactNode } from "react";
 import HeaderBar from "../Components/NavBar/HeaderBar/HeaderBar";
-import { Box, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
+import {UserAuthentication} from "../../Backend/UserAuth/UserAuthentication";
 import SideBar from "../Components/NavBar/SideBar/SideBar";
-import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
 import { Outlet } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import styles from "./MainLayout.module.css";
+import { Profile } from "../../Backend/Classes/Profile";
+
+
 
 interface MainLayoutProps {
   children?: ReactNode;
@@ -14,6 +16,8 @@ interface MainLayoutProps {
 interface MainLayoutState {
   pageTitle: string;
   isChatOpen: boolean;
+  username: string|null;
+  profilePic: string|null;
 }
 
 export interface PageTitleContextType {
@@ -30,9 +34,22 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
     this.state = {
       pageTitle: "HomePage",
       isChatOpen: false, // Chat is initially closed
+      username: null,
+      profilePic:null,
     };
   }
+  async componentDidMount() {
+    const userAuth=UserAuthentication.GetInstance();
+    let userProfile: Profile | null= await userAuth.GetCurrentUserProfile();
+    if (userProfile!=null){
+      userProfile = userProfile as Profile;
+    this.setState({
+      username:userProfile.GetUserName(),
+      profilePic: userProfile.GetProfilePic()
+    });
+  }
 
+  }
   setPageTitle = (title: string) => {
     this.setState({ pageTitle: title });
   };
@@ -43,7 +60,12 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
 
   render() {
     const { isChatOpen } = this.state;
-
+    let{username,profilePic}=this.state;
+    if(username===null)
+      username="";
+    if(profilePic===null)
+      profilePic="https://www.w3schools.com/w3images/avatar2.png";
+      
     return (
       <PageTitleContext.Provider value={{ setPageTitle: this.setPageTitle }}>
         <Box
@@ -75,7 +97,9 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
 
           {/* Header */}
           <Box className={styles.header}>
-            <HeaderBar />
+            <HeaderBar  
+            name={username} 
+            picURL={profilePic}/>
           </Box>
 
          

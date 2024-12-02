@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+
 import Login from "./Login";
 import Register from "./Signup";
 import styles from "./Account.module.css"; // Import the CSS module
@@ -8,8 +8,8 @@ interface AccountState extends AbstractPageState {
   isLoginActive: boolean;
 }
 
-class Account extends AbstractPage<{}, AccountState> {
-  constructor(props: {}) {
+class Account extends AbstractPage<object, AccountState> {
+  constructor(props: object) {
     super(props);
     this.state = {
       data: null,
@@ -37,6 +37,7 @@ class Account extends AbstractPage<{}, AccountState> {
           style={{
             transform: isLoginActive ? "translateX(0)" : "translateX(100%)",
             opacity: isLoginActive ? 1 : 0,
+            pointerEvents: isLoginActive? "auto":"none"
           }}
         >
           <Login />
@@ -45,6 +46,7 @@ class Account extends AbstractPage<{}, AccountState> {
             style={{
               transform: isLoginActive ? "translateX(100%)" : "translateX(0)",
               opacity: isLoginActive ? 1 : 0,
+              zIndex: 2
             }}
           >
             <p>Don't have an account? Sign up now!</p>
@@ -65,6 +67,7 @@ class Account extends AbstractPage<{}, AccountState> {
           style={{
             transform: isLoginActive ? "translateX(-100%)" : "translateX(0)",
             opacity: isLoginActive ? 0 : 1,
+            pointerEvents: isLoginActive? "none":"auto"
           }}
         >
           <Register />

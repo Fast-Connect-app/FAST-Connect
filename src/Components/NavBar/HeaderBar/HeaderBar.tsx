@@ -7,6 +7,8 @@ import { withMenuNavigation } from "../../../router";
 // Define props interface to include handleMenuSelect
 interface HeaderBarProps {
   handleMenuSelect: (route: string) => void; // This is the function to navigate
+  name: string;
+  picURL: string;
 }
 
 interface HeaderBarState {
@@ -14,6 +16,12 @@ interface HeaderBarState {
 }
 
 class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
+  constructor(props: HeaderBarProps) {
+    super(props);
+    this.state= {
+      anchorEl: null,
+    };
+  }
   state: HeaderBarState = {
     anchorEl: null, // Used to anchor the menu
   };
@@ -28,15 +36,14 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
 
   render() {
     const { anchorEl } = this.state;
-    const { handleMenuSelect } = this.props; // Access handleMenuSelect passed through props
-
+    const { handleMenuSelect,name,picURL } = this.props; // Access handleMenuSelect passed through props
     return (
       <div className={styles["header-bar"]}>
         {/* Profile section */}
         <Box className={styles["header-bar-box"]}>
           <Avatar
-            alt="User Profile"
-            src="https://www.w3schools.com/w3images/avatar2.png"
+            alt={name}
+            src={picURL}
             onClick={this.handleMenuClick}
             className={styles["header-bar-avatar"]}
           />
@@ -44,7 +51,7 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
           
           onClick={this.handleMenuClick} 
           className={styles["header-bar-username"]}>
-            John Doe
+            {name}
           
           </Typography>
         </Box>
@@ -87,4 +94,5 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
   }
 }
 
-export default withMenuNavigation(HeaderBar);
+const EnhancedHeaderBar = withMenuNavigation(HeaderBar);
+export default EnhancedHeaderBar;
