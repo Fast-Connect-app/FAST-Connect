@@ -12,25 +12,21 @@ import { IModify } from "../DatabaseInterfaces/IModify";
 // Only implement interfaces that are required for each type
 
 export type InterfaceTypes = {
-  Profile: ISaveById & ILoadById & ILoadByName & IModify;
-
-  Event: ISaveObject & ILoadById & ILoadAll & ILoadByName;
-
-  Group: ISaveById & ILoadForMember & ILoadById & IDelete & IModify;
-
-  Post: ISaveObject & ILoadAll & ILoadById & IDelete;
-
-  DirectMessage: ISaveById & ILoadOnChange & ILoadLimited;
-
-  GroupMessage: ISaveObject &
-    ISaveById &
-    ILoadOnChange &
-    ILoadLimited &
-    IDelete;
-
-  GlobalMessage: ISaveById & ILoadOnChange & ILoadLimited;
-
-  PostMessage: ISaveById & ILoadAll & IDelete;
+    Profile: ISaveById & ILoadById & ILoadByName & IModify;
+    
+    Event: ISaveObject & ILoadById & ILoadAll & ILoadByName;
+    
+    Group: ISaveObject & ILoadForMember & ILoadById & IDelete & IModify;
+    
+    Post: ISaveObject & ILoadAll & ILoadById & IDelete;
+    
+    DirectMessage: ISaveById & ILoadOnChange & ILoadLimited;
+    
+    GroupMessage: ISaveObject & ISaveById & ILoadOnChange & ILoadLimited & IDelete;
+    
+    GlobalMessage: ISaveById & ILoadOnChange & ILoadLimited;
+    
+    PostMessage: ISaveById & ILoadAll & IDelete;
 
   UserContactSave: ISaveById & IModify;
 

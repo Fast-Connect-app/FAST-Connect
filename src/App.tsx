@@ -8,6 +8,8 @@ import JobPage from "./Pages/Jobpage/JobPage";
 import StudyPage from "./Pages/StudyMaterial/StudyMaterialPage";
 import ChatPage from "./Pages/ChatPage/ChatPage";
 import Account from "./Pages/SignUpPage/Account";
+import GroupPage from "./Pages/GroupPage/GroupPage";
+import SavedPage from "./Pages/SavedPage/SavedPage";
 
 class App extends Component {
   render() {
@@ -21,6 +23,8 @@ class App extends Component {
           <Route path="JobPage" element={<JobPage />} />
           <Route path="StudyPage" element={<StudyPage />} />
           <Route path="ChatPage" element={<ChatPage />} />
+          <Route path="SavedPage" element={<SavedPage />} />
+          <Route path="GroupPage" element={<GroupPage />} />
         </Route>
         <Route path="/Login" element={<Account />} />
         {/* Routes without MainLayout */}
