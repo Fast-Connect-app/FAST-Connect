@@ -1,7 +1,6 @@
 import { IDelete } from "../DatabaseInterfaces/IDelete";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
-import { ILoadForUser } from "../DatabaseInterfaces/ILoadForUser";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { ISaveById } from "../DatabaseInterfaces/ISaveById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
@@ -18,7 +17,7 @@ const maxLoads: number = 10;
 import { db } from "../FirebaseApp";
 import { DocumentData } from "firebase-admin/firestore";
 
-export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnChange, ISaveById, ISaveObject, ILoadForUser, IDelete, ILoadLimited, ILoadForMember, ILoadByName {
+export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnChange, ISaveById, ISaveObject, IDelete, ILoadLimited, ILoadForMember, ILoadByName {
   private collectionName: string;
   private parentDocumentId?: string;
   private subCollectionName?: string;
@@ -104,33 +103,6 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
       return data;
     } catch (error) {
       console.error("Error loading documents with id:", error);
-      return null;
-    }
-  }
-  /**
-   * Loads documents for a specific user by their UID.
-   * @param uid - The UID of the user.
-   * @returns A promise that resolves to a JSON string of the documents or null if an error occurs.
-   */
-  async LoadForUser(uid: string): Promise<object | null> {
-    try {
-      let querySnapshot;
-
-      // Fetch documents from the sub-collection or main collection
-      if (this.parentDocumentId && this.subCollectionName) {
-        querySnapshot = await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).get();
-      } else {
-        querySnapshot = await db.collection(this.collectionName).get();
-      }
-
-      // Filter documents where the ID contains the substring `uid`
-      const data = querySnapshot.docs
-        .filter((doc) => doc.id.includes(uid)) // Check if the ID contains the substring `uid`
-        .map((doc) => ({ id: doc.id, ...doc.data() }));
-
-      return data;
-    } catch (error) {
-      console.error("Error loading documents for user:", error);
       return null;
     }
   }
