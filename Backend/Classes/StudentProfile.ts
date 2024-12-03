@@ -24,7 +24,8 @@ export class StudentProfile implements IJSONData {
   }
 
   public static FromFirebaseJson(data: { resume: string | null; dateOfAdmission: Timestamp }): StudentProfile {
-    const newDate = new Date(data.dateOfAdmission.seconds * 1000 + data.dateOfAdmission.nanoseconds / 1000000);
+    let newDate = null;
+    if (data.dateOfAdmission != null) newDate = new Date(data.dateOfAdmission.seconds * 1000 + data.dateOfAdmission.nanoseconds / 1000000);
     const newResume: string = data.resume ? JSON.parse(data.resume) : "";
     return new StudentProfile(newResume, newDate);
   }

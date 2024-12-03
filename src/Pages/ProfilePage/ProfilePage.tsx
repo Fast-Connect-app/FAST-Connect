@@ -50,11 +50,11 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
             if (userProfile.type == "alumni") {
               const alumniDatabaseAdapter = AlumniProfile.GetDatabaseAdapter();
               const alumniJSON = await alumniDatabaseAdapter.LoadById(userProfile.userId);
-              _alumni = AlumniProfile.fromFirebaseJson(alumniJSON);
+              if (alumniJSON != null) _alumni = AlumniProfile.fromFirebaseJson(alumniJSON);
             } else {
               const studentDatabaseAdapter = StudentProfile.GetDatabaseAdapter();
               const studentJson = await studentDatabaseAdapter.LoadById(userProfile.userId);
-              _student = StudentProfile.FromFirebaseJson(studentJson);
+              if (studentJson != null) _student = StudentProfile.FromFirebaseJson(studentJson);
             }
             this.setState({
               user: userProfile,
