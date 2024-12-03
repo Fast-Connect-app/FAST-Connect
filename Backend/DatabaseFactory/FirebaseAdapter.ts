@@ -18,14 +18,31 @@ const maxLoads: number = 10;
 import { db } from "../FirebaseApp";
 import { DocumentData } from "firebase-admin/firestore";
 
-export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnChange, ISaveById, ISaveObject, ILoadForUser, IDelete, ILoadLimited, ILoadForMember, ILoadByName {
+export class FirebaseAdapter
+  implements
+    IModify,
+    ILoadAll,
+    ILoadById,
+    ILoadOnChange,
+    ISaveById,
+    ISaveObject,
+    ILoadForUser,
+    IDelete,
+    ILoadLimited,
+    ILoadForMember,
+    ILoadByName
+{
   private collectionName: string;
   private parentDocumentId?: string;
   private subCollectionName?: string;
 
   private subscribers: ISubscriber[] = [];
 
-  constructor(_collectionName: string, _parentDocumentId?: string, _subCollectionName?: string) {
+  constructor(
+    _collectionName: string,
+    _parentDocumentId?: string,
+    _subCollectionName?: string
+  ) {
     this.collectionName = _collectionName;
     this.parentDocumentId = _parentDocumentId;
     this.subCollectionName = _subCollectionName;
@@ -68,13 +85,20 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
         //there is a sub collection
 
         //get all the data from a collection
-        querySnapshot = await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).get();
+        querySnapshot = await db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .get();
       } else {
         querySnapshot = await db.collection(this.collectionName).get();
       }
 
       //Transform data into JSON
-      const data = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       return JSON.stringify(data);
     } catch (error) {
@@ -94,7 +118,12 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
         //there is a sub collection
 
         //get the data of a document with id given
-        querySnapshot = await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).doc(id).get();
+        querySnapshot = await db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .doc(id)
+          .get();
       } else {
         querySnapshot = await db.collection(this.collectionName).doc(id).get();
       }
@@ -118,7 +147,11 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
 
       // Fetch documents from the sub-collection or main collection
       if (this.parentDocumentId && this.subCollectionName) {
-        querySnapshot = await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).get();
+        querySnapshot = await db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .get();
       } else {
         querySnapshot = await db.collection(this.collectionName).get();
       }
@@ -145,7 +178,12 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
       if (this.parentDocumentId && this.subCollectionName) {
         //sub collection exists
 
-        await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).doc(id).delete();
+        await db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .doc(id)
+          .delete();
 
         return true;
       } else {
@@ -168,12 +206,23 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
       if (this.parentDocumentId && this.subCollectionName) {
         //sub collection exists
 
-        querySnapshot = await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).where("members", "array-contains", uid).get();
+        querySnapshot = await db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .where("members", "array-contains", uid)
+          .get();
       } else {
-        querySnapshot = await db.collection(this.collectionName).where("members", "array-contains", uid).get();
+        querySnapshot = await db
+          .collection(this.collectionName)
+          .where("members", "array-contains", uid)
+          .get();
       }
 
-      const data = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       return JSON.stringify(data);
     } catch (error) {
@@ -194,13 +243,24 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
         //sub collection exists
 
         //get all the docs whose name or title is given
-        querySnapshotName = await db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).where(field, "==", name).get();
+        querySnapshotName = await db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .where(field, "==", name)
+          .get();
       } else {
-        querySnapshotName = await db.collection(this.collectionName).where(field, "==", name).get();
+        querySnapshotName = await db
+          .collection(this.collectionName)
+          .where(field, "==", name)
+          .get();
       }
 
       //Get Json Data
-      const data = querySnapshotName.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const data = querySnapshotName.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       return JSON.stringify(data);
     } catch (error) {
@@ -258,7 +318,10 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
     try {
       let collectionRef;
       if (this.parentDocumentId && this.subCollectionName) {
-        collectionRef = db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName);
+        collectionRef = db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName);
       } else {
         collectionRef = db.collection(this.collectionName);
       }
@@ -269,7 +332,10 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
       if (iteration > 1) {
         // Calculate the offset for the requested iteration
         const skipCount = (iteration - 1) * maxLoads;
-        const snapshot = await collectionRef.orderBy("timeStamp", "desc").limit(skipCount).get();
+        const snapshot = await collectionRef
+          .orderBy("timeStamp", "desc")
+          .limit(skipCount)
+          .get();
 
         if (!snapshot.empty) {
           // Get the last document from the previous query
@@ -305,7 +371,11 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
       if (this.parentDocumentId && this.subCollectionName) {
         //there is a sub collection
 
-        docRef = db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).doc();
+        docRef = db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .doc();
       } else {
         docRef = db.collection(this.collectionName).doc();
       }
@@ -330,7 +400,11 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
         //there is a sub collection
 
         //generate a new document
-        docRef = db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).doc(id);
+        docRef = db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .doc(id);
       } else {
         docRef = db.collection(this.collectionName).doc(id);
       }
@@ -353,7 +427,11 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
       let docRef;
       if (this.parentDocumentId && this.subCollectionName) {
         //there is a sub collectiom
-        docRef = db.collection(this.collectionName).doc(this.parentDocumentId).collection(this.subCollectionName).doc(id);
+        docRef = db
+          .collection(this.collectionName)
+          .doc(this.parentDocumentId)
+          .collection(this.subCollectionName)
+          .doc(id);
       } else {
         docRef = db.collection(this.collectionName).doc(id);
       }

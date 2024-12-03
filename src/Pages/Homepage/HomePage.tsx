@@ -42,7 +42,6 @@ class HomePage extends AbstractPage<{}, HomePageState> {
     const { setPageTitle } = this.context as PageTitleContextType;
     setPageTitle("Home Page");
   }
-  // Initialize state in the constructor
   constructor(props: {}) {
     super(props);
     this.state = {
