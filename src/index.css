@@ -17,6 +17,8 @@
 
   --sidebar-icon-color-light: #000000;
   --sidebar-icon-color-dark: #f7f7f7;
+
+  --transition-speed: 600ms;
 }
 
 html.light {
