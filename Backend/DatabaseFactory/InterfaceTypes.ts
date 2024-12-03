@@ -2,7 +2,6 @@ import { ISaveObject } from "../DatabaseInterfaces/ISaveObject"
 import { ISaveById } from "../DatabaseInterfaces/ISaveById"
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
-import { ILoadForUser } from "../DatabaseInterfaces/ILoadForUser";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { IDelete } from "../DatabaseInterfaces/IDelete";
 import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
@@ -14,7 +13,7 @@ import { IModify } from "../DatabaseInterfaces/IModify";
 // Only implement interfaces that are required for each type
 
 export type InterfaceTypes = {
-    Profile: ISaveById & ILoadForUser & ILoadById & ILoadByName & IModify;
+    Profile: ISaveById & ILoadById & ILoadByName & IModify;
     
     Event: ISaveObject & ILoadById & ILoadAll & ILoadByName;
     
@@ -22,7 +21,7 @@ export type InterfaceTypes = {
     
     Post: ISaveObject & ILoadAll & ILoadById & IDelete;
     
-    DirectMessage: ILoadForUser & ISaveById & ILoadOnChange & ILoadLimited;
+    DirectMessage: ISaveById & ILoadOnChange & ILoadLimited;
     
     GroupMessage: ISaveObject & ISaveById & ILoadOnChange & ILoadLimited & IDelete;
     
@@ -30,9 +29,9 @@ export type InterfaceTypes = {
     
     PostMessage: ISaveById & ILoadAll & IDelete;
 
-    UserContactSave: ISaveById & ILoadForUser & IModify;
+    UserContactSave: ISaveById & IModify;
     
-    UserBlock: ISaveById & IDelete & ILoadForUser & IModify;
+    UserBlock: ISaveById & IDelete & IModify;
     
     Job: ISaveObject & ILoadAll & ILoadById & IDelete & ILoadByName;
     

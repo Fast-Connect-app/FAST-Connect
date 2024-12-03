@@ -83,3 +83,19 @@
 .chat-closed {
   width: 0; /* Collapse the chat completely */
 }
+
+.userSearch{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userSearch input{
+  width: 50%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+.userSearch button{
+  width: 10%;
+  height: 30%;
+}
