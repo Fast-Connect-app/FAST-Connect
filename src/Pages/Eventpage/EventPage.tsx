@@ -158,13 +158,14 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
         {" "}
         <Box className={styles.pageContainer}>
           <Box className={styles.filtersSection}>
-            <FormControl variant="outlined" sx={{ minWidth: 150 }}>
-              <InputLabel id="time-range-label">At any time</InputLabel>
+            <FormControl variant="outlined" sx={{ minWidth: 150 , color: 'white'}}>
+              <InputLabel id="time-range-label" sx={{color : 'white'}}>At any time</InputLabel>
               <Select
                 labelId="time-range-label"
                 value={this.state.timeRange}
                 onChange={this.handleTimeRangeChange}
                 label="At any time"
+                sx={{ color: 'white', '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' } }}
               >
                 <MenuItem value="any">At any time</MenuItem>
                 <MenuItem value="today">Today</MenuItem>

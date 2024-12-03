@@ -1,7 +1,6 @@
 /* Register.module.css */
 
 .container {
-  margin-top: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,20 +8,22 @@
 }
 
 .avatar {
-  margin: 1rem;
-  background-color: var(--mui-palette-primary-light);
+  width: 100px;
+  height: 100px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .title {
-  margin-top: 1rem;
+  margin: 1rem;
 }
 
 .form {
-  margin-top: 2rem;
-}
-.registerButton {
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .linkContainer {
@@ -33,7 +34,6 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 1rem;
 }
 
 .error{

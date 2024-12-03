@@ -52,10 +52,21 @@
     justify-content: center;
     color: white;
     padding: 10px;
-    width: min-content;
+    margin: 10px;
     border-radius: 5px;
 }
 
 .jobCard{
     margin: 10px;
+}
+
+
+.studentCardContainer{
+    background-color: grey;
+    padding: 10px;
+    border-radius: 5px;
+}
+.resumeLines{
+    display: flex;
+    flex-direction: column;
 }

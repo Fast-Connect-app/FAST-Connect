@@ -75,7 +75,7 @@ const ProfileCard = (props: { userProfile: Profile; onSave: (updatedProfile: Pro
                   variant="contained"
                   color="secondary"
                   size="small"
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, marginRight: 5 }}
                   disabled={!editingControlsEnabled}
                   onClick={async () => {
                     setEditingControlsEnabled(false);

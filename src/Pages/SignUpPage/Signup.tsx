@@ -1,9 +1,8 @@
-import { Avatar, Box, Button, Container, CssBaseline, TextField, FormLabel, Typography, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography, Radio, RadioGroup, FormControlLabel } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Register.module.css"; // Import the CSS module
+import styles from "./Signup.module.css"; // Import the CSS module
 import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
 import { useNavigate } from "react-router-dom";
 
@@ -71,32 +70,37 @@ const Register = () => {
               <TextField required fullWidth name="password-signup" label="Password" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <TextField required fullWidth name="dob" label="Date of Birth" type="date" value={dob} onChange={handleDobChange} />
+              <TextField required fullWidth name="dob" label="Date of Birth" slotProps={{ inputLabel: { shrink: true } }} type="date" value={dob} onChange={handleDobChange} />
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <FormLabel component="legend">Register as</FormLabel>
-              <RadioGroup className={styles.radioButtons} row aria-label="role" name="role" value={role} onChange={(e) => setRole(e.target.value)}>
-                <FormControlLabel value="student" control={<Radio />} label="Student" />
-                <FormControlLabel value="alumni" control={<Radio />} label="Alumni" />
-              </RadioGroup>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <FormLabel component="legend">Gender</FormLabel>
-              <RadioGroup className={styles.radioButtons} row aria-label="gender" name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
-                <FormControlLabel value="m" control={<Radio />} label="Male" />
-                <FormControlLabel value="f" control={<Radio />} label="Female" />
-              </RadioGroup>
-            </Grid>
-          </Grid>
+              
+                <RadioGroup className={styles.radioButtons} row aria-label="role" name="role" value={role} onChange={(e) => setRole(e.target.value)}>
 
-          <Button fullWidth variant="contained" className={styles.registerButton} onClick={registerEnabled ? handleRegister : undefined} disabled={!registerEnabled}>
-            Register
-          </Button>
-          <Grid container className={styles.linkContainer}>
-            <Grid size={{ xs: 12 }}>
-              <Link to="/login">Already have an account? Login</Link>
+              <FormControlLabel value="alumni" control={<Radio />} label="Alumni" />
+
+               <FormControlLabel value="student" control={<Radio />} label="Student" />
+                </RadioGroup>
             </Grid>
+            <Grid size={{ xs: 12 }} className={styles.genderContainer}>
+                <RadioGroup className={styles.radioButtons} row aria-label="gender" name="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+
+              <FormControlLabel value="m" control={<Radio />} label="Male" />
+
+               <FormControlLabel value="f" control={<Radio />} label="Female" />
+
+                </RadioGroup>
+
+               </Grid>
           </Grid>
+            <Grid container style={{ marginTop: "2rem", marginBottom : "1rem" }}>
+            <Button
+              variant="contained"
+              onClick={registerEnabled ? handleRegister : undefined}
+              disabled={!registerEnabled}
+            >
+              Register
+            </Button>
+            </Grid>
           {errorMsg != "" && (
             <Grid container className={(styles.linkContainer, styles.error)}>
               <Grid size={{ xs: 12 }}>{errorMsg}</Grid>

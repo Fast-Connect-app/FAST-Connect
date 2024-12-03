@@ -20,12 +20,15 @@ const ThemeToggle = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // useEffect(() => {
+  //   setTheme("dark");
+  // }, []);
+  // return null;
+
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      style={{ width: "100px", fontSize: "10px" }}
+      onClick={() => setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"))}
     >
-      Switch to {theme === "dark" ? "Light" : "Dark"} Theme
     </button>
   );
 };
@@ -35,6 +38,7 @@ export default ThemeToggle;
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
+    <ThemeToggle/>
       <App />
     </BrowserRouter>
   </StrictMode>

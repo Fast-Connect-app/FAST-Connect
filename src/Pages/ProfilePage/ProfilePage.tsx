@@ -33,6 +33,7 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
     };
     this.onProfileEdit = this.onProfileEdit.bind(this);
     this.onAlumniProfileEdit = this.onAlumniProfileEdit.bind(this);
+    this.onStudentProfileEdit = this.onStudentProfileEdit.bind(this);
   }
 
   async componentDidMount() {
@@ -49,11 +50,11 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
             if (userProfile.type == "alumni") {
               const alumniDatabaseAdapter = AlumniProfile.GetDatabaseAdapter();
               const alumniJSON = await alumniDatabaseAdapter.LoadById(userProfile.userId);
-              _alumni = AlumniProfile.fromFirebaseJson(alumniJSON);
+              if (alumniJSON != null) _alumni = AlumniProfile.fromFirebaseJson(alumniJSON);
             } else {
               const studentDatabaseAdapter = StudentProfile.GetDatabaseAdapter();
               const studentJson = await studentDatabaseAdapter.LoadById(userProfile.userId);
-              _student = StudentProfile.FromFirebaseJson(studentJson);
+              if (studentJson != null) _student = StudentProfile.FromFirebaseJson(studentJson);
             }
             this.setState({
               user: userProfile,
@@ -105,6 +106,51 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
     }
   }
 
+  async onStudentProfileEdit(studentProfile: StudentProfile): Promise<void> {
+    try {
+      const userAuth = UserAuthentication.GetInstance();
+      const userID: string | undefined = userAuth.GetCurrentUserId();
+      if (typeof userID === "string" && studentProfile instanceof StudentProfile) {
+        const studentProfileAdapter = StudentProfile.GetDatabaseAdapter();
+        await studentProfileAdapter.Modify(userID, studentProfile.GetJsonData());
+        this.setState({
+          student: studentProfile,
+        });
+      }
+      return;
+    } catch (error) {
+      if (error instanceof Error) console.log(error.message);
+    }
+  }
+
+  handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result?.split(",")[1];
+        try {
+          const userAuth = UserAuthentication.GetInstance();
+          const userID: string | undefined = userAuth.GetCurrentUserId();
+          if (typeof userID === "string") {
+            const profileAdapter = Profile.GetDatabaseAdapter();
+            const userProfile = this.state.user;
+            if (userProfile != null) {
+              userProfile.profilePic = base64String;
+              await profileAdapter.Modify(userID, userProfile.GetJsonData());
+              this.setState({
+                user: userProfile,
+              });
+            }
+          }
+          return;
+        } catch (error) {
+          if (error instanceof Error) console.log(error.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   render() {
     const { user, loading } = this.state;
     let { alumni, student } = this.state;
@@ -141,6 +187,10 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
                       Message
                     </Button>
                   </Box>
+                  <Button variant="contained" component="label" color="primary" size="small" sx={{ mt: 2 }}>
+                    Upload Profile Picture
+                    <input type="file" accept="image/*" hidden onChange={this.handleFileChange} />
+                  </Button>
                 </Box>
               </CardContent>{" "}
             </Card>
@@ -192,7 +242,7 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
               </CardContent>
             </Card>
           </Grid>
-          {user.type == "alumni" ? <AlumniProfileCard alumniProfile={alumni} onSave={this.onAlumniProfileEdit}></AlumniProfileCard> : <Card></Card>}
+          {user.type == "alumni" ? <AlumniProfileCard alumniProfile={alumni} onSave={this.onAlumniProfileEdit}></AlumniProfileCard> : <StudentProfileCard studentProfile={student} onSave={this.onStudentProfileEdit}></StudentProfileCard>}
         </Grid>
       </Box>
     );
