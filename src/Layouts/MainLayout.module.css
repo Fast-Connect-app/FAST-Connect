@@ -41,6 +41,9 @@
 }
 
 .contentheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   grid-area: contentheader;
   overflow-y: auto;
   padding-left: 16px;
@@ -84,18 +87,17 @@
   width: 0; /* Collapse the chat completely */
 }
 
-.userSearch{
+.userSearch {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-self: center;
+  width: 70%;
 }
 
-.userSearch input{
+.userSearch input {
   width: 50%;
   padding-top: 0.5%;
   padding-bottom: 0.5%;
 }
-.userSearch button{
-  width: 10%;
+.userSearch button {
   height: 30%;
 }

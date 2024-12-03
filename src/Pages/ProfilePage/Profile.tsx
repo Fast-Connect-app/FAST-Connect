@@ -1,9 +1,26 @@
-import { Box, Card, CardContent, Avatar, Typography, Button, Link, TextField } from "@mui/material";
-import { GitHub as GitHubIcon, Twitter as TwitterIcon, Instagram as InstagramIcon, Facebook as FacebookIcon } from "@mui/icons-material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Avatar,
+  Typography,
+  Button,
+  Link,
+  TextField,
+} from "@mui/material";
+import {
+  GitHub as GitHubIcon,
+  Twitter as TwitterIcon,
+  Instagram as InstagramIcon,
+  Facebook as FacebookIcon,
+} from "@mui/icons-material";
 import Grid from "@mui/material/Grid2";
 import styles from "./Profile.module.css"; // Import the CSS module
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
-import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout";
+import {
+  PageTitleContext,
+  PageTitleContextType,
+} from "../../Layouts/MainLayout";
 import { Profile } from "../../../Backend/Classes/Profile";
 import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
 import { auth } from "../../../Backend/FirebaseApp";
@@ -23,11 +40,12 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         const userAuth = UserAuthentication.GetInstance();
-        const userProfile: Profile | null = await userAuth.GetCurrentUserProfile();
+        const userProfile: Profile | null =
+          await userAuth.GetCurrentUserProfile();
         if (userProfile != null) {
           this.setState({
             user: userProfile,
-            editable: [userProfile.GetUserName(), userProfile.GetRollNumber()],
+            editable: [userProfile.userName, userProfile.rollNumber],
             loading: false,
           });
         }
@@ -56,11 +74,12 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
       const newRollNo = this.state.editable[1];
       const userAuth = UserAuthentication.GetInstance();
       const userID: string | undefined = userAuth.GetCurrentUserId();
-      const userProfile: Profile | null = await userAuth.GetCurrentUserProfile();
+      const userProfile: Profile | null =
+        await userAuth.GetCurrentUserProfile();
       if (typeof userID === "string" && userProfile instanceof Profile) {
         const profileAdapter = Profile.GetDatabaseAdapter();
-        userProfile.SetRollNumber(newRollNo);
-        userProfile.SetUserName(newName);
+        userProfile.rollNumber = newRollNo;
+        userProfile.userName = newName;
         await profileAdapter.Modify(userID, userProfile.GetJsonData());
         this.setState({
           user: userProfile,
@@ -93,9 +112,19 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
             <Card className={styles.profileCard}>
               <CardContent>
                 <Box className={styles.profileCardContent}>
-                  <Avatar className={styles.avatar} alt={user.GetUserName()} src={user.GetProfilePic() || undefined} sx={{ width: 100, height: 100 }} />
+                  <Avatar
+                    className={styles.avatar}
+                    alt={user.userName}
+                    src={user.profilePic || undefined}
+                    sx={{ width: 100, height: 100 }}
+                  />
                   <Box className={styles.followMessageButtons}>
-                    <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      sx={{ mr: 1 }}
+                    >
                       Follow
                     </Button>
                     <Button variant="outlined" color="primary" size="small">
@@ -114,9 +143,9 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
                 <Box>
                   {/* ID specifies if it should be editable and if so what its position is in the editable string array */}
                   {[
-                    { label: "Full Name", id: 0, value: user.GetUserName() },
-                    { label: "Email", id: -1, value: user.GetEmail() },
-                    { label: "Roll No", id: 1, value: user.GetRollNumber() },
+                    { label: "Full Name", id: 0, value: user.userName },
+                    { label: "Email", id: -1, value: user.email },
+                    { label: "Roll No", id: 1, value: user.rollNumber },
                   ].map((field, index) => (
                     <Box
                       key={index}
@@ -127,7 +156,11 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
                         mt: index === 0 ? 0 : 2,
                       }}
                     >
-                      <Typography variant="h6" className={styles.contactHeading} sx={{ flex: "0 0 1" }}>
+                      <Typography
+                        variant="h6"
+                        className={styles.contactHeading}
+                        sx={{ flex: "0 0 1" }}
+                      >
                         {field.label}
                       </Typography>
                       {/* If its editing then its a textfield otherwise its a typography */}
@@ -203,11 +236,31 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
                 </Typography>
                 <Box>
                   {[
-                    { platform: "Website", url: "https://example.com", icon: "🌐" },
-                    { platform: "GitHub", url: "https://github.com", icon: <GitHubIcon /> },
-                    { platform: "Twitter", url: "https://twitter.com", icon: <TwitterIcon /> },
-                    { platform: "Instagram", url: "https://instagram.com", icon: <InstagramIcon /> },
-                    { platform: "Facebook", url: "https://facebook.com", icon: <FacebookIcon /> },
+                    {
+                      platform: "Website",
+                      url: "https://example.com",
+                      icon: "🌐",
+                    },
+                    {
+                      platform: "GitHub",
+                      url: "https://github.com",
+                      icon: <GitHubIcon />,
+                    },
+                    {
+                      platform: "Twitter",
+                      url: "https://twitter.com",
+                      icon: <TwitterIcon />,
+                    },
+                    {
+                      platform: "Instagram",
+                      url: "https://instagram.com",
+                      icon: <InstagramIcon />,
+                    },
+                    {
+                      platform: "Facebook",
+                      url: "https://facebook.com",
+                      icon: <FacebookIcon />,
+                    },
                   ].map((link, index) => (
                     <Box
                       key={index}

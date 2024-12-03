@@ -25,7 +25,6 @@ export class FirebaseAdapter
     ILoadOnChange,
     ISaveById,
     ISaveObject,
-    ILoadForUser,
     IDelete,
     ILoadLimited,
     ILoadForMember,
@@ -261,7 +260,7 @@ export class FirebaseAdapter
         ...doc.data(),
       }));
 
-      return JSON.stringify(data);
+      return data;
     } catch (error) {
       console.error("Couldnt delete due to:", error);
       return null;

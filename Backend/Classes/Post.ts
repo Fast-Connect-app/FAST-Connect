@@ -28,7 +28,6 @@ export class Post {
   }
 
   public GetJsonData(): object {
-  public GetJsonData(): object {
     const data = { ...this };
     return data;
   }
