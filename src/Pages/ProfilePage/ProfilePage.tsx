@@ -122,6 +122,35 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
       if (error instanceof Error) console.log(error.message);
     }
   }
+
+  handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result?.split(",")[1];
+        try {
+          const userAuth = UserAuthentication.GetInstance();
+          const userID: string | undefined = userAuth.GetCurrentUserId();
+          if (typeof userID === "string") {
+            const profileAdapter = Profile.GetDatabaseAdapter();
+            const userProfile = this.state.user;
+            if (userProfile != null) {
+              userProfile.profilePic = base64String;
+              await profileAdapter.Modify(userID, userProfile.GetJsonData());
+              this.setState({
+                user: userProfile,
+              });
+            }
+          }
+          return;
+        } catch (error) {
+          if (error instanceof Error) console.log(error.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   render() {
     const { user, loading } = this.state;
     let { alumni, student } = this.state;
@@ -158,6 +187,10 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
                       Message
                     </Button>
                   </Box>
+                  <Button variant="contained" component="label" color="primary" size="small" sx={{ mt: 2 }}>
+                    Upload Profile Picture
+                    <input type="file" accept="image/*" hidden onChange={this.handleFileChange} />
+                  </Button>
                 </Box>
               </CardContent>{" "}
             </Card>
