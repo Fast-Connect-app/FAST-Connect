@@ -118,17 +118,21 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           )}
 
           {/* Chat Toggle Button */}
-          <IconButton
+            <IconButton
             onClick={this.toggleChat}
             sx={{
-              position: "absolute",
+              position: "fixed",
               top: "50%",
               right: isChatOpen ? "20vw" : "0", // Adjust toggle button based on chat state
               transform: "translateY(-50%)",
               color: "black",
               zIndex: 1000,
+              backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent background
+              '&:hover': {
+              backgroundColor: "rgba(255, 255, 255, 0.7)", // Darker on hover
+              },
             }}
-          >
+            >
             {isChatOpen ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </Box>
