@@ -1,17 +1,11 @@
 import { IDelete } from "../DatabaseInterfaces/IDelete";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
-import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { ISaveById } from "../DatabaseInterfaces/ISaveById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
-import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { IModify } from "../DatabaseInterfaces/IModify";
-import { ISubscriber } from "../Classes/ISubscriber";
 import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
-
-//Loading Max Number
-const maxLoads: number = 10;
 
 //firebase imports
 import { db } from "../FirebaseApp";
@@ -22,19 +16,15 @@ export class FirebaseAdapter
     IModify,
     ILoadAll,
     ILoadById,
-    ILoadOnChange,
     ISaveById,
     ISaveObject,
     IDelete,
-    ILoadLimited,
     ILoadForMember,
     ILoadByName
 {
   private collectionName: string;
   private parentDocumentId?: string;
   private subCollectionName?: string;
-
-  private subscribers: ISubscriber[] = [];
 
   constructor(
     _collectionName: string,
@@ -44,32 +34,6 @@ export class FirebaseAdapter
     this.collectionName = _collectionName;
     this.parentDocumentId = _parentDocumentId;
     this.subCollectionName = _subCollectionName;
-  }
-  /**
-   * Adds a subscriber to the list of subscribers.
-   * @param subscriber - The subscriber to be added.
-   */
-  AddSubscriber(subscriber: ISubscriber): void {
-    this.subscribers.push(subscriber);
-  }
-  /**
-   * Removes a subscriber from the list of subscribers.
-   * @param subscriber - The subscriber to be removed.
-   */
-  RemoveSubscriber(subscriber: ISubscriber): void {
-    const index = this.subscribers.indexOf(subscriber);
-    if (index > -1) {
-      this.subscribers.splice(index, 1); // Removes 1 element at the specified index
-    }
-  }
-  /**
-   * Notifies all subscribers with the provided data.
-   * @param data - The data to be sent to the subscribers.
-   */
-  NotifySubscribers(data: string): void {
-    this.subscribers.forEach((subscriber) => {
-      subscriber.ReceiveData(data);
-    });
   }
 
   /**
@@ -177,12 +141,12 @@ export class FirebaseAdapter
           .collection(this.collectionName)
           .doc(this.parentDocumentId)
           .collection(this.subCollectionName)
-          .where("members", "array-contains", uid)
+          .where("usersList", "array-contains", uid)
           .get();
       } else {
         querySnapshot = await db
           .collection(this.collectionName)
-          .where("members", "array-contains", uid)
+          .where("usersList", "array-contains", uid)
           .get();
       }
 
@@ -235,96 +199,7 @@ export class FirebaseAdapter
       return null;
     }
   }
-  /**
-   * Sets up a listener for changes in the collection or sub-collection and notifies subscribers.
-   * @param _id - The ID of the document to be monitored.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async LoadOnChange(_id: string): Promise<void> {
-    try {
-      if (this.parentDocumentId && this.subCollectionName) {
-        //there is a sub collection
-
-        db.collection(this.collectionName)
-          .doc(this.parentDocumentId)
-          .collection(this.subCollectionName)
-          .onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added") {
-                // New document added to the sub-collection
-                const newMessage = change.doc.data();
-
-                // Notify your subscribers with the new message
-                this.NotifySubscribers(newMessage.string);
-              }
-            });
-          });
-      } else {
-        db.collection(this.collectionName).onSnapshot((snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-              // New document added to the sub-collection
-              const newMessage = change.doc.data();
-
-              // Notify your subscribers with the new message
-              this.NotifySubscribers(newMessage.string);
-            }
-          });
-        });
-      }
-    } catch (error) {
-      console.error("Couldn't load because: ", error);
-    }
-  }
-  /**
-   * Loads a limited number of documents based on the iteration.
-   * @param iteration - The iteration number to determine the offset.
-   * @returns A promise that resolves to a JSON string of the documents or null if an error occurs.
-   */
-  async LoadLimited(iteration: number): Promise<object | null> {
-    try {
-      let collectionRef;
-      if (this.parentDocumentId && this.subCollectionName) {
-        collectionRef = db
-          .collection(this.collectionName)
-          .doc(this.parentDocumentId)
-          .collection(this.subCollectionName);
-      } else {
-        collectionRef = db.collection(this.collectionName);
-      }
-
-      // Base query: order by timestamp and limit the number of messages
-      let query = collectionRef.orderBy("timeStamp", "desc").limit(maxLoads);
-
-      if (iteration > 1) {
-        // Calculate the offset for the requested iteration
-        const skipCount = (iteration - 1) * maxLoads;
-        const snapshot = await collectionRef
-          .orderBy("timeStamp", "desc")
-          .limit(skipCount)
-          .get();
-
-        if (!snapshot.empty) {
-          // Get the last document from the previous query
-          const lastDoc = snapshot.docs[snapshot.docs.length - 1];
-          query = query.startAfter(lastDoc); // Start the next batch after this document
-        } else {
-          return null; // No data available for the given iteration
-        }
-      }
-
-      // Execute the query for the current batch
-      const resultSnapshot = await query.get();
-      const result = resultSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      return result;
-    } catch (error) {
-      console.error("Error loading limited messages:", error);
-      return null;
-    }
-  }
+ 
   /**
    * Saves a new document with the provided data to the collection or sub-collection.
    * @param data - The data to be saved.

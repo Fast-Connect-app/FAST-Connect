@@ -1,29 +1,9 @@
-import {
-  Box,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  SelectChangeEvent,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Box, Card, CardMedia, CardContent, CardActions, Typography, Button, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
 import styles from "./EventPage.module.css"; // Import the CSS module
-import {
-  PageTitleContext,
-  PageTitleContextType,
-} from "../../Layouts/MainLayout"; // Import context correctly
-import {Events} from "../../../Backend/Classes/Events"; // Import the Events class
+import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout"; // Import context correctly
+import { Events } from "../../../Backend/Classes/Events"; // Import the Events class
 interface EventsPageState extends AbstractPageState {
   eventType: string;
   timeRange: string;
@@ -56,24 +36,22 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
     const { setPageTitle } = this.context as PageTitleContextType;
     setPageTitle("Events Page"); // Set the title when the component is mounted
     //Get events from backend
-    try{
+    try {
       const eventsAdapter = Events.GetDatabaseAdapter();
-      const data = await eventsAdapter.LoadAll()
-      if(data!=null){
-        if(data instanceof Array){
-          const newEvents =data.map((event)=>Events.fromFirebaseJson(event));
+      const data = await eventsAdapter.LoadAll();
+      if (data != null) {
+        if (data instanceof Array) {
+          const newEvents = data.map((event) => Events.fromFirebaseJson(event));
           this.setState({
             events: newEvents,
             filteredEvents: newEvents,
           });
         }
-    }
-  }
-    catch(error){
-      if (error instanceof Error){
-        console.log(error.message);
       }
-      else{
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
         throw new Error("An unknown error occurred. Please try again.");
       }
     }
@@ -107,10 +85,7 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
           endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
           return eventDate >= startOfWeek && eventDate <= endOfWeek;
         } else if (timeRange === "this-month") {
-          return (
-            eventDate.getMonth() === today.getMonth() &&
-            eventDate.getFullYear() === today.getFullYear()
-          );
+          return eventDate.getMonth() === today.getMonth() && eventDate.getFullYear() === today.getFullYear();
         }
         return true;
       });
@@ -123,12 +98,7 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
     const { openDialog, selectedEvent } = this.state;
 
     return (
-      <Dialog
-        open={openDialog}
-        onClose={this.handleDialogClose}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={openDialog} onClose={this.handleDialogClose} maxWidth="sm" fullWidth>
         <DialogTitle>{selectedEvent?.title || "Event Details"}</DialogTitle>
         <DialogContent>
           {selectedEvent && (
@@ -152,21 +122,16 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
   }
 
   renderContent() {
-    console.log()
     return (
       <>
         {" "}
         <Box className={styles.pageContainer}>
           <Box className={styles.filtersSection}>
-            <FormControl variant="outlined" sx={{ minWidth: 150 , color: 'white'}}>
-              <InputLabel id="time-range-label" sx={{color : 'white'}}>At any time</InputLabel>
-              <Select
-                labelId="time-range-label"
-                value={this.state.timeRange}
-                onChange={this.handleTimeRangeChange}
-                label="At any time"
-                sx={{ color: 'white', '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' } }}
-              >
+            <FormControl variant="outlined" sx={{ minWidth: 150, color: "white" }}>
+              <InputLabel id="time-range-label" sx={{ color: "white" }}>
+                At any time
+              </InputLabel>
+              <Select labelId="time-range-label" value={this.state.timeRange} onChange={this.handleTimeRangeChange} label="At any time" sx={{ color: "white", ".MuiOutlinedInput-notchedOutline": { borderColor: "white" } }}>
                 <MenuItem value="any">At any time</MenuItem>
                 <MenuItem value="today">Today</MenuItem>
                 <MenuItem value="this-week">This Week</MenuItem>
@@ -175,11 +140,8 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
               </Select>
             </FormControl>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.filterEvents}
-            >
+          
+          <Button variant="contained" color="primary" onClick={this.filterEvents}>
               Find Events
             </Button>
           </Box>
@@ -194,12 +156,7 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
                 this.state.filteredEvents.map((event) => (
                   <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.eventID}>
                     <Card className={styles.card}>
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        image={event.picBase64Compressed}
-                        alt={event.title}
-                      />
+                      <CardMedia component="img" height="140" image={event.picLink} alt={event.title} />
                       <CardContent className={styles.cardContent}>
                         <Typography variant="h6" component="div" noWrap>
                           {event.title}

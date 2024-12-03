@@ -11,8 +11,9 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Send, Settings, Call, VideoCall } from "@mui/icons-material";
-import AbstractPage, {AbstractPageState} from "../AbstractPages";
+import AbstractPage, { AbstractPageState } from "../AbstractPages";
 import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout";
+import styles from "./ChatPage.module.css";
 
 // Mock chat data
 const chatData = [
@@ -26,62 +27,56 @@ const chatData = [
       { id: 3, text: "Hey Did you just ......", sender: "Abdullah", timestamp: "10:02 AM" },
     ],
   },
+  // Add additional chat data as needed
   {
-    id: 2,
-    name: "Raif",
-    avatar: "",
-    messages: [
-      { id: 1, text: "Hey, how's it going?", sender: "Raif", timestamp: "Yesterday, 9:00 PM" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Arham",
-    avatar: "",
-    messages: [{ id: 1, text: "Let's meet tomorrow!", sender: "Arham", timestamp: "Yesterday, 8:30 PM" }],
-  },
+    id : 2,
+    name : "Raef",
+    avatar : "",
+    messages: [{id:1, text: "Hey Babe", sender : "Raef", timestamp : "10:00PM"}]
+  }
 ];
 
-interface Message{
-    id: number;
-    text: String;
-    sender: String;
-    timestamp: String;
-}
-interface Chat {
-    id: number;
-    name: string;
-    avatar: string;
-    messages: Message[]; 
+interface Message {
+  id: number;
+  text: String;
+  sender: String;
+  timestamp: String;
 }
 
-interface ChatPageState extends AbstractPageState{
-    selectedChat : Chat;
-    messages: Message[];
-    newMessage: String;
-    chats: Chat[];
+interface Chat {
+  id: number;
+  name: string;
+  avatar: string;
+  messages: Message[];
 }
+
+interface ChatPageState extends AbstractPageState {
+  selectedChat: Chat;
+  messages: Message[];
+  newMessage: String;
+  chats: Chat[];
+}
+
 class ChatPage extends AbstractPage<{}, ChatPageState> {
-  static contextType = PageTitleContext; // Correct contextType assignment
+  static contextType = PageTitleContext;
 
   componentDidMount() {
     const { setPageTitle } = this.context as PageTitleContextType;
     setPageTitle("Chat Page");
   }
 
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-        data: null,
-        error: null,
-        selectedChat: chatData[0],
-        messages: chatData[0].messages,
-        newMessage: "",
-        chats: chatData,
-        };
-    }
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      data: null,
+      error: null,
+      selectedChat: chatData[0],
+      messages: chatData[0].messages,
+      newMessage: "",
+      chats: chatData,
+    };
+  }
 
-  // Handler to switch chat
   handleChatSelect = (chatId: number) => {
     const chat = chatData.find((c) => c.id === chatId);
     if (chat) {
@@ -92,7 +87,6 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
     }
   };
 
-  // Simulate sending a new message
   handleSendMessage = () => {
     const { newMessage, messages } = this.state;
     if (newMessage.trim() === "") return;
@@ -114,58 +108,25 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
     const { selectedChat, messages, newMessage } = this.state;
 
     return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          backgroundColor: "#282c34",
-          padding: 2,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            flexGrow: 1,
-            boxShadow: 3,
-            borderRadius: 2,
-            backgroundColor: "#f5f5f5",
-            overflow: "hidden",
-          }}
-        >
+      <Box className={styles.pageContainer}>
+        <Box className={styles.mainContainer}>
           {/* Left Sidebar - Chat List */}
-          <Box
-            sx={{
-              width: "25%",
-              backgroundColor: "#e8e8e8",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <Box className={styles.sidebar}>
             <TextField
               placeholder="Search"
               variant="outlined"
               size="small"
-              sx={{
-                margin: 1,
-                backgroundColor: "white",
-                borderRadius: 1,
-              }}
+              className={styles.searchInput}
             />
-            <List sx={{ flexGrow: 1, overflowY: "auto" }}>
+            <List className={styles.chatList}>
               {chatData.map((chat) => (
                 <ListItem
                   key={chat.id}
                   component="div"
                   onClick={() => this.handleChatSelect(chat.id)}
-                  sx={{
-                    padding: 1.5,
-                    "&:hover": {
-                      backgroundColor: "#dcdcdc",
-                    },
-                    backgroundColor: selectedChat.id === chat.id ? "#ddd" : "transparent",
-                  }}
+                  className={`${styles.chatItem} ${
+                    selectedChat.id === chat.id ? styles.activeChat : ""
+                  }`}
                 >
                   <ListItemAvatar>
                     <Avatar alt={chat.name} src={chat.avatar} />
@@ -180,30 +141,14 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
           </Box>
 
           {/* Chat Area */}
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <Box className={styles.chatArea}>
             {/* Chat Header */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: 1,
-                borderBottom: "1px solid #ddd",
-              }}
-            >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box className={styles.chatHeader}>
+              <Box className={styles.chatHeaderDetails}>
                 <Avatar alt={selectedChat.name} src={selectedChat.avatar} />
-                <Typography sx={{ marginLeft: 1 }} variant="h6">
-                  {selectedChat.name}
-                </Typography>
+                <Typography className={styles.chatName}>{selectedChat.name}</Typography>
               </Box>
-              <Box>
+              <Box className={styles.chatHeaderActions}>
                 <IconButton>
                   <Call />
                 </IconButton>
@@ -217,51 +162,22 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
             </Box>
 
             {/* Chat Messages */}
-            <Box
-              sx={{
-                flexGrow: 1,
-                padding: 2,
-                display: "flex",
-                flexDirection: "column",
-                overflowY: "auto",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
+            <Box className={styles.chatMessages}>
               {messages.map((msg) => (
                 <Box
                   key={msg.id}
-                  sx={{
-                    alignSelf: msg.sender === "You" ? "flex-end" : "flex-start",
-                    backgroundColor: msg.sender === "You" ? "#3f51b5" : "#e0e0e0",
-                    color: msg.sender === "You" ? "white" : "black",
-                    borderRadius: 2,
-                    padding: 1.5,
-                    marginBottom: 1,
-                    maxWidth: "60%",
-                  }}
+                  className={`${styles.messageBubble} ${
+                    msg.sender === "You" ? styles.sentMessage : styles.receivedMessage
+                  }`}
                 >
                   <Typography variant="body2">{msg.text}</Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      display: "block",
-                      textAlign: msg.sender === "You" ? "right" : "left",
-                    }}
-                  >
-                    {msg.timestamp}
-                  </Typography>
+                  <Typography className={styles.timestamp}>{msg.timestamp}</Typography>
                 </Box>
               ))}
             </Box>
 
             {/* Message Input */}
-            <Box
-              sx={{
-                padding: 1,
-                display: "flex",
-                borderTop: "1px solid #ddd",
-              }}
-            >
+            <Box className={styles.messageInputContainer}>
               <TextField
                 fullWidth
                 value={newMessage}
@@ -270,16 +186,14 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") this.handleSendMessage();
                 }}
-                slotProps={{
-                  input: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={this.handleSendMessage}>
-                          <Send />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  },
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={this.handleSendMessage}>
+                        <Send />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
             </Box>
