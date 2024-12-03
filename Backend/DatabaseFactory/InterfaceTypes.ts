@@ -2,9 +2,7 @@ import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
 import { ISaveById } from "../DatabaseInterfaces/ISaveById";
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
-import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { IDelete } from "../DatabaseInterfaces/IDelete";
-import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
 import { IModify } from "../DatabaseInterfaces/IModify";
@@ -16,23 +14,23 @@ export type InterfaceTypes = {
     
     Event: ISaveObject & ILoadById & ILoadAll & ILoadByName;
     
-    Group: ISaveObject & ILoadForMember & ILoadById & IDelete & IModify;
+    Group: ISaveObject & ILoadForMember & ILoadById & IModify;
     
     Post: ISaveObject & ILoadAll & ILoadById & IDelete;
     
-    DirectMessage: ISaveById & ILoadOnChange & ILoadLimited;
+    DirectMessage: ISaveById & ILoadAll;
     
-    GroupMessage: ISaveObject & ISaveById & ILoadOnChange & ILoadLimited & IDelete;
+    GroupMessage: ISaveById & ILoadAll;
     
-    GlobalMessage: ISaveById & ILoadOnChange & ILoadLimited;
+    GlobalMessage: ISaveById & ILoadAll;
     
-    PostMessage: ISaveById & ILoadAll & IDelete;
+    PostMessage: ISaveById & ILoadAll;
 
   UserContactSave: ISaveById & IModify;
 
   UserBlock: ISaveById & IDelete & IModify;
 
-  Job: ISaveObject & ILoadAll & ILoadById & IDelete & ILoadByName;
+  Job: ISaveObject & ILoadAll & ILoadById & ILoadByName;
 
   StudyMaterial: ISaveObject & ILoadById & ILoadAll & ILoadByName;
 };
