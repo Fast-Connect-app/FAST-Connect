@@ -1,11 +1,11 @@
 import { Message } from "./Message"
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 
-export class PostMessages implements IJSONData,IDatabaseAdapter {
-    private postID:string;
-    private messages:Message[] = [];
+export class PostMessages implements IJSONData {
+    public postID:string;
+    public messages:Message[] = [];
 
     constructor(_postID:string, originalMessage?:Message){
         this.postID = _postID;

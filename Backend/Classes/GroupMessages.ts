@@ -1,11 +1,11 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
-export class GroupMessages implements IDatabaseAdapter, IJSONData {
-  private groupID: string;
-  private messages: Message[];
+export class GroupMessages implements IJSONData {
+  public groupID: string;
+  public messages: Message[];
 
   constructor(_groupID: string) {
     this.groupID = _groupID;

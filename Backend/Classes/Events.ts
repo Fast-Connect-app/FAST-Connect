@@ -1,8 +1,9 @@
 import { Timestamp } from "firebase-admin/firestore";
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
+import {IJSONData} from "./IDatabaseAdapter"
 
-export class Events {
+export class Events implements IJSONData{
   public eventID: string;
   public title: string;
   public dateOfOccurence: Date;

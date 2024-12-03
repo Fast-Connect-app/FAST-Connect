@@ -1,11 +1,11 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 
-export class Post implements IDatabaseAdapter, IJSONData {
-  private title: string;
-  private postingUser: string;
-  private content: string;
+export class Post implements IJSONData {
+  public title: string;
+  public postingUser: string;
+  public content: string;
 
   constructor(_title: string, _postingUser: string, _content: string) {
     this.content = _content;

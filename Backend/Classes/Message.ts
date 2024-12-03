@@ -1,11 +1,11 @@
 import { IJSONData } from "./IDatabaseAdapter";
 
 export class Message implements IJSONData{
-    private senderId:string;
-    private content:string;
-    private FileAttachment : string | null;
-    private TimeStamp: Date;
-    private parentMessage:Message | undefined;
+    public senderId:string;
+    public content:string;
+    public FileAttachment : string | null;
+    public TimeStamp: Date;
+    public parentMessage:Message | undefined;
 
     constructor(_senderID:string, _content:string, _FileAttachment:string | null, _TimeStamp:Date, _parentMessage ?: Message){
         this.senderId = _senderID;

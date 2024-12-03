@@ -285,7 +285,7 @@ export class FirebaseAdapter implements IModify, ILoadAll, ILoadById, ILoadOnCha
         id: doc.id,
         ...doc.data(),
       }));
-      return data;
+      return result;
     } catch (error) {
       console.error("Error loading limited messages:", error);
       return null;

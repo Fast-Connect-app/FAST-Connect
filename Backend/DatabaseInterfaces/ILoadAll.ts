@@ -1,3 +1,3 @@
 export interface ILoadAll{
-    LoadAll():Promise<string | null>;
+    LoadAll():Promise<object | null>;
 }
