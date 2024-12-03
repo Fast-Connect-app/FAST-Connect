@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase-admin/firestore";
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
@@ -8,13 +9,15 @@ export class Events implements IDatabaseAdapter, IJSONData {
   private description: string;
   private headUser: string;
   private venue: string;
+  private picBase64Compressed: string; 
 
-  constructor(_title: string, _dateOfOccurence: Date, _description: string, _headUser: string, _venue: string) {
+  constructor(_title: string, _dateOfOccurence: Date, _description: string, _headUser: string, _venue: string , _picBase64Compressed:string) {
     this.title = _title;
     this.dateOfOccurence = _dateOfOccurence;
     this.description = _description;
     this.headUser = _headUser;
     this.venue = _venue;
+    this.picBase64Compressed=_picBase64Compressed;
   }
 
   public GetDatabaseAdapter() {
@@ -27,5 +30,17 @@ export class Events implements IDatabaseAdapter, IJSONData {
       dateOfOccurence: this.dateOfOccurence.toISOString(),
     };
     return data;
+  }
+
+  public static fromFirebaseJson( data:{
+    title: string,
+    dateOfOccurence: Timestamp,
+    description: string,
+    headUser: string,
+    venue: string,
+    picBase64Compressed: string
+  }) : Events{
+    const newDate = new Date(data.dateOfOccurence.seconds * 1000 + data.dateOfOccurence.nanoseconds / 1000000);
+    return new Events(data.title, newDate, data.description, data.headUser, data.venue, data.picBase64Compressed);
   }
 }

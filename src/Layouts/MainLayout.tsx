@@ -9,10 +9,12 @@ import { Profile } from "../../Backend/Classes/Profile";
 import { auth } from "../../Backend/FirebaseApp";
 import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-
+import { withMenuNavigation } from "../router";
 interface MainLayoutProps {
   children?: ReactNode;
+  handleMenuSelect: (menu: string) => void;
 }
+
 
 interface MainLayoutState {
   pageTitle: string;
@@ -28,7 +30,6 @@ export interface PageTitleContextType {
 export const PageTitleContext = React.createContext<
   PageTitleContextType | undefined
 >(undefined);
-
 class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
   constructor(props: MainLayoutProps) {
     super(props);
@@ -40,7 +41,7 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
     };
   }
   async componentDidMount() {
-    auth.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged(async (user:unknown) => {
       if (user) {
         const userAuth = UserAuthentication.GetInstance();
         let userProfile: Profile | null =
@@ -53,7 +54,7 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           });
         }
       } else {
-        console.log("No user is signed in.");
+        this.props.handleMenuSelect("Login");
       }
     });
   }
@@ -133,4 +134,4 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
   }
 }
 
-export default MainLayout;
+export default withMenuNavigation(MainLayout);
