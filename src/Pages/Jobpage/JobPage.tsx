@@ -1,4 +1,3 @@
-import React, { Component, ReactNode } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import {
   Box,
@@ -197,6 +196,7 @@ class JobPage extends AbstractPage<{}, JobPageState> {
               value={selectedLocation}
               onChange={this.handleLocationChange}
               className={styles.locationSelect}
+              sx = {{color: 'white', '.MuiOutlinedInput-notchedOutline': { borderColor: 'white' } }}
             >
               <MenuItem value="All locations">All locations</MenuItem>
               <MenuItem value="Boston">Boston</MenuItem>
@@ -214,7 +214,7 @@ class JobPage extends AbstractPage<{}, JobPageState> {
             className={styles.filterTabs}
           >
             {categories.map((category) => (
-              <Tab key={category} value={category} label={category} />
+              <Tab key={category} value={category} label={category} sx = {{color : "white"}} />
             ))}
           </Tabs>
 

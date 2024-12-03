@@ -5,7 +5,7 @@ import { Message } from "./Message";
 
 export class GroupMessages implements IJSONData {
   public groupID: string;
-  public messages: Message[];
+  public messages: Message[] = [];
 
   constructor(_groupID: string) {
     this.groupID = _groupID;

@@ -3,9 +3,13 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  Avatar,
   ListItemText,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Button,
+  DialogActions,
   IconButton,
   TextField,
   InputAdornment,
@@ -13,72 +17,68 @@ import {
 import { Send, Settings, Call, VideoCall } from "@mui/icons-material";
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
 import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout";
-import styles from "./ChatPage.module.css";
+import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
+import { Group as MyGroup } from "../../../Backend/Classes/Group";
+import styles from "./GroupPage.module.css";
 
-// Mock chat data
-const chatData = [
+const groupData = [
   {
-    id: 1,
-    name: "Abdullah",
-    avatar: "",
-    messages: [
-      { id: 1, text: "Yo wassup lil dude", sender: "Abdullah", timestamp: "10:00 AM" },
-      { id: 2, text: "Well that's the shit for giggles for sure", sender: "You", timestamp: "10:01 AM" },
-      { id: 3, text: "Hey Did you just ......", sender: "Abdullah", timestamp: "10:02 AM" },
-    ],
+    id: "",
+    groupName: "",
+    groupDescription: "",
+    messages: [],
   },
-  // Add additional chat data as needed
-  {
-    id : 2,
-    name : "Raef",
-    avatar : "",
-    messages: [{id:1, text: "Hey Babe", sender : "Raef", timestamp : "10:00PM"}]
-  }
 ];
 
 interface Message {
   id: number;
-  text: String;
-  sender: String;
-  timestamp: String;
+  text: string;
+  sender: string;
+  timestamp: string;
+  file?: string;
 }
 
-interface Chat {
-  id: number;
-  name: string;
-  avatar: string;
+interface Group {
+  id: string;
+  groupName: string;
+  groupDescription: string;
   messages: Message[];
 }
 
-interface ChatPageState extends AbstractPageState {
-  selectedChat: Chat;
+interface GroupPageState extends AbstractPageState {
+  selectedChat: Group;
   messages: Message[];
-  newMessage: String;
-  chats: Chat[];
+  newMessage: string;
+  chats: Group[];
+  open: boolean;
 }
 
-class ChatPage extends AbstractPage<{}, ChatPageState> {
+let groupAdapter = MyGroup.GetDatabaseAdapter();
+
+class GroupPage extends AbstractPage<{}, GroupPageState> {
   static contextType = PageTitleContext;
-
-  componentDidMount() {
-    const { setPageTitle } = this.context as PageTitleContextType;
-    setPageTitle("Chat Page");
-  }
 
   constructor(props: {}) {
     super(props);
     this.state = {
       data: null,
       error: null,
-      selectedChat: chatData[0],
-      messages: chatData[0].messages,
+      selectedChat: groupData[0],
+      messages: groupData[0].messages,
       newMessage: "",
-      chats: chatData,
+      chats: groupData,
+      open: false,
     };
   }
 
-  handleChatSelect = (chatId: number) => {
-    const chat = chatData.find((c) => c.id === chatId);
+  componentDidMount() {
+    const { setPageTitle } = this.context as PageTitleContextType;
+    setPageTitle("Group Chat Page");
+    this.GetGroups();
+  }
+
+  handleChatSelect = (chatId: string) => {
+    const chat = groupData.find((c) => c.id === chatId);
     if (chat) {
       this.setState({
         selectedChat: chat,
@@ -104,13 +104,57 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
     });
   };
 
+  async GetGroups() {
+    let userId = UserAuthentication.GetInstance().GetCurrentUserId();
+    if (!userId) return;
+
+    let data = await groupAdapter.LoadForMember(userId);
+    if (data === null) return;
+
+    data.forEach((element: any) => {
+      groupData.push({
+        id: element.id,
+        groupName: element.name,
+        groupDescription: element.description,
+        messages: [],
+      });
+    });
+  }
+
+  ShowDisplay() {
+    const { open } = this.state;
+    return (
+      <Dialog open={open}>
+        <DialogTitle>Create new Group</DialogTitle>
+        <DialogContent>
+          <input type="text" placeholder="Group Name" id="groupNameField" />
+          <br />
+          <input type="text" placeholder="Group Description" id="groupDescField" />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => this.setState({ open: false })} color="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              this.setState({ open: false });
+              this.MakeGroup("groupNameField", "groupDescField");
+            }}
+            color="secondary"
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
   renderContent() {
     const { selectedChat, messages, newMessage } = this.state;
 
     return (
       <Box className={styles.pageContainer}>
         <Box className={styles.mainContainer}>
-          {/* Left Sidebar - Chat List */}
           <Box className={styles.sidebar}>
             <TextField
               placeholder="Search"
@@ -118,37 +162,35 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
               size="small"
               className={styles.searchInput}
             />
+            <button
+              id="createGroupButton"
+              onClick={() => this.setState({ open: true })}
+              className={styles.createGroupButton}
+            >
+              Create Group
+            </button>
             <List className={styles.chatList}>
-              {chatData.map((chat) => (
+              {groupData.map((group) => (
                 <ListItem
-                  key={chat.id}
-                  component="div"
-                  onClick={() => this.handleChatSelect(chat.id)}
+                  key={group.id}
+                  onClick={() => this.handleChatSelect(group.id)}
                   className={`${styles.chatItem} ${
-                    selectedChat.id === chat.id ? styles.activeChat : ""
+                    selectedChat.id === group.id ? styles.activeChat : ""
                   }`}
                 >
-                  <ListItemAvatar>
-                    <Avatar alt={chat.name} src={chat.avatar} />
-                  </ListItemAvatar>
+                  <ListItemAvatar />
                   <ListItemText
-                    primary={chat.name}
-                    secondary={chat.messages[chat.messages.length - 1]?.text || "No messages"}
+                    primary={group.groupName}
+                    secondary={group.messages[group.messages.length - 1]?.text || "No messages"}
                   />
                 </ListItem>
               ))}
             </List>
           </Box>
-
-          {/* Chat Area */}
           <Box className={styles.chatArea}>
-            {/* Chat Header */}
             <Box className={styles.chatHeader}>
-              <Box className={styles.chatHeaderDetails}>
-                <Avatar alt={selectedChat.name} src={selectedChat.avatar} />
-                <Typography className={styles.chatName}>{selectedChat.name}</Typography>
-              </Box>
-              <Box className={styles.chatHeaderActions}>
+              <Typography className={styles.chatName}>{selectedChat.groupName}</Typography>
+              <Box>
                 <IconButton>
                   <Call />
                 </IconButton>
@@ -160,8 +202,6 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
                 </IconButton>
               </Box>
             </Box>
-
-            {/* Chat Messages */}
             <Box className={styles.chatMessages}>
               {messages.map((msg) => (
                 <Box
@@ -170,13 +210,11 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
                     msg.sender === "You" ? styles.sentMessage : styles.receivedMessage
                   }`}
                 >
-                  <Typography variant="body2">{msg.text}</Typography>
+                  <Typography>{msg.text}</Typography>
                   <Typography className={styles.timestamp}>{msg.timestamp}</Typography>
                 </Box>
               ))}
             </Box>
-
-            {/* Message Input */}
             <Box className={styles.messageInputContainer}>
               <TextField
                 fullWidth
@@ -199,9 +237,10 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
             </Box>
           </Box>
         </Box>
+        {this.ShowDisplay()}
       </Box>
     );
   }
 }
 
-export default ChatPage;
+export default GroupPage;

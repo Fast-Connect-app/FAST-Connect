@@ -37,5 +37,15 @@ export const navItems: NavItem[] = [
     icon: <Event />,
     route: "/ChatPage",
   },
+  {
+    label: "Groups",
+    icon: <Event />,
+    route: "/GroupPage"
+  },
+  {
+    label: "Saved",
+    icon: <Event />,
+    route: "/SavedPage"
+  },
   // Add more items as needed
 ];
