@@ -21,7 +21,7 @@ import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication
 import { Group as MyGroup } from "../../../Backend/Classes/Group";
 import styles from "./GroupPage.module.css";
 
-const groupData = [
+const groupData: Group[] = [
   {
     id: "",
     groupName: "",
@@ -73,7 +73,7 @@ class GroupPage extends AbstractPage<{}, GroupPageState> {
 
   componentDidMount() {
     const { setPageTitle } = this.context as PageTitleContextType;
-    setPageTitle("Group Chat Page");
+    setPageTitle("GroupChat Page");
     this.GetGroups();
   }
 
@@ -111,7 +111,7 @@ class GroupPage extends AbstractPage<{}, GroupPageState> {
     let data = await groupAdapter.LoadForMember(userId);
     if (data === null) return;
 
-    data.forEach((element: any) => {
+    Array.isArray(data) && data.forEach((element: any) => {
       groupData.push({
         id: element.id,
         groupName: element.name,
@@ -119,7 +119,62 @@ class GroupPage extends AbstractPage<{}, GroupPageState> {
         messages: [],
       });
     });
+
+            // if (data){
+        //     groups = data.map((group:any)=>{
+        //         const groupData = group as {id:string, groupName:string, groupDescription:string}
+        //         return {
+        //             id : groupData.id,
+        //             groupName: groupData.groupName,
+        //             groupDescription: groupData.groupDescription
+        //         }
+        //     });
+        // }
+        // groups.forEach(async (group:any) => {
+        //     let groupMessages = new GroupMessages(group.id);
+        //     let groupMessagesAdapter = groupMessages.GetDatabaseAdapter();
+        //     let messages = await groupMessagesAdapter.LoadAll();
+
+        //     if(messages === null)
+        //         return;
+        //     let i = 0;
+        //     groupData.forEach((groupDataElement) => {
+        //         if(groupDataElement.id === group.id){
+        //             let userName = Profile.GetDatabaseAdapter().LoadById(group.sender);
+        //             groupDataElement.messages.push({
+        //                 id:group.id,
+        //                 sender: userName,
+        //                 text: messages[i].text,
+        //                 timestamp:messages[i].timeStamp,
+        //             }as never);
+        //         }
+        //     });
+        // });
+    
   }
+
+  async MakeGroup(nameInput:string, descInput:string){
+    let name = document.getElementById(nameInput) as HTMLInputElement;
+    let desc = document.getElementById(descInput) as HTMLInputElement;
+
+    let userId = UserAuthentication.GetInstance().GetCurrentUserId();
+    if(!userId)
+        return;
+    let group = new MyGroup(name.value,desc.value,[userId],userId);
+
+    let docId:string = await groupAdapter.SaveObject(group.GetJsonData());
+
+    if(docId !== ""){
+        groupData.push({id:docId,
+            groupName: group.name,
+            groupDescription:group.description,
+            messages:[]
+        });
+    }
+    else{
+        console.log("Couldnt Make Group!");
+    }
+}
 
   ShowDisplay() {
     const { open } = this.state;
@@ -224,14 +279,16 @@ class GroupPage extends AbstractPage<{}, GroupPageState> {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") this.handleSendMessage();
                 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={this.handleSendMessage}>
-                        <Send />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={this.handleSendMessage}>
+                          <Send />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
                 }}
               />
             </Box>
