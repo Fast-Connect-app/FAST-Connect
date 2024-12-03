@@ -33,6 +33,7 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
     };
     this.onProfileEdit = this.onProfileEdit.bind(this);
     this.onAlumniProfileEdit = this.onAlumniProfileEdit.bind(this);
+    this.onStudentProfileEdit = this.onStudentProfileEdit.bind(this);
   }
 
   async componentDidMount() {
@@ -105,6 +106,22 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
     }
   }
 
+  async onStudentProfileEdit(studentProfile: StudentProfile): Promise<void> {
+    try {
+      const userAuth = UserAuthentication.GetInstance();
+      const userID: string | undefined = userAuth.GetCurrentUserId();
+      if (typeof userID === "string" && studentProfile instanceof StudentProfile) {
+        const studentProfileAdapter = StudentProfile.GetDatabaseAdapter();
+        await studentProfileAdapter.Modify(userID, studentProfile.GetJsonData());
+        this.setState({
+          student: studentProfile,
+        });
+      }
+      return;
+    } catch (error) {
+      if (error instanceof Error) console.log(error.message);
+    }
+  }
   render() {
     const { user, loading } = this.state;
     let { alumni, student } = this.state;
@@ -192,7 +209,7 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
               </CardContent>
             </Card>
           </Grid>
-          {user.type == "alumni" ? <AlumniProfileCard alumniProfile={alumni} onSave={this.onAlumniProfileEdit}></AlumniProfileCard> : <Card></Card>}
+          {user.type == "alumni" ? <AlumniProfileCard alumniProfile={alumni} onSave={this.onAlumniProfileEdit}></AlumniProfileCard> : <StudentProfileCard studentProfile={student} onSave={this.onStudentProfileEdit}></StudentProfileCard>}
         </Grid>
       </Box>
     );
