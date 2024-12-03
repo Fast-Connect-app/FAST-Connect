@@ -1,7 +1,7 @@
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { Timestamp } from "firebase-admin/firestore";
-export class Profile {
+export class Profile{
   protected userId: string;
   protected email: string;
   protected userName: string;

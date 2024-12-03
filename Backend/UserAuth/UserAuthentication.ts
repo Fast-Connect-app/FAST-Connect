@@ -78,8 +78,7 @@ export class UserAuthentication {
       if (userProfileData === null) {
         return null;
       }
-      const parsedJSON = JSON.parse(userProfileData);
-      const userProfile: Profile = Profile.fromFirebaseJson(parsedJSON);
+      const userProfile: Profile = Profile.fromFirebaseJson(userProfileData);
       return userProfile;
     } catch (error) {
       if (error instanceof Error) {

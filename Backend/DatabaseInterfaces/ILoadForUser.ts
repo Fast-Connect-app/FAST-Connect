@@ -1,3 +1,3 @@
 export interface ILoadForUser{
-    LoadForUser(uid:string):Promise<string | null>;
+    LoadForUser(uid:string):Promise<object | null>;
 }
