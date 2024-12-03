@@ -1,5 +1,5 @@
-import { ISaveObject } from "../DatabaseInterfaces/ISaveObject"
-import { ISaveById } from "../DatabaseInterfaces/ISaveById"
+import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
+import { ISaveById } from "../DatabaseInterfaces/ISaveById";
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
@@ -8,7 +8,6 @@ import { ILoadLimited } from "../DatabaseInterfaces/ILoadLimited";
 import { ILoadForMember } from "../DatabaseInterfaces/ILoadForMember";
 import { ILoadByName } from "../DatabaseInterfaces/ILoadByName";
 import { IModify } from "../DatabaseInterfaces/IModify";
-
 
 // Only implement interfaces that are required for each type
 
