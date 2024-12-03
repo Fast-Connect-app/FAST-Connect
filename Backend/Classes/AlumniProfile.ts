@@ -1,6 +1,7 @@
 import { IJSONData } from "./IDatabaseAdapter.ts";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
+
 export class Job {
   public jobTitle: string;
   public companyName: string;
@@ -26,7 +27,6 @@ export class Job {
 }
 
 export class AlumniProfile implements IJSONData {
-  public userID: string;
   public jobHistory: Job[] | null;
   public dateOfGraduation: Date | null;
 
@@ -36,12 +36,11 @@ export class AlumniProfile implements IJSONData {
   }
 
   public static GetDatabaseAdapter() {
-    return GetDatabaseAdapter<"AlumniProfile">(FirebaseAdapterFactory, "AlumniProfile");
+    return GetDatabaseAdapter<"Profile">(FirebaseAdapterFactory, "AlumniProfile");
   }
   public GetJsonData(): object {
     //Get all the data
     const data = {
-      userID: this.userID,
       jobHistory: this.jobHistory ? this.jobHistory.map((job) => job.GetJsonData()) : null,
       dateOfGraduation: this.dateOfGraduation,
     };
