@@ -4,11 +4,13 @@ import { IJSONData } from "./IDatabaseAdapter";
 
 export class StudyMaterial implements IJSONData {
   public senderUserId: string;
+  public topic:string;
   public fileMaterial: string;
 
-  constructor(_senderUserId: string, _fileMaterial: string) {
+  constructor(_senderUserId: string, _fileMaterial: string,_topic:string) {
     this.fileMaterial = _fileMaterial;
     this.senderUserId = _senderUserId;
+    this.topic = _topic;
   }
 
   public static GetDatabaseAdapter() {

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "./Layouts/MainLayout";
 import HomePage from "./Pages/Homepage/HomePage";
 import Events from "./Pages/Eventpage/EventPage";
-import ProfilePage from "./Pages/ProfilePage/Profile";
+import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import JobPage from "./Pages/Jobpage/JobPage";
 import StudyPage from "./Pages/StudyMaterial/StudyMaterialPage";
 import ChatPage from "./Pages/ChatPage/ChatPage";

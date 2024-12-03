@@ -1,0 +1,61 @@
+.contactCard {
+    box-shadow: 3;
+}
+
+.secondCard{
+    margin-top:10px;
+}
+.bigCardContainer{
+    background-color: rgba(0, 0, 0, 0.26);
+    padding: 10px;
+}
+.contactCardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.contactHeading {
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+.cardLabel{
+    font-weight: bold;
+    font-size: large;
+    padding: 10px;
+}
+
+.cardValue{
+    padding: 10px;
+}
+
+.graduationDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items:  start;
+    
+}
+.jobHistoryTitleCard{
+    display: flex;
+    flex-direction: horizontal;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.error{
+    align-self: center;
+    font-weight: bold;
+    background-color: darkred;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 10px;
+    width: min-content;
+    border-radius: 5px;
+}
+
+.jobCard{
+    margin: 10px;
+}

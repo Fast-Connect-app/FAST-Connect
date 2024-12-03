@@ -4,7 +4,7 @@ import { useState } from "react";
 import styles from "./Common.module.css"; // Import the CSS module
 import { Profile } from "../../../../Backend/Classes/Profile";
 
-const StudentProfileCard = (props: { userProfile: Profile; onSave: (updatedProfile: Profile) => Promise<void> }) => {
+const ProfileCard = (props: { userProfile: Profile; onSave: (updatedProfile: Profile) => Promise<void> }) => {
   const [editing, setEditing] = useState(false);
   const [editingControlsEnabled, setEditingControlsEnabled] = useState(true);
   const [editable, setEditable] = useState([props.userProfile.userName, props.userProfile.rollNumber, props.userProfile.bio]);
@@ -107,4 +107,4 @@ const StudentProfileCard = (props: { userProfile: Profile; onSave: (updatedProfi
   );
 };
 
-export default StudentProfileCard;
+export default ProfileCard;

@@ -1,6 +1,8 @@
 import { IJSONData } from "./IDatabaseAdapter.ts";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { Timestamp } from "firebase-admin/firestore";
+
 export class Job {
   public jobTitle: string;
   public companyName: string;
@@ -14,8 +16,10 @@ export class Job {
     this.endDate = _endDate;
   }
 
-  public static fromFirebaseJson(data: { jobTitle: string; companyName: string; startDate: Date; endDate: Date }): Job {
-    return new Job(data.jobTitle, data.companyName, data.startDate, data.endDate);
+  public static fromFirebaseJson(data: { jobTitle: string; companyName: string; startDate: Timestamp; endDate: Timestamp }): Job {
+    const newstartDate = new Date(data.startDate.seconds * 1000 + data.startDate.nanoseconds / 1000000);
+    const newendDate = new Date(data.endDate.seconds * 1000 + data.endDate.nanoseconds / 1000000);
+    return new Job(data.jobTitle, data.companyName, newstartDate, newendDate);
   }
 
   public GetJsonData(): object {
@@ -26,7 +30,6 @@ export class Job {
 }
 
 export class AlumniProfile implements IJSONData {
-  public userID: string;
   public jobHistory: Job[] | null;
   public dateOfGraduation: Date | null;
 
@@ -36,12 +39,11 @@ export class AlumniProfile implements IJSONData {
   }
 
   public static GetDatabaseAdapter() {
-    return GetDatabaseAdapter<"AlumniProfile">(FirebaseAdapterFactory, "AlumniProfile");
+    return GetDatabaseAdapter<"Profile">(FirebaseAdapterFactory, "AlumniProfile");
   }
   public GetJsonData(): object {
     //Get all the data
     const data = {
-      userID: this.userID,
       jobHistory: this.jobHistory ? this.jobHistory.map((job) => job.GetJsonData()) : null,
       dateOfGraduation: this.dateOfGraduation,
     };

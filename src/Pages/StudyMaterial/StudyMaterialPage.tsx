@@ -55,10 +55,14 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
 
     renderContent() {
         return (
-            <div className="studyPage">
+            <div>
                 <div className={styles.topContainer}>
-                    SearchBar
-                    <input name="searchFilter" className="searchBar"/>
+                    <Button className={styles.addButton}>
+                        <img src="src/Pages/StudyMaterial/addItemSign.png" alt=" " />
+                        Add File
+                    </Button>
+                    <input name="searchFilter" className={styles.searchBar}
+                    placeholder="Search here..."/>
                 </div>
                 <Grid container spacing={4}>
                     {this.state.studyMaterialList1.map((studyMat: StudyMaterial, index: number) => (

@@ -12,7 +12,7 @@ export class StudentProfile implements IJSONData {
   }
 
   public static GetDatabaseAdapter() {
-    return GetDatabaseAdapter<"StudentProfile">(FirebaseAdapterFactory, "StudentProfile");
+    return GetDatabaseAdapter<"Profile">(FirebaseAdapterFactory, "StudentProfile");
   }
 
   public GetJsonData(): object {
