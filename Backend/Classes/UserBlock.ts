@@ -17,7 +17,7 @@ export class UserBlock implements IDatabaseAdapter, IJSONData {
     return GetDatabaseAdapter<"UserBlock">(FirebaseAdapterFactory, "UserBlocks");
   }
 
-  public GetJsonData(): string {
+  public GetJsonData(): object {
     const data = { ...this };
     return data;
   }

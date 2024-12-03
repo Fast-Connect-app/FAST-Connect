@@ -10,11 +10,11 @@ export class GlobalMessages implements IDatabaseAdapter,IJSONData{
         return GetDatabaseAdapter<"GlobalMessage">(FirebaseAdapterFactory,"GlobalMessage");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {
-            Messages: this.messages.map(message => JSON.parse(message.GetJsonData()))
+            Messages: this.messages.map(message => message.GetJsonData())
         }
 
-        return JSON.stringify(data);
+        return data;
     }
 }

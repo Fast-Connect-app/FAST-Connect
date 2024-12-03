@@ -17,7 +17,7 @@ export class Post implements IDatabaseAdapter, IJSONData {
     return GetDatabaseAdapter<"Post">(FirebaseAdapterFactory, "Posts");
   }
 
-  public GetJsonData(): string {
+  public GetJsonData(): object {
     const data = { ...this };
     return data;
   }

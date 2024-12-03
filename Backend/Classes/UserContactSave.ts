@@ -17,8 +17,8 @@ export class UserContactSave implements IDatabaseAdapter,IJSONData{
         return GetDatabaseAdapter<"UserContactSave">(FirebaseAdapterFactory,"UserContactSaves");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {...this};
-        return JSON.stringify(data);
+        return data;
     }
 }

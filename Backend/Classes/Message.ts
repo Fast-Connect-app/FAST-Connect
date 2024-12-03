@@ -15,7 +15,7 @@ export class Message implements IJSONData{
         this.parentMessage = _parentMessage;
     }
     
-    public GetJsonData():string{
+    public GetJsonData():object{
         const data = {
             senderId: this.senderId,
             content: this.content,
@@ -23,7 +23,6 @@ export class Message implements IJSONData{
             timeStamp: this.TimeStamp.toISOString(),
             parentMessage: this.parentMessage?.GetJsonData()
         }
-
-        return JSON.stringify(data);
+        return data;
     }
 }

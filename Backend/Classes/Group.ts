@@ -20,8 +20,8 @@ export class Group implements IDatabaseAdapter,IJSONData{
         return GetDatabaseAdapter<"Group">(FirebaseAdapterFactory,"Groups");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {...this};
-        return JSON.stringify(data);
+        return data;
     }
 }

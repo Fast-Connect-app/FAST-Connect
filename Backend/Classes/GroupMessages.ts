@@ -18,7 +18,7 @@ export class GroupMessages implements IDatabaseAdapter, IJSONData {
   public GetJsonData(): object {
     const data = {
       groupID: this.groupID,
-      Messages: this.messages.map((message) => JSON.parse(message.GetJsonData())),
+      Messages: this.messages.map((message) => message.GetJsonData()),
     };
 
     return data;

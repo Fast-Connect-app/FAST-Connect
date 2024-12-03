@@ -15,7 +15,7 @@ export class StudyMaterial implements IDatabaseAdapter, IJSONData {
     return GetDatabaseAdapter<"StudyMaterial">(FirebaseAdapterFactory, "StudyMaterial");
   }
 
-  public GetJsonData(): string {
+  public GetJsonData(): object {
     const data = { ...this };
     return data;
   }

@@ -18,13 +18,12 @@ export class PostMessages implements IJSONData,IDatabaseAdapter {
         return GetDatabaseAdapter<"PostMessage">(FirebaseAdapterFactory,"PostMessages");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {
             id: this.postID,
-            Messages: this.messages.map(message => JSON.parse(message.GetJsonData())) 
+            Messages: this.messages.map(message => message.GetJsonData()) 
         }
-        
-        return JSON.stringify(data);
+        return data;
     }
 
 }

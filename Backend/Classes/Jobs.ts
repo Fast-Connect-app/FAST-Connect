@@ -17,8 +17,8 @@ export class Jobs implements IDatabaseAdapter,IJSONData{
         return GetDatabaseAdapter<"Job">(FirebaseAdapterFactory,"Jobs");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {...this};
-        return JSON.stringify(data);
+        return data;
     }
 }
