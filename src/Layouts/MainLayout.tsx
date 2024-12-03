@@ -15,7 +15,6 @@ interface MainLayoutProps {
   handleMenuSelect: (menu: string) => void;
 }
 
-
 interface MainLayoutState {
   pageTitle: string;
   isChatOpen: boolean;
@@ -27,9 +26,7 @@ export interface PageTitleContextType {
   setPageTitle: (title: string) => void;
 }
 
-export const PageTitleContext = React.createContext<
-  PageTitleContextType | undefined
->(undefined);
+export const PageTitleContext = React.createContext<PageTitleContextType | undefined>(undefined);
 class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
   constructor(props: MainLayoutProps) {
     super(props);
@@ -41,16 +38,15 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
     };
   }
   async componentDidMount() {
-    auth.onAuthStateChanged(async (user:unknown) => {
+    auth.onAuthStateChanged(async (user: unknown) => {
       if (user) {
         const userAuth = UserAuthentication.GetInstance();
-        let userProfile: Profile | null =
-          await userAuth.GetCurrentUserProfile();
+        let userProfile: Profile | null = await userAuth.GetCurrentUserProfile();
         if (userProfile != null) {
           userProfile = userProfile as Profile;
           this.setState({
-            username: userProfile.GetUserName(),
-            profilePic: userProfile.GetProfilePic(),
+            username: userProfile.userName,
+            profilePic: userProfile.profilePic,
           });
         }
       } else {
@@ -71,18 +67,11 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
     const { isChatOpen } = this.state;
     let { username, profilePic } = this.state;
     if (username === null) username = "";
-    if (profilePic === null)
-      profilePic = "https://www.w3schools.com/w3images/avatar2.png";
+    if (profilePic === null) profilePic = "https://www.w3schools.com/w3images/avatar2.png";
 
     return (
       <PageTitleContext.Provider value={{ setPageTitle: this.setPageTitle }}>
-        <Box
-          className={`${styles["main-layout"]} ${
-            isChatOpen
-              ? styles["chat-open-layout"]
-              : styles["chat-closed-layout"]
-          }`}
-        >
+        <Box className={`${styles["main-layout"]} ${isChatOpen ? styles["chat-open-layout"] : styles["chat-closed-layout"]}`}>
           {/* Sidebar */}
           <Box className={styles.sidebar}>
             <SideBar />

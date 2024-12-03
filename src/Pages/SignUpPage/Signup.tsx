@@ -22,7 +22,7 @@ const Register = () => {
     setRegisterEnabled(false);
     const userAuth = UserAuthentication.GetInstance();
     try {
-      await userAuth.CreateUser(name, email, password, role);
+      await userAuth.CreateUser(name, email, password, new Date(dob), gender, role);
       await userAuth.SignUserIn(email, password);
       navigate("/HomePage");
     } catch (error: unknown) {
