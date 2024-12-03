@@ -77,6 +77,7 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
         <button
           id="searchUsersButton"
           onClick={() => this.DisplayUsers("searchUsersInputField")}
+          style={{ backgroundColor: "#007BFF", color: "white", border: "none", padding: "8px 16px", marginLeft : "15px",cursor: "pointer" }}
         >
           Search
         </button>

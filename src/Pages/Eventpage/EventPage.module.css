@@ -1,7 +1,7 @@
 /* Events.module.css */
 .pageContainer {
   padding: 2rem;
-  background-color: #ffffff;
+  background-color : var(--background-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--secondary-color);
   margin-bottom: 2rem;
 }
 
