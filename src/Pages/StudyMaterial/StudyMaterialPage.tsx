@@ -1,5 +1,6 @@
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
-import { Button, Grid, Card, Typography } from "@mui/material";
+import { Button, Card, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import styles from "./StudyMaterial.module.css";
 import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout";
 import { StudyMaterial } from "../../../Backend/Classes/StudyMaterial";
@@ -18,7 +19,7 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
     this.state = {
       data: null,
       error: null,
-      studyMaterialList1: [],
+      studyMaterialList: [],
       filterTerm: "",
       filteredStudyMaterialList: [],
     };
@@ -48,7 +49,7 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
       // Handle file upload logic here
       const reader = new FileReader();
       reader.onloadend = async () => {
-        const base64String = reader.result?.split(",")[1];
+        const base64String = typeof reader.result === "string" ? reader.result.split(",")[1] : "";
         try {
           const userAuth = UserAuthentication.GetInstance();
           const userID: string | undefined = userAuth.GetCurrentUserId();
@@ -75,7 +76,7 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
     }
   };
 
-  handleDownload = (index, fileName) => {
+  handleDownload = (index: number, fileName: string) => {
     const base64String = this.state.filteredStudyMaterialList[index];
     const linkSource = `data:application/octet-stream;base64,${base64String}`;
     const downloadLink = document.createElement("a");
@@ -94,14 +95,14 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
       <div>
         <div className={styles.topContainer}>
           <input name="searchFilter" className={styles.searchBar} placeholder="Search here..." onChange={(e) => this.filterContent(e.target.value)} />
-          <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()}>
+            <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()} sx={{ backgroundColor : "white", color: "black", marginRight : "1rem" }}>
             Add File
-          </Button>
+            </Button>
           <input type="file" id="fileInput" className={styles.hiddenFileInput} onChange={this.handleFileChange} />
         </div>
         <Grid container spacing={4}>
           {this.state.filteredStudyMaterialList.map((studyMat: StudyMaterial, index: number) => (
-            <Grid item xs={3} key={index}>
+            <Grid sx = {{xs : 3}} key={index}>
               <Card className={styles.studyItem}>
                 <img src={`data:image/png;base64,${studyMat.fileMaterial}`} className={styles.fileImage} />
                 <div className={styles.fileInfo}>

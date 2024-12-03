@@ -19,8 +19,6 @@
 }
 
 .addFileButton {
-    background-color: #1976d2;
-    color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -65,8 +63,8 @@
     /*margin: 0px;*/
     padding: 5px;
     display: fixed;
-    width: 95%;
-    height: 15vh;
+    width: 20vw;
+    height: 20vh;
     align-items: center;
     justify-content: flex-start;
 }

@@ -20,17 +20,17 @@ const ThemeToggle = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // useEffect(() => {
-  //   setTheme("dark");
-  // }, []);
-  // return null;
+  useEffect(() => {
+    setTheme("dark");
+  }, []);
+  return null;
 
-  return (
-    <button
-      onClick={() => setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"))}
-    >
-    </button>
-  );
+  // return (
+  //   <button
+  //     onClick={() => setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"))}
+  //   >
+  //   </button>
+  // );
 };
 
 export default ThemeToggle;
