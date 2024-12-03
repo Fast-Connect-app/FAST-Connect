@@ -18,10 +18,13 @@ import {
   PageTitleContextType,
 } from "../../Layouts/MainLayout";
 import AddPostDialog from "./AddPostDialog";
+import { Post as MyPost } from "../../../Backend/Classes/Post";
+import { Profile } from "../../../Backend/Classes/Profile";
+import { update } from "firebase/database";
 
 // Define the Post interface
 interface Post {
-  id: number;
+  postID: string;
   author: string;
   avatar: string;
   content: string;
@@ -32,7 +35,7 @@ interface Post {
 
 interface HomePageState extends AbstractPageState {
   posts: Post[];
-  selectedPostId: number | null; // Track the post for which comments are open
+  selectedPostId: string | null; // Track the post for which comments are open
   isAddPostOpen: boolean;
 }
 
@@ -41,50 +44,76 @@ class HomePage extends AbstractPage<{}, HomePageState> {
   componentDidMount() {
     const { setPageTitle } = this.context as PageTitleContextType;
     setPageTitle("Home Page");
+    this.UpdateData();
   }
   constructor(props: {}) {
     super(props);
     this.state = {
       data: null,
       error: null,
-      posts: [
-        {
-          id: 1,
-          author: "John Doe",
-          avatar: "https://i.pravatar.cc/150?img=1",
-          content:
-            "Check out this amazing view! This view is absolutely beautiful and worth sharing with the world. 🌍",
-          likes: 10,
-          liked: false,
-          mediaUrl: "https://via.placeholder.com/600x300", // Example image
-        },
-        {
-          id: 2,
-          author: "Jane Smith",
-          avatar: "https://i.pravatar.cc/150?img=2",
-          content:
-            "Had a great day at the beach 🏖️. The sun was shining, the waves were perfect, and it was just an amazing experience.",
-          likes: 20,
-          liked: false,
-          mediaUrl: "https://via.placeholder.com/600x300", // Example image
-        },
-      ],
+      posts: [],
       selectedPostId: null,
       isAddPostOpen: false,
     };
   }
 
-  handleReplyClick = (id: number) => {
+  async getprofile(authorId: string) {
+    let data = await Profile.GetDatabaseAdapter().LoadById(authorId);
+    const profileData = data as { userName: string; profilePic: string };
+    return {
+      userName: profileData.userName,
+      avatar: profileData.profilePic,
+    };
+  }
+
+  async UpdateData() {
+    let data = await MyPost.GetDatabaseAdapter().LoadAll();
+
+    if (Array.isArray(data)) {
+      const posts = await Promise.all(
+        data.map(async (post) => {
+          const postData = post as {
+            postID: string;
+            authorId: string;
+            likes: number;
+            content: string;
+            base64encoded: string;
+          };
+
+          // Await the result of getprofile (ensure it resolves before destructuring)
+          const profileData = await this.getprofile(postData.authorId);
+
+          // Destructure after promise resolves
+          const { userName, avatar } = profileData;
+
+          return {
+            postID: postData.postID,
+            author: userName, // Assign userName to author
+            avatar: avatar, // Assign avatar to avatar
+            likes: postData.likes,
+            liked: false,
+            content: postData.content,
+            mediaUrl: postData.base64encoded,
+          };
+        })
+      );
+
+      // Set the posts state
+      this.setState({ posts });
+    }
+  }
+
+  handleReplyClick = (postID: string) => {
     this.setState((prevState) => ({
-      selectedPostId: prevState.selectedPostId === id ? null : id,
+      selectedPostId: prevState.selectedPostId === postID ? null : postID,
     }));
   };
 
   // Handle the like button click
-  handleLike = (id: number) => {
+  handleLike = (postID: string) => {
     this.setState((prevState) => ({
       posts: prevState.posts.map((post) =>
-        post.id === id
+        post.postID === postID
           ? {
               ...post,
               likes: post.liked ? post.likes - 1 : post.likes + 1,
@@ -96,10 +125,10 @@ class HomePage extends AbstractPage<{}, HomePageState> {
   };
 
   // Handle read more action
-  handleReadMore = (id: number) => {
+  handleReadMore = (postID: string) => {
     this.setState((prevState) => ({
       posts: prevState.posts.map((post) =>
-        post.id === id
+        post.postID === postID
           ? {
               ...post,
               content: post.content + " (Read more...)", // You can adjust this as per your need
@@ -117,20 +146,21 @@ class HomePage extends AbstractPage<{}, HomePageState> {
 
   // Close the Add Post dialog
   handleCloseAddPost = () => {
+    console.log("calling this");
     this.setState({ isAddPostOpen: false });
   };
 
   // Add a new post
-  handleAddPost = (mediaFile: File | null, content: string) => {
+  handleAddPost = (mediaFile: string | null, content: string) => {
     if (mediaFile) {
       const newPost: Post = {
-        id: this.state.posts.length + 1,
+        postID: this.state.posts.length + "1",
         author: "New User",
         avatar: "https://i.pravatar.cc/150?img=3",
         content,
         likes: 0,
         liked: false,
-        mediaUrl: URL.createObjectURL(mediaFile), // Convert file to local URL for preview
+        mediaUrl: mediaFile, // Convert file to local URL for preview
       };
 
       this.setState((prevState) => ({
@@ -180,7 +210,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
         <div className={styles["homepage-container"]}>
           {posts.map((post) => (
             <Box
-              key={post.id}
+              key={post.postID}
               display="flex"
               justifyContent="center"
               alignItems="stretch" // Ensure both children (Post and Comments) match height
@@ -191,11 +221,11 @@ class HomePage extends AbstractPage<{}, HomePageState> {
               <Card
                 className={styles["homepage-card"]}
                 style={{
-                  flexBasis: selectedPostId === post.id ? "70%" : "50%",
+                  flexBasis: selectedPostId === post.postID ? "70%" : "50%",
                   maxWidth: "500px",
                   transition: "transform 0.3s ease",
                   transform:
-                    selectedPostId === post.id
+                    selectedPostId === post.postID
                       ? "translateX(-10%)"
                       : "translateX(0)",
                   display: "flex",
@@ -222,7 +252,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                   <Box className={styles["homepage-action-buttons"]}>
                     <IconButton
                       color={post.liked ? "primary" : "default"}
-                      onClick={() => this.handleLike(post.id)}
+                      onClick={() => this.handleLike(post.postID)}
                       disableRipple
                       className={styles["homepage-icon-button"]}
                     >
@@ -234,7 +264,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                     </IconButton>
                     <IconButton
                       color="default"
-                      onClick={() => this.handleReplyClick(post.id)}
+                      onClick={() => this.handleReplyClick(post.postID)}
                     >
                       <ReplyIcon />
                     </IconButton>
@@ -251,7 +281,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                       <Typography
                         variant="body2"
                         className={styles["homepage-read-more"]}
-                        onClick={() => this.handleReadMore(post.id)}
+                        onClick={() => this.handleReadMore(post.postID)}
                       >
                         Read More
                       </Typography>
@@ -261,7 +291,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
               </Card>
 
               {/* Comments Section */}
-              {selectedPostId === post.id && (
+              {selectedPostId === post.postID && (
                 <Box
                   style={{
                     flexBasis: "30%",
@@ -273,7 +303,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                     overflow: "hidden", // Prevent overflow
                   }}
                 >
-                  <Comments postId={post.id} />
+                  <Comments postId={post.postID} />
                 </Box>
               )}
             </Box>

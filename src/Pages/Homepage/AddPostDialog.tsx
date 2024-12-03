@@ -9,15 +9,17 @@ import {
   Box,
   Typography,
 } from "@mui/material";
+import { Post } from "../../../Backend/Classes/Post";
+import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
 
 interface AddPostDialogProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (mediaFile: File | null, content: string) => void;
+  onSubmit: (mediaFile: any, content: string) => void;
 }
 
 interface AddPostDialogState {
-  mediaFile: File | null;
+  mediaFile: any;
   mediaPreview: string | null;
   content: string;
 }
@@ -38,7 +40,6 @@ class AddPostDialog extends Component<AddPostDialogProps, AddPostDialogState> {
       const reader = new FileReader();
       reader.onload = () => {
         this.setState({
-          mediaFile: file,
           mediaPreview: reader.result as string,
         });
       };
@@ -52,9 +53,14 @@ class AddPostDialog extends Component<AddPostDialogProps, AddPostDialogState> {
     this.setState({ content: e.target.value });
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { mediaFile, content } = this.state;
     this.props.onSubmit(mediaFile, content);
+    let userId = UserAuthentication.GetInstance().GetCurrentUserId();
+    if (userId) {
+      let newPost = new Post(userId, 0, content, mediaFile);
+      await Post.GetDatabaseAdapter().SaveObject(newPost.GetJsonData());
+    }
     this.setState({ mediaFile: null, mediaPreview: null, content: "" }); // Reset form fields
   };
 
@@ -105,7 +111,7 @@ class AddPostDialog extends Component<AddPostDialogProps, AddPostDialogState> {
           <Button
             onClick={this.handleSubmit}
             color="primary"
-            disabled={!this.state.mediaFile || !content} // Disable button if fields are empty
+            disabled={!content} // Disable button if fields are empty
           >
             Post
           </Button>

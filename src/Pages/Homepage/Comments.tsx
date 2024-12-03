@@ -3,7 +3,7 @@ import { Box, Typography, Avatar, Button } from "@mui/material";
 import styles from "./Comments.module.css";
 
 interface CommentsProps {
-  postId: number;
+  postId: string;
 }
 
 interface Reply {
