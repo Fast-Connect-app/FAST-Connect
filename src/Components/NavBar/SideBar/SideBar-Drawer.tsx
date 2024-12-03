@@ -140,7 +140,7 @@ class SideBarDrawer extends Component<SideBarDrawerProps, SidebarDrawerState> {
         >
           <Box className={styles.mainDrawerContent}>
             <Box className={styles.logoContainer}>
-              <img src="vite.svg" alt="Company Logo" />
+              <img src="src\assets\logo.png" alt="Company Logo" />
             </Box>
             <Divider sx={{ marginBottom: 0 }} />
             {this.renderNavItems()}
