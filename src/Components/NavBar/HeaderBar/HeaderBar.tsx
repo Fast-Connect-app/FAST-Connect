@@ -18,7 +18,7 @@ interface HeaderBarState {
 class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
   constructor(props: HeaderBarProps) {
     super(props);
-    this.state= {
+    this.state = {
       anchorEl: null,
     };
   }
@@ -35,16 +35,14 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
   };
 
   async logoutUser(): Promise<void> {
-    try{
-     const userAuth:UserAuthentication = UserAuthentication.GetInstance();
-    await userAuth.SignUserOut();
-    return;
-    }
-    catch(error){
-      if(error instanceof Error){
+    try {
+      const userAuth: UserAuthentication = UserAuthentication.GetInstance();
+      await userAuth.SignUserOut();
+      return;
+    } catch (error) {
+      if (error instanceof Error) {
         console.error(error.message);
-      }
-      else{
+      } else {
         throw new Error("An unknown error occurred. Please try again.");
       }
     }
@@ -52,59 +50,46 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
 
   render() {
     const { anchorEl } = this.state;
-    const { handleMenuSelect,name,picURL } = this.props; // Access handleMenuSelect passed through props
+    const { handleMenuSelect, name, picURL } = this.props; // Access handleMenuSelect passed through props
     return (
       <div className={styles["header-bar"]}>
         {/* Profile section */}
         <Box className={styles["header-bar-box"]}>
-          <Avatar
-            alt={name}
-            src={picURL}
-            onClick={this.handleMenuClick}
-            className={styles["header-bar-avatar"]}
-          />
-          <Typography
-          
-          onClick={this.handleMenuClick} 
-          className={styles["header-bar-username"]}>
+          <Avatar alt={name} src={picURL} onClick={this.handleMenuClick} className={styles["header-bar-avatar"]} />
+          <Typography onClick={this.handleMenuClick} className={styles["header-bar-username"]}>
             {name}
-          
           </Typography>
         </Box>
 
         {/* Menu for Profile, Settings, and Logout */}
         <Box>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleMenuClose}
-        >
-          <MenuItem
-            onClick={() => {
-              this.handleMenuClose();
-              handleMenuSelect("/Profile"); // Use handleMenuSelect from props
-            }}
-          >
-            Profile
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              this.handleMenuClose();
-              handleMenuSelect("/"); // Use handleMenuSelect from props
-            }}
-          >
-            Settings
-          </MenuItem>
-          <MenuItem
-            onClick={async () => {
-              this.handleMenuClose();
-              await this.logoutUser();
-              handleMenuSelect("/Login"); // Use handleMenuSelect from props
-            }}
-          >
-            Logout
-          </MenuItem>
-        </Menu>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
+            <MenuItem
+              onClick={() => {
+                this.handleMenuClose();
+                handleMenuSelect("/ProfilePage"); // Use handleMenuSelect from props
+              }}
+            >
+              Profile
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                this.handleMenuClose();
+                handleMenuSelect("/"); // Use handleMenuSelect from props
+              }}
+            >
+              Settings
+            </MenuItem>
+            <MenuItem
+              onClick={async () => {
+                this.handleMenuClose();
+                await this.logoutUser();
+                handleMenuSelect("/Login"); // Use handleMenuSelect from props
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
         </Box>
       </div>
     );

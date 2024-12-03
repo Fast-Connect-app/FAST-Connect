@@ -2,18 +2,19 @@ import { Card, Box, Button, CardContent, TextField, Typography } from "@mui/mate
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
 import styles from "./Common.module.css"; // Import the CSS module
-import { AlumniProfile } from "../../../../Backend/Classes/AlumniProfile";
+import { Profile } from "../../../../Backend/Classes/Profile";
 
-const AlumniProfileCard = (props: { alumniProfile: AlumniProfile; onSave: (updatedProfile: AlumniProfile) => Promise<void> }) => {
+const ProfileCard = (props: { userProfile: Profile; onSave: (updatedProfile: Profile) => Promise<void> }) => {
   const [editing, setEditing] = useState(false);
   const [editingControlsEnabled, setEditingControlsEnabled] = useState(true);
-  const [editable, setEditable] = useState([props.alumniProfile.jobHistory, props.alumniProfile.dateOfGraduation]);
+  const [editable, setEditable] = useState([props.userProfile.userName, props.userProfile.rollNumber, props.userProfile.bio]);
 
-  const alumniProfile = props.alumniProfile;
+  const userProfile = props.userProfile;
   const onEditConfirm = async () => {
-    alumniProfile.jobHistory = editable[0];
-    alumniProfile.dateOfGraduation = editable[1];
-    await props.onSave(alumniProfile);
+    userProfile.bio = editable[2];
+    userProfile.rollNumber = editable[1];
+    userProfile.userName = editable[0];
+    await props.onSave(userProfile);
   };
   return (
     <Grid size={{ xs: 12, md: 8 }}>
@@ -106,4 +107,4 @@ const AlumniProfileCard = (props: { alumniProfile: AlumniProfile; onSave: (updat
   );
 };
 
-export default AlumniProfileCard;
+export default ProfileCard;

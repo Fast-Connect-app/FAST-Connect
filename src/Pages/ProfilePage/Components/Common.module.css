@@ -1,0 +1,15 @@
+.contactCard {
+    box-shadow: 3;
+}
+
+.contactCardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.contactHeading {
+    font-weight: bold;
+    align-self: flex-start;
+}
