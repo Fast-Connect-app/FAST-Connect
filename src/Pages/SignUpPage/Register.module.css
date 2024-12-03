@@ -28,3 +28,19 @@
 .linkContainer {
   justify-content: flex-end;
 }
+
+.radioButtons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.error{
+  background-color: red;
+  font-weight: bold;
+  color:white;
+  padding: 10px;
+  border-radius: 10px;
+  animation: fadeIn 0.5 ease-in-out;
+}

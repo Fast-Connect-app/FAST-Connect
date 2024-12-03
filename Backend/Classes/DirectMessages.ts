@@ -1,11 +1,11 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter,IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
-export class DirectMessages implements IDatabaseAdapter,IJSONData{
-    private userToUserId:string;
-    private messages:Message[] = [];
+export class DirectMessages implements IJSONData{
+    public userToUserId:string;
+    public messages:Message[] = [];
 
     constructor(_userToUserId:string, _message:Message){
         this.userToUserId = _userToUserId;
@@ -16,12 +16,11 @@ export class DirectMessages implements IDatabaseAdapter,IJSONData{
         return GetDatabaseAdapter<"DirectMessage">(FirebaseAdapterFactory,"DirectMessages",this.userToUserId,"Messages");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {
             userToUserId: this.userToUserId,
-            Messages: this.messages.map(message => JSON.parse(message.GetJsonData()))
+            Messages: this.messages.map(message => message.GetJsonData())
         }
-
-        return JSON.stringify(data);
+        return data;
     }
 }

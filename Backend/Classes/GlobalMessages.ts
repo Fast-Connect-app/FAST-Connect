@@ -1,20 +1,20 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter,IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 import { Message } from "./Message";
 
-export class GlobalMessages implements IDatabaseAdapter,IJSONData{
-    messages:Message[];
+export class GlobalMessages implements IJSONData{
+    public messages:Message[];
 
-    public GetDatabaseAdapter(){
+    public static GetDatabaseAdapter(){
         return GetDatabaseAdapter<"GlobalMessage">(FirebaseAdapterFactory,"GlobalMessage");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {
-            Messages: this.messages.map(message => JSON.parse(message.GetJsonData()))
+            Messages: this.messages.map(message => message.GetJsonData())
         }
 
-        return JSON.stringify(data);
+        return data;
     }
 }

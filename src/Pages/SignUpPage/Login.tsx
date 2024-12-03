@@ -64,7 +64,7 @@ const Login = () => {
             </Grid>
           </Grid>
           {errorMsg != "" && (
-            <Grid container className={styles.linkContainer}>
+            <Grid container className={(styles.linkContainer, styles.error)}>
               <Grid size={{ xs: 12 }}>{errorMsg}</Grid>
             </Grid>
           )}

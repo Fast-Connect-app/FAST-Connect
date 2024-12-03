@@ -1,3 +1,3 @@
 export interface ILoadById{
-    LoadById(id:string):Promise<string | null>;
+    LoadById(id:string):Promise<object | null>;
 }

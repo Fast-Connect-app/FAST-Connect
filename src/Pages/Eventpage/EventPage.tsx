@@ -23,22 +23,14 @@ import {
   PageTitleContext,
   PageTitleContextType,
 } from "../../Layouts/MainLayout"; // Import context correctly
-
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  image: string;
-  type: string;
-}
-
+import {Events} from "../../../Backend/Classes/Events"; // Import the Events class
 interface EventsPageState extends AbstractPageState {
   eventType: string;
   timeRange: string;
-  events: Event[];
-  filteredEvents: Event[];
+  events: Events[];
+  filteredEvents: Events[];
   openDialog: boolean; // Track dialog visibility
-  selectedEvent: Event | null; // Track selected event details
+  selectedEvent: Events | null; // Track selected event details
 }
 
 class Eventspage extends AbstractPage<{}, EventsPageState> {
@@ -52,42 +44,41 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
       error: "null",
       eventType: "all",
       timeRange: "any",
-      events: [
-        {
-          id: 1,
-          title: "Phil Collins: This Is The Day",
-          date: "10 Aug - 21 Oct 2018",
-          image: "https://via.placeholder.com/300x200",
-          type: "Exhibition",
-        },
-        {
-          id: 2,
-          title: "Swing, Soul, and Showsongs",
-          date: "16 Oct 2018",
-          image: "https://via.placeholder.com/300x200",
-          type: "Music",
-        },
-        {
-          id: 3,
-          title: "Chapter & Verse (Chorus Verse)",
-          date: "17 Oct 2018",
-          image: "https://via.placeholder.com/300x200",
-          type: "Music",
-        },
-      ],
+      events: [],
       filteredEvents: [],
       openDialog: false,
       selectedEvent: null,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Correctly access context here
     const { setPageTitle } = this.context as PageTitleContextType;
     setPageTitle("Events Page"); // Set the title when the component is mounted
-    this.setState({ filteredEvents: this.state.events });
+    //Get events from backend
+    try{
+      const eventsAdapter = Events.GetDatabaseAdapter();
+      const data = await eventsAdapter.LoadAll()
+      if(data!=null){
+        if(data instanceof Array){
+          const newEvents =data.map((event)=>Events.fromFirebaseJson(event));
+          this.setState({
+            events: newEvents,
+            filteredEvents: newEvents,
+          });
+        }
+    }
   }
-  handleDialogOpen = (event: Event) => {
+    catch(error){
+      if (error instanceof Error){
+        console.log(error.message);
+      }
+      else{
+        throw new Error("An unknown error occurred. Please try again.");
+      }
+    }
+  }
+  handleDialogOpen = (event: Events) => {
     this.setState({ openDialog: true, selectedEvent: event });
   };
 
@@ -95,28 +86,18 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
     this.setState({ openDialog: false, selectedEvent: null });
   };
 
-  handleEventTypeChange = (event: SelectChangeEvent<string>) => {
-    this.setState({ eventType: event.target.value });
-  };
-
   handleTimeRangeChange = (event: SelectChangeEvent<string>) => {
     this.setState({ timeRange: event.target.value });
   };
 
   filterEvents = () => {
-    const { events, eventType, timeRange } = this.state;
+    const { events, timeRange } = this.state;
     let filtered = events;
-
-    if (eventType !== "all") {
-      filtered = filtered.filter(
-        (event) => event.type.toLowerCase() === eventType.toLowerCase()
-      );
-    }
 
     if (timeRange !== "any") {
       const today = new Date();
       filtered = filtered.filter((event) => {
-        const eventDate = new Date(event.date.split(" ")[0]);
+        const eventDate = event.dateOfOccurence;
         if (timeRange === "today") {
           return eventDate.toDateString() === today.toDateString();
         } else if (timeRange === "this-week") {
@@ -153,14 +134,10 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
           {selectedEvent && (
             <Box>
               <Typography>
-                <strong>Date:</strong> {selectedEvent.date}
+                <strong>Date:</strong> {selectedEvent.dateOfOccurence.toDateString()}
               </Typography>
               <Typography>
-                <strong>Type:</strong> {selectedEvent.type}
-              </Typography>
-              <Typography>
-                <strong>Description:</strong> This is a placeholder description
-                for the event.
+                <strong>Description:</strong> {selectedEvent.description}
               </Typography>
             </Box>
           )}
@@ -175,27 +152,12 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
   }
 
   renderContent() {
+    console.log()
     return (
       <>
         {" "}
         <Box className={styles.pageContainer}>
           <Box className={styles.filtersSection}>
-            <FormControl variant="outlined" sx={{ minWidth: 150 }}>
-              <InputLabel id="event-type-label">Show me</InputLabel>
-              <Select
-                labelId="event-type-label"
-                value={this.state.eventType}
-                onChange={this.handleEventTypeChange}
-                label="Show me"
-              >
-                <MenuItem value="all">All Events</MenuItem>
-                <MenuItem value="music">Music</MenuItem>
-                <MenuItem value="exhibition">Exhibition</MenuItem>
-                <MenuItem value="theatre">Theatre</MenuItem>
-                <MenuItem value="dance">Dance</MenuItem>
-              </Select>
-            </FormControl>
-
             <FormControl variant="outlined" sx={{ minWidth: 150 }}>
               <InputLabel id="time-range-label">At any time</InputLabel>
               <Select
@@ -229,12 +191,12 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
                 </Box>
               ) : (
                 this.state.filteredEvents.map((event) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.id}>
+                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={event.eventID}>
                     <Card className={styles.card}>
                       <CardMedia
                         component="img"
                         height="140"
-                        image={event.image}
+                        image={event.picBase64Compressed}
                         alt={event.title}
                       />
                       <CardContent className={styles.cardContent}>
@@ -242,7 +204,7 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
                           {event.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          {event.date}
+                          {event.dateOfOccurence.toDateString()}
                         </Typography>
                       </CardContent>
                       <CardActions>
@@ -252,10 +214,6 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
                           onClick={() => this.handleDialogOpen(event)} // Pass the event data
                         >
                           More Info
-                        </Button>
-
-                        <Button size="small" color="secondary">
-                          Book Now
                         </Button>
                       </CardActions>
                     </Card>

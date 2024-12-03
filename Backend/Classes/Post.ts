@@ -1,6 +1,6 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 
 export class Post {
   private authorid: string;
@@ -27,6 +27,7 @@ export class Post {
     return GetDatabaseAdapter<"Post">(FirebaseAdapterFactory, "Posts");
   }
 
+  public GetJsonData(): object {
   public GetJsonData(): object {
     const data = { ...this };
     return data;

@@ -1,12 +1,12 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter,IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 
-export class Group implements IDatabaseAdapter,IJSONData{
-    private name:string;
-    private description: string;
-    private usersList:string[] = [];
-    private groupAdminList: string[] = [];
+export class Group implements IJSONData{
+    public name:string;
+    public description: string;
+    public usersList:string[] = [];
+    public groupAdminList: string[] = [];
 
     constructor(_name:string, _description:string, _usersList: string[], _originalAdmin:string){
         this.name = _name;
@@ -16,12 +16,12 @@ export class Group implements IDatabaseAdapter,IJSONData{
         this.groupAdminList.push(_originalAdmin)
     }
 
-    public GetDatabaseAdapter() {
+    public static GetDatabaseAdapter() {
         return GetDatabaseAdapter<"Group">(FirebaseAdapterFactory,"Groups");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {...this};
-        return JSON.stringify(data);
+        return data;
     }
 }

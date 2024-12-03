@@ -1,3 +1,3 @@
 export interface ISaveById{
-    SaveById(id:string,data):Promise<boolean>;
+    SaveById(id:string,data:any):Promise<boolean>;
 }

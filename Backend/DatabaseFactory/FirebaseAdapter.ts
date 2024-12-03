@@ -1,7 +1,6 @@
 import { IDelete } from "../DatabaseInterfaces/IDelete";
 import { ILoadAll } from "../DatabaseInterfaces/ILoadAll";
 import { ILoadById } from "../DatabaseInterfaces/ILoadById";
-import { ILoadForUser } from "../DatabaseInterfaces/ILoadForUser";
 import { ILoadOnChange } from "../DatabaseInterfaces/ILoadOnChange";
 import { ISaveById } from "../DatabaseInterfaces/ISaveById";
 import { ISaveObject } from "../DatabaseInterfaces/ISaveObject";
@@ -78,7 +77,7 @@ export class FirebaseAdapter
    * Loads all documents from the collection or sub-collection.
    * @returns A promise that resolves to a JSON string of all documents or null if an error occurs.
    */
-  async LoadAll(): Promise<string | null> {
+  async LoadAll(): Promise<object | null> {
     try {
       let querySnapshot;
       if (this.parentDocumentId && this.subCollectionName) {
@@ -100,7 +99,7 @@ export class FirebaseAdapter
         ...doc.data(),
       }));
 
-      return JSON.stringify(data);
+      return data;
     } catch (error) {
       console.error("Error loading documents:", error);
       return null;
@@ -111,7 +110,7 @@ export class FirebaseAdapter
    * @param id - The ID of the document to be loaded.
    * @returns A promise that resolves to a JSON string of the document or null if an error occurs.
    */
-  async LoadById(id: string): Promise<string | null> {
+  async LoadById(id: string): Promise<object | null> {
     try {
       let querySnapshot;
       if (this.parentDocumentId && this.subCollectionName) {
@@ -130,7 +129,7 @@ export class FirebaseAdapter
 
       //Transform data into JSON
       const data = { id: querySnapshot.id, ...querySnapshot.data() };
-      return JSON.stringify(data);
+      return data;
     } catch (error) {
       console.error("Error loading documents with id:", error);
       return null;
@@ -200,7 +199,7 @@ export class FirebaseAdapter
    * @param uid - The UID of the member.
    * @returns A promise that resolves to a JSON string of the documents or null if an error occurs.
    */
-  async LoadForMember(uid: string): Promise<string | null> {
+  async LoadForMember(uid: string): Promise<object | null> {
     try {
       let querySnapshot;
       if (this.parentDocumentId && this.subCollectionName) {
@@ -224,7 +223,7 @@ export class FirebaseAdapter
         ...doc.data(),
       }));
 
-      return JSON.stringify(data);
+      return data;
     } catch (error) {
       console.error("Couldnt delete due to:", error);
       return null;
@@ -236,7 +235,7 @@ export class FirebaseAdapter
    * @param name - The name to be matched.
    * @returns A promise that resolves to a JSON string of the documents or null if an error occurs.
    */
-  async LoadByName(field: string, name: string): Promise<string | null> {
+  async LoadByName(field: string, name: string): Promise<object | null> {
     try {
       let querySnapshotName;
       if (this.parentDocumentId && this.subCollectionName) {
@@ -314,7 +313,7 @@ export class FirebaseAdapter
    * @param iteration - The iteration number to determine the offset.
    * @returns A promise that resolves to a JSON string of the documents or null if an error occurs.
    */
-  async LoadLimited(iteration: number): Promise<string | null> {
+  async LoadLimited(iteration: number): Promise<object | null> {
     try {
       let collectionRef;
       if (this.parentDocumentId && this.subCollectionName) {
@@ -352,8 +351,7 @@ export class FirebaseAdapter
         id: doc.id,
         ...doc.data(),
       }));
-
-      return JSON.stringify(result);
+      return result;
     } catch (error) {
       console.error("Error loading limited messages:", error);
       return null;

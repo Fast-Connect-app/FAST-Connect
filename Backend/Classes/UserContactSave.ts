@@ -1,11 +1,11 @@
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
-import { IDatabaseAdapter, IJSONData } from "./IDatabaseAdapter";
+import { IJSONData } from "./IDatabaseAdapter";
 
-export class UserContactSave implements IDatabaseAdapter,IJSONData{
-    private savingUserId:string;
-    private savedUserId:string;
-    private savedUserName:string;
+export class UserContactSave implements IJSONData{
+    public savingUserId:string;
+    public savedUserId:string;
+    public savedUserName:string;
 
     constructor(_savingUserId:string, _savedUserId:string, _savedUserName:string){
         this.savingUserId = _savingUserId;
@@ -13,12 +13,12 @@ export class UserContactSave implements IDatabaseAdapter,IJSONData{
         this.savedUserName = _savedUserName;
     }
 
-    public GetDatabaseAdapter() {
+    public static GetDatabaseAdapter() {
         return GetDatabaseAdapter<"UserContactSave">(FirebaseAdapterFactory,"UserContactSaves");
     }
 
-    public GetJsonData(): string {
+    public GetJsonData(): object {
         const data = {...this};
-        return JSON.stringify(data);
+        return data;
     }
 }

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Box, Avatar, Menu, MenuItem, Typography } from "@mui/material";
 import styles from "./HeaderBar.module.css";
 import { withMenuNavigation } from "../../../router";
-
+import { UserAuthentication } from "../../../../Backend/UserAuth/UserAuthentication";
 // Define props interface to include handleMenuSelect
 interface HeaderBarProps {
   handleMenuSelect: (route: string) => void; // This is the function to navigate
@@ -33,6 +33,22 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
   handleMenuClose = () => {
     this.setState({ anchorEl: null }); // Close the menu
   };
+
+  async logoutUser(): Promise<void> {
+    try{
+     const userAuth:UserAuthentication = UserAuthentication.GetInstance();
+    await userAuth.SignUserOut();
+    return;
+    }
+    catch(error){
+      if(error instanceof Error){
+        console.error(error.message);
+      }
+      else{
+        throw new Error("An unknown error occurred. Please try again.");
+      }
+    }
+  }
 
   render() {
     const { anchorEl } = this.state;
@@ -80,9 +96,10 @@ class HeaderBar extends Component<HeaderBarProps, HeaderBarState> {
             Settings
           </MenuItem>
           <MenuItem
-            onClick={() => {
+            onClick={async () => {
               this.handleMenuClose();
-              handleMenuSelect("/"); // Use handleMenuSelect from props
+              await this.logoutUser();
+              handleMenuSelect("/Login"); // Use handleMenuSelect from props
             }}
           >
             Logout
