@@ -139,10 +139,6 @@ class Eventspage extends AbstractPage<{}, EventsPageState> {
                 <MenuItem value="date-range">Date Range</MenuItem>
               </Select>
             </FormControl>
-
-            <Button variant="contained" color="primary" onClick={this.filterEvents}>
-              Find Events
-            </Button>
           </Box>
 
           <Box className={styles.eventsGridContainer}>
