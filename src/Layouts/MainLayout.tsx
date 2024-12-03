@@ -8,6 +8,7 @@ import styles from "./MainLayout.module.css";
 import { Profile } from "../../Backend/Classes/Profile";
 import { auth } from "../../Backend/FirebaseApp";
 import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
+import { UserSearchComponent } from "./UserSearch";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { withMenuNavigation } from "../router";
 interface MainLayoutProps {
@@ -80,6 +81,9 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           {/* Content Header */}
           <Box className={styles.contentheader}>
             <h2>{this.state.pageTitle}</h2>
+            <div className={styles.userSearch}>
+              <UserSearchComponent/>
+            </div>
           </Box>
 
           {/* Main Content */}
