@@ -2,7 +2,6 @@ import { LockOutlined } from "@mui/icons-material";
 import { Container, CssBaseline, Box, Avatar, Typography, TextField, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import styles from "./Login.module.css"; // Import the CSS module
 import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
 import { useNavigate } from "react-router-dom";
@@ -53,16 +52,14 @@ const Login = () => {
             }}
           />
 
+          <Grid container style={{ marginTop: "2rem",  marginBottom : "2rem"}}>
           {loginEnabled && (
             <Button fullWidth variant="contained" className={styles.loginButton} onClick={handleLogin}>
               Login
             </Button>
           )}
-          <Grid container className={styles.linkContainer}>
-            <Grid size={{ xs: 12 }}>
-              <Link to="/register">Don't have an account? Register</Link>
-            </Grid>
           </Grid>
+          
           {errorMsg != "" && (
             <Grid container className={(styles.linkContainer, styles.error)}>
               <Grid size={{ xs: 12 }}>{errorMsg}</Grid>

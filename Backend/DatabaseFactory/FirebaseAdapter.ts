@@ -25,7 +25,6 @@ export class FirebaseAdapter
     ILoadOnChange,
     ISaveById,
     ISaveObject,
-    ILoadForUser,
     IDelete,
     ILoadLimited,
     ILoadForMember,
@@ -135,37 +134,6 @@ export class FirebaseAdapter
       return null;
     }
   }
-  /**
-   * Loads documents for a specific user by their UID.
-   * @param uid - The UID of the user.
-   * @returns A promise that resolves to a JSON string of the documents or null if an error occurs.
-   */
-  async LoadForUser(uid: string): Promise<string | null> {
-    try {
-      let querySnapshot;
-
-      // Fetch documents from the sub-collection or main collection
-      if (this.parentDocumentId && this.subCollectionName) {
-        querySnapshot = await db
-          .collection(this.collectionName)
-          .doc(this.parentDocumentId)
-          .collection(this.subCollectionName)
-          .get();
-      } else {
-        querySnapshot = await db.collection(this.collectionName).get();
-      }
-
-      // Filter documents where the ID contains the substring `uid`
-      const data = querySnapshot.docs
-        .filter((doc) => doc.id.includes(uid)) // Check if the ID contains the substring `uid`
-        .map((doc) => ({ id: doc.id, ...doc.data() }));
-
-      return JSON.stringify(data);
-    } catch (error) {
-      console.error("Error loading documents for user:", error);
-      return null;
-    }
-  }
 
   /**
    * Deletes a document by its ID from the collection or sub-collection.
@@ -261,7 +229,7 @@ export class FirebaseAdapter
         ...doc.data(),
       }));
 
-      return JSON.stringify(data);
+      return data;
     } catch (error) {
       console.error("Couldnt delete due to:", error);
       return null;
@@ -362,7 +330,7 @@ export class FirebaseAdapter
    * @param data - The data to be saved.
    * @returns A promise that resolves to true if the document is saved successfully, otherwise false.
    */
-  async SaveObject(data: DocumentData): Promise<boolean> {
+  async SaveObject(data: DocumentData): Promise<string> {
     try {
       let docRef;
 
@@ -378,11 +346,11 @@ export class FirebaseAdapter
         docRef = db.collection(this.collectionName).doc();
       }
 
-      await docRef.set(data);
-      return true;
+      await docRef.set({id:docRef.id,...data});
+      return docRef.id;
     } catch (error) {
       console.error("Couldn't Save Data because:", error);
-      return false;
+      return "";
     }
   }
   /**
@@ -407,7 +375,7 @@ export class FirebaseAdapter
         docRef = db.collection(this.collectionName).doc(id);
       }
 
-      await docRef.set(data);
+      await docRef.set({id:id,...data});
       return true;
     } catch (error) {
       console.error("Couldn't Save Data because:", error);

@@ -22,10 +22,8 @@ const ThemeToggle = () => {
 
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      style={{ width: "100px", fontSize: "10px" }}
+      onClick={() => setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"))}
     >
-      Switch to {theme === "dark" ? "Light" : "Dark"} Theme
     </button>
   );
 };
@@ -35,6 +33,7 @@ export default ThemeToggle;
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
+    <ThemeToggle/>
       <App />
     </BrowserRouter>
   </StrictMode>
