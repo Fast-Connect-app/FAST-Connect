@@ -10,8 +10,12 @@ import { auth } from "../../../Backend/FirebaseApp";
 import ProfileCard from "./Components/ProfileCard";
 import StudentProfileCard from "./Components/StudentProfile";
 import AlumniProfileCard from "./Components/AlumniProfile";
+import { AlumniProfile } from "../../../Backend/Classes/AlumniProfile";
+import { StudentProfile } from "../../../Backend/Classes/StudentProfile";
 interface ProfilePageState extends AbstractPageState {
   user: Profile | null;
+  alumni: AlumniProfile | null;
+  student: StudentProfile | null;
   loading: boolean;
 }
 
@@ -23,9 +27,12 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
       data: null,
       error: null,
       user: null,
+      alumni: null,
+      student: null,
       loading: true,
     };
     this.onProfileEdit = this.onProfileEdit.bind(this);
+    this.onAlumniProfileEdit = this.onAlumniProfileEdit.bind(this);
   }
 
   async componentDidMount() {
@@ -36,9 +43,22 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
         if (user) {
           const userAuth = UserAuthentication.GetInstance();
           const userProfile: Profile | null = await userAuth.GetCurrentUserProfile();
+          let _alumni = null;
+          let _student = null;
           if (userProfile != null) {
+            if (userProfile.type == "alumni") {
+              const alumniDatabaseAdapter = AlumniProfile.GetDatabaseAdapter();
+              const alumniJSON = await alumniDatabaseAdapter.LoadById(userProfile.userId);
+              _alumni = AlumniProfile.fromFirebaseJson(alumniJSON);
+            } else {
+              const studentDatabaseAdapter = StudentProfile.GetDatabaseAdapter();
+              const studentJson = await studentDatabaseAdapter.LoadById(userProfile.userId);
+              _student = StudentProfile.FromFirebaseJson(studentJson);
+            }
             this.setState({
               user: userProfile,
+              alumni: _alumni,
+              student: _student,
               loading: false,
             });
           }
@@ -67,15 +87,40 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
       if (error instanceof Error) console.log(error.message);
     }
   }
+
+  async onAlumniProfileEdit(alumniProfile: AlumniProfile): Promise<void> {
+    try {
+      const userAuth = UserAuthentication.GetInstance();
+      const userID: string | undefined = userAuth.GetCurrentUserId();
+      if (typeof userID === "string" && alumniProfile instanceof AlumniProfile) {
+        const alumniProfileAdapter = AlumniProfile.GetDatabaseAdapter();
+        await alumniProfileAdapter.Modify(userID, alumniProfile.GetJsonData());
+        this.setState({
+          alumni: alumniProfile,
+        });
+      }
+      return;
+    } catch (error) {
+      if (error instanceof Error) console.log(error.message);
+    }
+  }
+
   render() {
     const { user, loading } = this.state;
-
+    let { alumni, student } = this.state;
     if (loading) {
       return <Typography>Loading...</Typography>;
     }
 
     if (!user) {
       return <Typography>Error: User not found</Typography>;
+    }
+
+    if (alumni == null) {
+      alumni = new AlumniProfile(null, null);
+    }
+    if (student == null) {
+      student = new StudentProfile(null, null);
     }
 
     return (
@@ -147,7 +192,7 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
               </CardContent>
             </Card>
           </Grid>
-          {user.type == "alumni" ? <AlumniProfileCard></AlumniProfileCard> : <StudentProfileCard userProfile={user} onSave={this.onProfileEdit}></StudentProfileCard>}
+          {user.type == "alumni" ? <AlumniProfileCard alumniProfile={alumni} onSave={this.onAlumniProfileEdit}></AlumniProfileCard> : <Card></Card>}
         </Grid>
       </Box>
     );

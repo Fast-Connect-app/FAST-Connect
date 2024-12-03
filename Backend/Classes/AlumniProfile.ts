@@ -1,6 +1,7 @@
 import { IJSONData } from "./IDatabaseAdapter.ts";
 import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactory";
 import { GetDatabaseAdapter } from "../DatabaseFactory/DatabaseAdapterFactory";
+import { Timestamp } from "firebase-admin/firestore";
 
 export class Job {
   public jobTitle: string;
@@ -15,8 +16,10 @@ export class Job {
     this.endDate = _endDate;
   }
 
-  public static fromFirebaseJson(data: { jobTitle: string; companyName: string; startDate: Date; endDate: Date }): Job {
-    return new Job(data.jobTitle, data.companyName, data.startDate, data.endDate);
+  public static fromFirebaseJson(data: { jobTitle: string; companyName: string; startDate: Timestamp; endDate: Timestamp }): Job {
+    const newstartDate = new Date(data.startDate.seconds * 1000 + data.startDate.nanoseconds / 1000000);
+    const newendDate = new Date(data.endDate.seconds * 1000 + data.endDate.nanoseconds / 1000000);
+    return new Job(data.jobTitle, data.companyName, newstartDate, newendDate);
   }
 
   public GetJsonData(): object {

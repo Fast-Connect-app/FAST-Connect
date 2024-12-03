@@ -25,18 +25,19 @@ export class UserAuthentication {
   async CreateUser(_name: string, _email: string, _password: string, _dateOfBirth: Date, _gender: string, _type: string): Promise<void> {
     try {
       const user = await auth.createUserWithEmailAndPassword(_email, _password);
+      if (user.user == null) throw Error;
       const profileAdapter = Profile.GetDatabaseAdapter();
       //Map a sample profile to DocumentData
-      const saveProfile: Profile = new Profile("", _email, _name, _dateOfBirth, _gender, "", "", "", _type);
-      if (user.user != null) profileAdapter.SaveById(user.user?.uid, saveProfile.GetJsonData());
+      const saveProfile: Profile = new Profile(user.user.uid, _email, _name, _dateOfBirth, _gender, "", "", "", _type);
+      profileAdapter.SaveById(user.user.uid, saveProfile.GetJsonData());
       if (_type === "student") {
         const studentProfileAdapter = StudentProfile.GetDatabaseAdapter();
         const studentProfile = new StudentProfile(null, null);
-        studentProfileAdapter.SaveById(user.user?.uid, studentProfile.GetJsonData());
+        studentProfileAdapter.SaveById(user.user.uid, studentProfile.GetJsonData());
       } else if (_type === "alumni") {
         const alumniProfileAdapter = AlumniProfile.GetDatabaseAdapter();
         const alumniProfile = new AlumniProfile(null, null);
-        alumniProfileAdapter.SaveById(user.user?.uid, alumniProfile.GetJsonData());
+        alumniProfileAdapter.SaveById(user.user.uid, alumniProfile.GetJsonData());
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
