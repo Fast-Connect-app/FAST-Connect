@@ -1,0 +1,45 @@
+.topContainer {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.searchContainer {
+    align-items: right;
+    justify-content: right;
+}
+
+.studyItem {
+    display: flex;
+    border-color: black;
+    border-width: 5px;
+    border-radius: 30px;
+    margin: 10px;
+    padding: 5px;
+    display: fixed;
+    width: 95%;
+    height: 15vh;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.studyGrid {
+    border-color: black;
+    border-width: 10px;
+    margin: 10px;
+    display: flex;
+    width: 100%;
+}
+
+.iconImg {
+    width: 35%;
+}
+
+.fileInfo {
+    width: 65%;
+    height: 100%;
+    display: flex; 
+    flex-direction: column;
+    align-self: center;
+    justify-content: space-between;
+}
+

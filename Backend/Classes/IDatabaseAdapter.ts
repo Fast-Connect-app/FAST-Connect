@@ -1,3 +1,3 @@
-export interface IJSONData{
-    GetJsonData():object;
+export interface IJSONData {
+  GetJsonData(): object;
 }
