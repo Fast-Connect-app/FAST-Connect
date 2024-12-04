@@ -8,7 +8,7 @@ import styles from "./MainLayout.module.css";
 import { Profile } from "../../Backend/Classes/Profile";
 import { auth } from "../../Backend/FirebaseApp";
 import GlobalChat from "../Components/NavBar/GlobalChatBar/GlobalChat";
-import { UserSearchComponent } from "./UserSearch";
+import UserSearchComponent from "./UserSearch";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { withMenuNavigation } from "../router";
 interface MainLayoutProps {
@@ -118,7 +118,7 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           )}
 
           {/* Chat Toggle Button */}
-            <IconButton
+          <IconButton
             onClick={this.toggleChat}
             sx={{
               position: "fixed",
@@ -128,11 +128,11 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
               color: "black",
               zIndex: 1000,
               backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent background
-              '&:hover': {
-              backgroundColor: "rgba(255, 255, 255, 0.7)", // Darker on hover
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.7)", // Darker on hover
               },
             }}
-            >
+          >
             {isChatOpen ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </Box>

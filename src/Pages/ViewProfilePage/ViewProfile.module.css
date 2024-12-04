@@ -1,0 +1,60 @@
+/* stylesheet.module.css */
+
+.pageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 2rem;
+}
+
+.profileCard {
+  box-shadow: 3;
+}
+
+.profileCardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatar {
+  background-color: var(--mui-primary-main);
+  margin-bottom: 10%;
+}
+
+.followMessageButtons {
+  margin-top: 2rem;
+}
+
+
+
+
+
+.socialLinksCard {
+  box-shadow: 3;
+  height: 100%;
+}
+
+.socialLinksContent {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.projectCard {
+  box-shadow: 3;
+}
+
+.projectCardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.projectTitle {
+  font-weight: bold;
+  align-self: flex-start;
+}
