@@ -20,7 +20,6 @@ import {
 import AddPostDialog from "./AddPostDialog";
 import { Post as MyPost } from "../../../Backend/Classes/Post";
 import { Profile } from "../../../Backend/Classes/Profile";
-import { update } from "firebase/database";
 
 // Define the Post interface
 interface Post {
@@ -30,7 +29,7 @@ interface Post {
   content: string;
   likes: number;
   liked: boolean;
-  mediaUrl: string; // URL of the picture or video
+  mediaUrl: string | null; // URL of the picture or video
 }
 
 interface HomePageState extends AbstractPageState {
@@ -62,7 +61,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
     const profileData = data as { userName: string; profilePic: string };
     return {
       userName: profileData.userName,
-      avatar: profileData.profilePic,
+      avatar: profileData.profilePic || "https://www.w3schools.com/w3images/avatar2.png",
     };
   }
 
@@ -73,21 +72,26 @@ class HomePage extends AbstractPage<{}, HomePageState> {
       const posts = await Promise.all(
         data.map(async (post) => {
           const postData = post as {
-            postID: string;
-            authorId: string;
+            id: string;
+            authorid: string;
             likes: number;
             content: string;
             base64encoded: string;
           };
 
+          console.log("authorId")
+          console.log(postData.authorid)
           // Await the result of getprofile (ensure it resolves before destructuring)
-          const profileData = await this.getprofile(postData.authorId);
+          const profileData = await this.getprofile(postData.authorid);
 
-          // Destructure after promise resolves
-          const { userName, avatar } = profileData;
+          console.log("profileData");
+          console.log(profileData);
+
+            // Destructure after promise resolves
+            const { userName, avatar } = profileData;
 
           return {
-            postID: postData.postID,
+            postID: postData.id,
             author: userName, // Assign userName to author
             avatar: avatar, // Assign avatar to avatar
             likes: postData.likes,
@@ -152,23 +156,22 @@ class HomePage extends AbstractPage<{}, HomePageState> {
 
   // Add a new post
   handleAddPost = (mediaFile: string | null, content: string) => {
-    if (mediaFile) {
+   
       const newPost: Post = {
         postID: this.state.posts.length + "1",
         author: "New User",
         avatar: "https://i.pravatar.cc/150?img=3",
-        content,
+        content: content,
         likes: 0,
         liked: false,
-        mediaUrl: mediaFile, // Convert file to local URL for preview
+        mediaUrl: mediaFile ? mediaFile : null , // Convert file to local URL for preview
       };
 
       this.setState((prevState) => ({
         posts: [newPost, ...prevState.posts],
         isAddPostOpen: false,
       }));
-    }
-  };
+    };
 
   renderContent() {
     const { posts, selectedPostId, isAddPostOpen } = this.state;
@@ -230,49 +233,32 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                       : "translateX(0)",
                   display: "flex",
                   flexDirection: "column",
+                  backgroundColor: "#f9f9f9",
                 }}
               >
                 <CardMedia
                   className={styles["homepage-card-media"]}
-                  style={{
-                    backgroundImage: `url(${post.mediaUrl})`,
-                    height: "200px", // Adjust as needed for media height
-                  }}
+                  // style={{
+                  // backgroundImage: `url(${post.mediaUrl})`,
+                  // height: "200px", // Adjusted for smaller media height
+                  // backgroundSize: "contain", // Ensure the image fits within the box
+                  // backgroundRepeat: "no-repeat",
+                  // backgroundPosition: "centre",
+                  // }}
                 >
                   <Box className={styles["homepage-author-info"]}>
-                    <Avatar
-                      src={post.avatar}
-                      alt={post.author}
-                      className={styles["homepage-author-avatar"]}
-                    />
-                    <Typography variant="subtitle1" marginLeft={2}>
-                      {post.author}
-                    </Typography>
+                  <Avatar
+                    src={post.avatar}
+                    alt={post.author}
+                    className={styles["homepage-author-avatar"]}
+                  />
+                  <Typography variant="subtitle1" marginLeft={2}>
+                    {post.author} 
+                  </Typography>
                   </Box>
-                  <Box className={styles["homepage-action-buttons"]}>
-                    <IconButton
-                      color={post.liked ? "primary" : "default"}
-                      onClick={() => this.handleLike(post.postID)}
-                      disableRipple
-                      className={styles["homepage-icon-button"]}
-                    >
-                      <Typography variant="overline">{post.likes}</Typography>
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton color="default">
-                      <ShareIcon />
-                    </IconButton>
-                    <IconButton
-                      color="default"
-                      onClick={() => this.handleReplyClick(post.postID)}
-                    >
-                      <ReplyIcon />
-                    </IconButton>
-                  </Box>
-                </CardMedia>
-                <CardContent className={styles["homepage-card-content"]}>
-                  <Box padding={3} textAlign="left">
-                    <Typography variant="body1">
+                  <Box className={styles["homepage-card-content"]}>
+                    
+                  <Typography variant="body1">
                       {post.content.length > 100
                         ? `${post.content.slice(0, 100)}...`
                         : post.content}
@@ -286,7 +272,57 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                         Read More
                       </Typography>
                     )}
+                  <hr></hr>
                   </Box>
+                  <Box className={styles["homepage-action-buttons"]}>
+                  <IconButton
+                    color={post.liked ? "primary" : "default"}
+                    onClick={() => this.handleLike(post.postID)}
+                    disableRipple
+                    className={styles["homepage-icon-button"]}
+                  >
+                    <Typography variant="overline">{post.likes}</Typography>
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton color="default">
+                    <ShareIcon />
+                  </IconButton>
+                    <IconButton
+                    color="default"
+                    onClick={() => this.handleReplyClick(post.postID)}
+                    >
+                    <ReplyIcon />
+                    </IconButton>
+                    </Box>
+                    {post.mediaUrl && (
+                        <Box padding={3} display="flex" justifyContent="center">
+                        <CardMedia
+                        component="img"
+                        image={post.mediaUrl}
+                        alt="Media"
+                        className={styles["homepage-media"]}
+                        style={{
+                        maxHeight: "250px",
+                        marginBottom : "10px",
+                        width: "auto", // Adjust width to fit the image size
+                        objectFit: "contain",
+                        transition: "transform 0.3s ease",
+                        border: "2px solid black", // Add border
+                        borderRadius: "8px", // Add border radius for rounded corners
+                        boxShadow: "0 14px 18px rgba(0, 0, 0, 0.1)", // Add shadow for frame effect
+                        }}
+                        onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                        }}
+                        />
+                        </Box>
+                    )}
+                </CardMedia>
+                <CardContent className={styles["homepage-card-content"]}>
+               
                 </CardContent>
               </Card>
 

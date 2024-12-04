@@ -35,17 +35,6 @@ interface Job {
   salary:number,
 }
 
-let jobsData: Job[] = [
-  {
-    id: "1",
-    title: "Data Science Engineer, Geospatial",
-    location: "Boston",
-    category: "Data Science",
-    description:"Why",
-    employer:"me",
-    salary:2000,
-  },
-];
 
 interface JobPageState extends AbstractPageState {
   selectedCategory: string;
@@ -53,6 +42,7 @@ interface JobPageState extends AbstractPageState {
   openDialog: boolean; // Track dialog visibility
   selectedJob: Job | null; // Track selected event details
   open:boolean,
+  jobsData: Job[],
   isAlumni:boolean,
 }
 
@@ -66,6 +56,7 @@ class JobPage extends AbstractPage<{}, JobPageState> {
       selectedLocation: "All locations",
       openDialog: false,
       selectedJob: null,
+      jobsData:[],
       open: false,
       isAlumni:false,
     };
@@ -94,7 +85,8 @@ class JobPage extends AbstractPage<{}, JobPageState> {
           </Button>
           <Button
             onClick={ async () => {
-              this.setState({open:false});
+              this.setState({open:false
+              });
 
               let titleElement = document.getElementById("jobNameField") as HTMLInputElement;
               let descElement = document.getElementById("jobDescField") as HTMLInputElement;
@@ -119,8 +111,8 @@ class JobPage extends AbstractPage<{}, JobPageState> {
               if(profile === null)
                 return;
               let name = profile.userName;
-
-              jobsData.push({
+              let newjobsData=this.state.jobsData;
+              newjobsData.push({
                 id: id,
                 title:job.title,
                 description:job.description,
@@ -129,6 +121,10 @@ class JobPage extends AbstractPage<{}, JobPageState> {
                 salary:job.salary,
                 employer:name,
               });
+              this.setState({
+                jobsData:newjobsData
+              })
+              
             }}
             color="secondary"
           >
@@ -157,22 +153,21 @@ class JobPage extends AbstractPage<{}, JobPageState> {
 
   async LoadJobs(){
     try{
-    console.log("hello Load Jobs");
     let jobAdapter = Jobs.GetDatabaseAdapter();
     let dbJobs = await jobAdapter.LoadAll();
     if(!dbJobs)
       return;
 
     
-    jobsData = [];
-    dbJobs.forEach(async (dbJob:any) => {
+    let newJobsData:Job[]= [];
+     dbJobs.forEach(async (dbJob:any) => {
       let profileAdapter = Profile.GetDatabaseAdapter();
       const profile = await profileAdapter.LoadById(dbJob.ownerUserId);
       const user:Profile = Profile.fromFirebaseJson(profile);
       
       let userName = user.userName;
       if(user){
-        jobsData.push({
+        newJobsData.push({
           id:dbJob.id,
           title:dbJob.title,
           description:dbJob.description,
@@ -181,9 +176,12 @@ class JobPage extends AbstractPage<{}, JobPageState> {
           employer:userName,
           location:dbJob.location
         });
+        this.setState({
+          jobsData:newJobsData
+        })
       }
-      console.log(jobsData);
     });
+    
   }
   catch(e){
     if(e instanceof Error){
@@ -211,7 +209,6 @@ class JobPage extends AbstractPage<{}, JobPageState> {
     this.setState({ selectedLocation: event.target.value as string });
   };
   handleDialogOpen = (event: Job) => {
-    console.log("fucking open");
     this.setState({ openDialog: true, selectedJob: event });
   };
 
@@ -260,9 +257,10 @@ class JobPage extends AbstractPage<{}, JobPageState> {
   }
 
   renderContent() {
-    const { selectedCategory, selectedLocation } = this.state as {
+    const { selectedCategory, selectedLocation, jobsData } = this.state as {
       selectedCategory: string;
       selectedLocation: string;
+      jobsData: Job[];
     };
 
     const categories = [

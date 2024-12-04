@@ -95,9 +95,12 @@
 
 .userSearch input {
   width: 50%;
+  border-radius: 10px;
   padding-top: 0.5%;
   padding-bottom: 0.5%;
+  padding-left: 10px;
 }
 .userSearch button {
+  border-radius: 7px;
   height: 30%;
 }

@@ -34,16 +34,27 @@ class AddPostDialog extends Component<AddPostDialogProps, AddPostDialogState> {
     };
   }
 
-  handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
+  imageToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        this.setState({
-          mediaPreview: reader.result as string,
-        });
+        resolve(reader.result as string);
       };
-      reader.readAsDataURL(file); // Convert file to Base64 string for preview
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+  
+        const mediaFile = await this.imageToBase64(file);
+        console.log(mediaFile);
+        this.setState({
+          mediaFile: mediaFile,
+          mediaPreview: mediaFile,
+        });
     } else {
       this.setState({ mediaFile: null, mediaPreview: null });
     }
