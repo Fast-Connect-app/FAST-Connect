@@ -8,6 +8,7 @@ import {
   Avatar,
   ListItemText,
   Paper,
+  Typography,
 } from "@mui/material";
 
 type Message = {
@@ -75,9 +76,10 @@ class GlobalChat extends Component<{}, GlobalChatState> {
             width: "100%",
             height: "90%",
             overflowY: "auto",
+            backgroundColor: "var(--background-color)",
           }}
         >
-          <h4>Global Chat</h4>
+          <Typography variant="h6" align="center" sx={{ padding: "10px 0", color : "white" }}> Global Chat </Typography>
           <List>
             {messages.map((message, index) => (
               <ListItem
@@ -87,6 +89,7 @@ class GlobalChat extends Component<{}, GlobalChatState> {
                   padding: "0px 16px", // Reduce overall padding
                   alignItems: "center", // Align items vertically
                   gap: 0,
+                  color : "white",
                   justifyContent: message.isUserMessage
                     ? "flex-end"
                     : "flex-start", // Align based on user message flag

@@ -1,7 +1,5 @@
 import HomeIcon from "@mui/icons-material/Home";
-import EventSubDrawer from "./SubDrawer/EventSubDrawer";
 import { Event } from "@mui/icons-material";
-import JobSubDrawer from "./SubDrawer/JobSubDrawer";
 import { BaseSubDrawerProps } from "../../BaseSubDrawer";
 
 interface NavItem {
@@ -41,11 +39,6 @@ export const navItems: NavItem[] = [
     label: "Groups",
     icon: <Event />,
     route: "/GroupPage"
-  },
-  {
-    label: "Saved",
-    icon: <Event />,
-    route: "/SavedPage"
   },
   // Add more items as needed
 ];
