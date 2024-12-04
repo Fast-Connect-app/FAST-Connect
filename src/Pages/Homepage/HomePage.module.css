@@ -11,7 +11,7 @@
 
 .homepage-card-media {
   position: relative;
-  height: 300px;
+  height: 320px;
   background-size: cover;
   background-position: center;
 }
@@ -32,7 +32,7 @@
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -51,8 +51,9 @@
 }
 
 .homepage-card-content {
-  padding: 24px;
+  padding: 20px;
   text-align: left;
+  margin-top : 4rem;
 }
 
 .homepage-read-more {
@@ -60,4 +61,10 @@
   color: var(
     --mui-palette-primary-main
   ); /* Dynamic primary color from MUI theme */
+}
+
+.homepage-media {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
 }

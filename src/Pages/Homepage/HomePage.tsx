@@ -231,49 +231,32 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                       : "translateX(0)",
                   display: "flex",
                   flexDirection: "column",
+                  backgroundColor: "#f9f9f9",
                 }}
               >
                 <CardMedia
                   className={styles["homepage-card-media"]}
-                  style={{
-                    backgroundImage: `url(${post.mediaUrl})`,
-                    height: "200px", // Adjust as needed for media height
-                  }}
+                  // style={{
+                  // backgroundImage: `url(${post.mediaUrl})`,
+                  // height: "200px", // Adjusted for smaller media height
+                  // backgroundSize: "contain", // Ensure the image fits within the box
+                  // backgroundRepeat: "no-repeat",
+                  // backgroundPosition: "centre",
+                  // }}
                 >
                   <Box className={styles["homepage-author-info"]}>
-                    <Avatar
-                      src={post.avatar}
-                      alt={post.author}
-                      className={styles["homepage-author-avatar"]}
-                    />
-                    <Typography variant="subtitle1" marginLeft={2}>
-                      {post.author}
-                    </Typography>
+                  <Avatar
+                    src={post.avatar}
+                    alt={post.author}
+                    className={styles["homepage-author-avatar"]}
+                  />
+                  <Typography variant="subtitle1" marginLeft={2}>
+                    {"hello"} 
+                  </Typography>
                   </Box>
-                  <Box className={styles["homepage-action-buttons"]}>
-                    <IconButton
-                      color={post.liked ? "primary" : "default"}
-                      onClick={() => this.handleLike(post.postID)}
-                      disableRipple
-                      className={styles["homepage-icon-button"]}
-                    >
-                      <Typography variant="overline">{post.likes}</Typography>
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton color="default">
-                      <ShareIcon />
-                    </IconButton>
-                    <IconButton
-                      color="default"
-                      onClick={() => this.handleReplyClick(post.postID)}
-                    >
-                      <ReplyIcon />
-                    </IconButton>
-                  </Box>
-                </CardMedia>
-                <CardContent className={styles["homepage-card-content"]}>
-                  <Box padding={3} textAlign="left">
-                    <Typography variant="body1">
+                  <Box className={styles["homepage-card-content"]}>
+                    
+                  <Typography variant="body1">
                       {post.content.length > 100
                         ? `${post.content.slice(0, 100)}...`
                         : post.content}
@@ -287,7 +270,57 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                         Read More
                       </Typography>
                     )}
+                  <hr></hr>
                   </Box>
+                  <Box className={styles["homepage-action-buttons"]}>
+                  <IconButton
+                    color={post.liked ? "primary" : "default"}
+                    onClick={() => this.handleLike(post.postID)}
+                    disableRipple
+                    className={styles["homepage-icon-button"]}
+                  >
+                    <Typography variant="overline">{post.likes}</Typography>
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton color="default">
+                    <ShareIcon />
+                  </IconButton>
+                    <IconButton
+                    color="default"
+                    onClick={() => this.handleReplyClick(post.postID)}
+                    >
+                    <ReplyIcon />
+                    </IconButton>
+                    </Box>
+                    {post.mediaUrl && (
+                        <Box padding={3} display="flex" justifyContent="center">
+                        <CardMedia
+                        component="img"
+                        image={post.mediaUrl}
+                        alt="Media"
+                        className={styles["homepage-media"]}
+                        style={{
+                        maxHeight: "250px",
+                        marginBottom : "10px",
+                        width: "auto", // Adjust width to fit the image size
+                        objectFit: "contain",
+                        transition: "transform 0.3s ease",
+                        border: "2px solid black", // Add border
+                        borderRadius: "8px", // Add border radius for rounded corners
+                        boxShadow: "0 14px 18px rgba(0, 0, 0, 0.1)", // Add shadow for frame effect
+                        }}
+                        onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.05)";
+                        }}
+                        onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                        }}
+                        />
+                        </Box>
+                    )}
+                </CardMedia>
+                <CardContent className={styles["homepage-card-content"]}>
+               
                 </CardContent>
               </Card>
 
