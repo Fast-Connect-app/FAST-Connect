@@ -34,7 +34,7 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
   constructor(props: MainLayoutProps) {
     super(props);
     this.state = {
-      pageTitle: "HomePage",
+      pageTitle: "FAST Connect",
       isChatOpen: false, // Chat is initially closed
       username: null,
       profilePic: null,
