@@ -108,7 +108,7 @@ export class UserAuthentication {
   async GetCurrentUserType(): Promise<string | null> {
     try {
       // Fetch the document
-      const userDoc = await db.collection("Profiles").doc(auth.currentUser?.uid).get();
+      const userDoc = await db.collection("Profile").doc(auth.currentUser?.uid).get();
 
       if (userDoc.exists) {
         const userData = userDoc.data(); // Retrieve the data

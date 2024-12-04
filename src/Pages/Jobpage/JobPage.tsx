@@ -21,68 +21,28 @@ import {
   PageTitleContext,
   PageTitleContextType,
 } from "../../Layouts/MainLayout";
+import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
+import { Jobs } from "../../../Backend/Classes/Jobs";
 
 interface Job {
-  id: number;
+  id: string;
   title: string;
   location: string;
   category: string;
+  description:string,
+  employer:string,
+  salary:number,
 }
 
-const jobs: Job[] = [
+const jobsData: Job[] = [
   {
-    id: 1,
+    id: "1",
     title: "Data Science Engineer, Geospatial",
     location: "Boston",
     category: "Data Science",
-  },
-  {
-    id: 2,
-    title: "Release Automation Engineer (Kubernetes)",
-    location: "Boston",
-    category: "Engineering",
-  },
-  {
-    id: 3,
-    title: "Senior Software Engineer",
-    location: "Boston",
-    category: "Engineering",
-  },
-  {
-    id: 4,
-    title: "Growth Marketer",
-    location: "Boston",
-    category: "Marketing",
-  },
-  {
-    id: 5,
-    title: "Marketing and Sales Content Lead",
-    location: "Boston",
-    category: "Marketing",
-  },
-  {
-    id: 6,
-    title: "Customer Facing Data Scientist",
-    location: "Japan",
-    category: "Data Science",
-  },
-  {
-    id: 7,
-    title: "Software Engineer (BI & Automation)",
-    location: "Kiev",
-    category: "Engineering",
-  },
-  {
-    id: 8,
-    title: "Print & Branding Designer",
-    location: "Kiev",
-    category: "Marketing",
-  },
-  {
-    id: 9,
-    title: "Federal - Customer Facing Data Scientist",
-    location: "Washington",
-    category: "Data Science",
+    description:"Why",
+    employer:"me",
+    salary:2000,
   },
 ];
 
@@ -91,6 +51,8 @@ interface JobPageState extends AbstractPageState {
   selectedLocation: string;
   openDialog: boolean; // Track dialog visibility
   selectedJob: Job | null; // Track selected event details
+  open:boolean,
+  isAlumni:boolean,
 }
 
 class JobPage extends AbstractPage<{}, JobPageState> {
@@ -103,19 +65,135 @@ class JobPage extends AbstractPage<{}, JobPageState> {
       selectedLocation: "All locations",
       openDialog: false,
       selectedJob: null,
+      open: false,
+      isAlumni:false,
     };
   }
   static contextType = PageTitleContext; // Correct contextType assignment
 
-  componentDidMount() {
+  ShowDisplay() {
+    const { open } = this.state;
+    return (
+      <Dialog open={open}>
+        <DialogTitle>Create new Group</DialogTitle>
+        <DialogContent>
+          <input type="text" placeholder="Job Title" id="jobNameField" />
+          <br />
+          <input type="text" placeholder="Job Description" id="jobDescField" />
+          <br />
+          <input type="text" placeholder="Job Location" id="jobLoactionField" />
+          <br />
+          <input type="text" placeholder="Job Category" id="jobCategoryField" />
+          <br />
+          <input type="text" placeholder="Job Salary" id="jobSalField" />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => this.setState({ open: false })} color="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={ async () => {
+              this.setState({open:false});
+
+              let titleElement = document.getElementById("jobNameField") as HTMLInputElement;
+              let descElement = document.getElementById("jobDescField") as HTMLInputElement;
+              let locationElement = document.getElementById("jobLoactionField") as HTMLInputElement;
+              let categoryElement = document.getElementById("jobCategoryField") as HTMLInputElement;
+              let salElement = document.getElementById("jobSalField") as HTMLInputElement;
+
+              let title = titleElement.value;
+              let desc = descElement.value;
+              let category = categoryElement.value;
+              let location = locationElement.value;
+              let sal = salElement.value;
+              let salary = parseInt(sal);
+              
+              console.log(title);
+              console.log(desc);
+              console.log(category);
+              console.log(location);
+              console.log(salary);
+
+              let userId = UserAuthentication.GetInstance().GetCurrentUserId();
+              let job = new Jobs(title,salary,userId,category,desc,location);
+
+              let jobAdapter = Jobs.GetDatabaseAdapter();
+              let id = await jobAdapter.SaveObject(job.GetJsonData());
+              
+              let profile = await UserAuthentication.GetInstance().GetCurrentUserProfile();
+              if(profile === null)
+                return;
+              let name = profile.userName;
+
+              jobsData.push({
+                id: id,
+                title:job.title,
+                description:job.description,
+                category:job.category,
+                location: job.location,
+                salary:job.salary,
+                employer:name,
+              });
+            }}
+            color="secondary"
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+  
+  async componentDidMount() {
     // Correctly access context here
     const { setPageTitle } = this.context as PageTitleContextType;
     setPageTitle("Job Page");
+
+    let type = await UserAuthentication.GetInstance().GetCurrentUserType();
+    if(type !== null && type === "alumni")
+      this.setState({isAlumni:true});
+
+    await this.LoadJobs();
+    console.log(jobsData);
   }
 
   handleCategoryChange = (_: React.ChangeEvent<{}>, value: string) => {
     this.setState({ selectedCategory: value });
   };
+
+  async LoadJobs(){
+    let jobAdapter = Jobs.GetDatabaseAdapter();
+    let dbJobs = await jobAdapter.LoadAll();
+    if(!dbJobs)
+      return;
+    dbJobs.forEach(async (dbJob:any) => {
+      let user = await UserAuthentication.GetInstance().GetCurrentUserProfile();
+      if(user){
+        let userName = user?.userName;
+        jobsData.push({
+          id:dbJob.id,
+          title:dbJob.title,
+          description:dbJob.description,
+          salary:dbJob.salary,
+          category:dbJob.category,
+          employer:userName,
+          location:dbJob.location
+        });
+      }
+    });
+  }
+
+  ShowButtonIfAlumni(){
+    if(this.state.isAlumni)
+    return (
+          <Button
+            onClick={() => {
+              this.setState({open:true});
+            }}
+            color="secondary"
+          >Add Job</Button>
+    );
+  }
 
   handleLocationChange = (event: SelectChangeEvent<string>) => {
     this.setState({ selectedLocation: event.target.value as string });
@@ -149,8 +227,13 @@ class JobPage extends AbstractPage<{}, JobPageState> {
                 <strong>Category:</strong> {selectedJob.category}
               </Typography>
               <Typography>
-                <strong>Description:</strong> This is a placeholder description
-                for the job.
+                <strong>Description:</strong> {selectedJob.description}
+              </Typography>
+              <Typography>
+                <strong>Salary:</strong> {selectedJob.salary}
+              </Typography>
+              <Typography>
+                <strong>Employer:</strong> {selectedJob.employer}
               </Typography>
             </Box>
           )}
@@ -177,7 +260,7 @@ class JobPage extends AbstractPage<{}, JobPageState> {
       "Marketing",
     ];
 
-    const filteredJobs = jobs.filter(
+    const filteredJobs = jobsData.filter(
       (job) =>
         (selectedCategory === "All Positions" ||
           job.category === selectedCategory) &&
@@ -204,8 +287,8 @@ class JobPage extends AbstractPage<{}, JobPageState> {
               <MenuItem value="Japan">Japan</MenuItem>
               <MenuItem value="Washington">Washington</MenuItem>
             </Select>
+            {this.ShowButtonIfAlumni()}
           </Typography>
-
           {/* Filter Tabs */}
           <Tabs
             value={selectedCategory}
@@ -237,14 +320,6 @@ class JobPage extends AbstractPage<{}, JobPageState> {
                     }}
                   >
                     <Button
-                      variant="contained"
-                      size="small"
-                      className={styles.applyButton}
-                      sx={{ flex: 1, marginRight: "8px" }}
-                    >
-                      Apply Now
-                    </Button>
-                    <Button
                       variant="outlined"
                       size="small"
                       className={styles.infoButton}
@@ -260,6 +335,7 @@ class JobPage extends AbstractPage<{}, JobPageState> {
           </Grid>
         </Box>
         {this.renderDialog()}
+        {this.ShowDisplay()}
       </>
     );
   }
