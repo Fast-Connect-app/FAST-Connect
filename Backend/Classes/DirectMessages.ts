@@ -7,9 +7,10 @@ export class DirectMessages implements IJSONData{
     public userToUserId:string;
     public messages:Message[] = [];
 
-    constructor(_userToUserId:string, _messages:Message[]){
+    constructor(_userToUserId:string, _messages?:Message[]){
         this.userToUserId = _userToUserId;
-        this.messages = _messages;
+        if(_messages)
+            this.messages = _messages;
     }
 
     public GetDatabaseAdapter() {

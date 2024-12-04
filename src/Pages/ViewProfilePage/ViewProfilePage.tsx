@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import {
   Box,
   Card,
@@ -6,7 +5,12 @@ import {
   Avatar,
   Typography,
   Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContent,
   Link,
+  Input,
 } from "@mui/material";
 import {
   GitHub as GitHubIcon,
@@ -17,24 +21,24 @@ import {
 import Grid from "@mui/material/Grid";
 import styles from "./ViewProfile.module.css"; // Import the CSS module
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
-import {
-  PageTitleContext,
-  PageTitleContextType,
-} from "../../Layouts/MainLayout";
 import { Profile } from "../../../Backend/Classes/Profile";
-import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
-import { auth } from "../../../Backend/FirebaseApp";
 import ViewProfileCard from "./Components/ViewProfileCard";
 import ViewStudentProfileCard from "./Components/ViewStudentProfile";
 import ViewAlumniProfileCard from "./Components/ViewAlumniProfile";
 import { AlumniProfile } from "../../../Backend/Classes/AlumniProfile";
 import { StudentProfile } from "../../../Backend/Classes/StudentProfile";
+import {UserContactSave} from "../../../Backend/Classes/UserContactSave"
+import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
+import {DirectMessages} from "../../../Backend/Classes/DirectMessages"
+import {UserBlock} from "../../../Backend/Classes/UserBlock"
 
 interface ViewProfilePageState extends AbstractPageState {
   user: Profile | null;
   alumni: AlumniProfile | null;
   student: StudentProfile | null;
   loading: boolean;
+  openSave:boolean,
+  openGroup:boolean,
 }
 
 let uid: string = "";
@@ -53,12 +57,15 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
       alumni: null,
       student: null,
       loading: true,
+      openSave:false,
+      openGroup:false,
     };
   }
 
   async componentDidMount() {
     try {
-      while (uid == "");
+      // while (uid == "");
+      uid = "HzColN5mODbXm0nEEZDMhyoHD7x2";
       let data = await Profile.GetDatabaseAdapter().LoadById(uid);
       let user = Profile.fromFirebaseJson(data);
 
@@ -67,6 +74,66 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
       if (error instanceof Error) console.log(error.message);
       else console.log(error);
     }
+  }
+
+  SaveContact(){
+
+  }
+
+  ShowSaving(){
+    const { openSave } = this.state;
+    return (
+      <Dialog open={openSave}>
+        <DialogTitle>Save Contact</DialogTitle>
+        <DialogContent>
+          <input type="text" id="SaveContactInput"/>
+        </DialogContent>
+        <Button onClick={
+          async ()=>{
+            this.setState({openSave:false});
+            let savedElement = document.getElementById("SaveContactInput") as HTMLInputElement;
+            let savedName = savedElement.value;
+
+            let userSave = new UserContactSave(UserAuthentication.GetInstance().GetCurrentUserId(),uid,savedName);
+            await UserContactSave.GetDatabaseAdapter().SaveById(UserAuthentication.GetInstance().GetCurrentUserId(),
+            userSave.GetJsonData());
+          }
+        }>Save</Button>
+        <Button onClick={()=>{
+          this.setState({openSave:false});
+        }}></Button>
+        <DialogActions>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
+  ShowGroups(){
+    const { openGroup } = this.state;
+    return (
+      <Dialog open={openGroup}>
+        <DialogTitle>Save Contact</DialogTitle>
+        <DialogContent>
+          <input type="text" id="SaveContactInput"/>
+        </DialogContent>
+        <Button onClick={
+          async ()=>{
+            this.setState({openSave:false});
+            let savedElement = document.getElementById("SaveContactInput") as HTMLInputElement;
+            let savedName = savedElement.value;
+
+            let userSave = new UserContactSave(UserAuthentication.GetInstance().GetCurrentUserId(),uid,savedName);
+            await UserContactSave.GetDatabaseAdapter().SaveById(UserAuthentication.GetInstance().GetCurrentUserId(),
+            userSave.GetJsonData());
+          }
+        }>Save</Button>
+        <Button onClick={()=>{
+          this.setState({openSave:false});
+        }}></Button>
+        <DialogActions>
+        </DialogActions>
+      </Dialog>
+    );
   }
 
   render() {
@@ -108,10 +175,24 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
                       color="primary"
                       size="small"
                       sx={{ mr: 1 }}
+                      onClick={}
                     >
                       Save
                     </Button>
-                    <Button variant="outlined" color="primary" size="small">
+                    <Button variant="outlined" color="primary" size="small" onClick={()=>{
+                      let userToUserId:string;
+                      if(UserAuthentication.GetInstance().GetCurrentUserId() < uid){
+                        userToUserId = UserAuthentication.GetInstance().GetCurrentUserId() + "+" + uid;
+                      }
+                      else{
+                        userToUserId = uid + "+" + UserAuthentication.GetInstance().GetCurrentUserId();
+                      }
+
+                      let dm = new DirectMessages(userToUserId);
+                      dm.GetDatabaseAdapter().SaveObject({
+                        messages: "This is a start"
+                      });
+                    }}>
                       Message
                     </Button>
                     <Button
@@ -119,6 +200,15 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
                       color="warning"
                       size="small"
                       sx={{ mr: 1 }}
+                      onClick={
+                        ()=>{
+                          async ()=>{
+                            let userBlock = new UserBlock(UserAuthentication.GetInstance().GetCurrentUserId(),uid,true);
+                            await UserBlock.GetDatabaseAdapter().SaveById(UserAuthentication.GetInstance().GetCurrentUserId(),
+                            userBlock.GetJsonData());
+                          }
+                        }
+                      }
                     >
                       Block
                     </Button>
