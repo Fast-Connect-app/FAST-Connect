@@ -18,7 +18,7 @@ export type InterfaceTypes = {
     
     Post: ISaveObject & ILoadAll & ILoadById & IDelete;
     
-    DirectMessage: ISaveById & ILoadAll;
+    DirectMessage: ISaveById & ILoadAll & ISaveObject;
     
     GroupMessage: ISaveById & ILoadAll;
     
