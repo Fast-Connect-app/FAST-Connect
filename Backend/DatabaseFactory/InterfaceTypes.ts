@@ -26,7 +26,7 @@ export type InterfaceTypes = {
     
     PostMessage: ISaveById & ILoadAll;
 
-  UserContactSave: ISaveById & IModify;
+  UserContactSave: ISaveById & IModify & ILoadByName;
 
   UserBlock: ISaveById & IDelete & IModify;
 

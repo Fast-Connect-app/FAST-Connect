@@ -14,7 +14,7 @@ export class DirectMessages implements IJSONData{
     }
 
     public GetDatabaseAdapter() {
-        return GetDatabaseAdapter<"DirectMessage">(FirebaseAdapterFactory,"DirectMessages",this.userToUserId,"Messages");
+        return GetDatabaseAdapter<"DirectMessage">(FirebaseAdapterFactory,"DirectMessages",this.userToUserID,"Messages");
     }
 
     public GetJsonData(): object {
