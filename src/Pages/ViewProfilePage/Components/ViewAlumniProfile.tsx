@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid2";
 import styles from "./Common.module.css"; // Import the CSS module
 import { Job, AlumniProfile } from "../../../../Backend/Classes/AlumniProfile";
 
-const AlumniProfileCard = (props: { alumniProfile: AlumniProfile}) => {
+const ViewAlumniProfileCard = (props: { alumniProfile: AlumniProfile}) => {
   const alumniProfile = props.alumniProfile;
 
  
@@ -46,4 +46,4 @@ const AlumniProfileCard = (props: { alumniProfile: AlumniProfile}) => {
   );
 };
 
-export default AlumniProfileCard;
+export default ViewAlumniProfileCard;

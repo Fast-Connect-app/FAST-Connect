@@ -23,6 +23,7 @@ import {
 } from "../../Layouts/MainLayout";
 import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
 import { Jobs } from "../../../Backend/Classes/Jobs";
+import { Profile } from "../../../Backend/Classes/Profile";
 
 interface Job {
   id: string;
@@ -34,7 +35,7 @@ interface Job {
   salary:number,
 }
 
-const jobsData: Job[] = [
+let jobsData: Job[] = [
   {
     id: "1",
     title: "Data Science Engineer, Geospatial",
@@ -108,12 +109,6 @@ class JobPage extends AbstractPage<{}, JobPageState> {
               let sal = salElement.value;
               let salary = parseInt(sal);
               
-              console.log(title);
-              console.log(desc);
-              console.log(category);
-              console.log(location);
-              console.log(salary);
-
               let userId = UserAuthentication.GetInstance().GetCurrentUserId();
               let job = new Jobs(title,salary,userId,category,desc,location);
 
@@ -154,7 +149,6 @@ class JobPage extends AbstractPage<{}, JobPageState> {
       this.setState({isAlumni:true});
 
     await this.LoadJobs();
-    console.log(jobsData);
   }
 
   handleCategoryChange = (_: React.ChangeEvent<{}>, value: string) => {
@@ -162,14 +156,22 @@ class JobPage extends AbstractPage<{}, JobPageState> {
   };
 
   async LoadJobs(){
+    try{
+    console.log("hello Load Jobs");
     let jobAdapter = Jobs.GetDatabaseAdapter();
     let dbJobs = await jobAdapter.LoadAll();
     if(!dbJobs)
       return;
+
+    
+    jobsData = [];
     dbJobs.forEach(async (dbJob:any) => {
-      let user = await UserAuthentication.GetInstance().GetCurrentUserProfile();
+      let profileAdapter = Profile.GetDatabaseAdapter();
+      const profile = await profileAdapter.LoadById(dbJob.ownerUserId);
+      const user:Profile = Profile.fromFirebaseJson(profile);
+      
+      let userName = user.userName;
       if(user){
-        let userName = user?.userName;
         jobsData.push({
           id:dbJob.id,
           title:dbJob.title,
@@ -180,7 +182,17 @@ class JobPage extends AbstractPage<{}, JobPageState> {
           location:dbJob.location
         });
       }
+      console.log(jobsData);
     });
+  }
+  catch(e){
+    if(e instanceof Error){
+      console.log(e.message);
+    }
+    else{
+      throw new Error("Unknown");
+    }
+  }
   }
 
   ShowButtonIfAlumni(){
