@@ -114,6 +114,17 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
                     <Button variant="outlined" color="primary" size="small">
                       Message
                     </Button>
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      size="small"
+                      sx={{ mr: 1 }}
+                    >
+                      Block
+                    </Button>
+                    <Button variant="outlined" color="primary" size="small">
+                      Add to Group
+                    </Button>
                   </Box>
                 </Box>
               </CardContent>
