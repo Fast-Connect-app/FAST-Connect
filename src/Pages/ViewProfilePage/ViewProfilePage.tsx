@@ -76,42 +76,10 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
     }
   }
 
-  SaveContact(){
-
-  }
-
   ShowSaving(){
     const { openSave } = this.state;
     return (
       <Dialog open={openSave}>
-        <DialogTitle>Save Contact</DialogTitle>
-        <DialogContent>
-          <input type="text" id="SaveContactInput"/>
-        </DialogContent>
-        <Button onClick={
-          async ()=>{
-            this.setState({openSave:false});
-            let savedElement = document.getElementById("SaveContactInput") as HTMLInputElement;
-            let savedName = savedElement.value;
-
-            let userSave = new UserContactSave(UserAuthentication.GetInstance().GetCurrentUserId(),uid,savedName);
-            await UserContactSave.GetDatabaseAdapter().SaveById(UserAuthentication.GetInstance().GetCurrentUserId(),
-            userSave.GetJsonData());
-          }
-        }>Save</Button>
-        <Button onClick={()=>{
-          this.setState({openSave:false});
-        }}></Button>
-        <DialogActions>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-
-  ShowGroups(){
-    const { openGroup } = this.state;
-    return (
-      <Dialog open={openGroup}>
         <DialogTitle>Save Contact</DialogTitle>
         <DialogContent>
           <input type="text" id="SaveContactInput"/>
@@ -175,7 +143,11 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
                       color="primary"
                       size="small"
                       sx={{ mr: 1 }}
-                      onClick={}
+                      onClick={
+                        ()=>{
+                          this.setState({openSave:true});
+                        }
+                      }
                     >
                       Save
                     </Button>
@@ -211,9 +183,6 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
                       }
                     >
                       Block
-                    </Button>
-                    <Button variant="outlined" color="primary" size="small">
-                      Add to Group
                     </Button>
                   </Box>
                 </Box>
@@ -297,7 +266,9 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
             ></ViewStudentProfileCard>
           )}
         </Grid>
+        {this.ShowSaving()}
       </Box>
+      
     );
   }
 }
