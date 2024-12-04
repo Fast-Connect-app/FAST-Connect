@@ -177,7 +177,7 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
             <Card className={styles.profileCard}>
               <CardContent>
                 <Box className={styles.profileCardContent}>
-                  <Avatar className={styles.avatar} alt={user.userName} src={user.profilePic || undefined} sx={{ width: 100, height: 100 }} />
+                  <Avatar className={styles.avatar} alt={user.userName} src={user.profilePic || "https://www.w3schools.com/w3images/avatar2.png"} sx={{ width: 100, height: 100 }} />
                   <Typography>{user.userName}</Typography>
                   <Box className={styles.followMessageButtons}>
                     <Button variant="contained" color="primary" size="small" sx={{ mr: 1 }}>

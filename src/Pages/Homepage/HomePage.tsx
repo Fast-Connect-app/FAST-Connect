@@ -61,7 +61,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
     const profileData = data as { userName: string; profilePic: string };
     return {
       userName: profileData.userName,
-      avatar: profileData.profilePic,
+      avatar: profileData.profilePic || "https://www.w3schools.com/w3images/avatar2.png",
     };
   }
 
