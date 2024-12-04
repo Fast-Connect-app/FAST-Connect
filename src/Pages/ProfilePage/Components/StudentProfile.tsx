@@ -37,7 +37,7 @@ const StudentProfileCard = (props: { studentProfile: StudentProfile; onSave: (up
             }}
           >
             <Typography className={styles.cardLabel} variant="h6">
-              Date of Graduation:
+              Date of Admission:
             </Typography>
             {editing ? (
               <TextField margin="dense" id="gradDate" label="Graduation Date" type="date" value={dateOfAdmission.toISOString().split("T")[0]} onChange={(e) => setDateOfAdmission(new Date(e.target.value))} />

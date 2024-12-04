@@ -3,12 +3,12 @@ import { FirebaseAdapterFactory } from "../DatabaseFactory/FirebaseAdapterFactor
 import { IJSONData } from "./IDatabaseAdapter";
 
 export class UserContactSave implements IJSONData{
-    public savingUserId:string;
+    public userID:string;
     public savedUserId:string;
     public savedUserName:string;
 
     constructor(_savingUserId:string, _savedUserId:string, _savedUserName:string){
-        this.savingUserId = _savingUserId;
+        this.userID = _savingUserId;
         this.savedUserId = _savedUserId;
         this.savedUserName = _savedUserName;
     }
@@ -21,4 +21,9 @@ export class UserContactSave implements IJSONData{
         const data = {...this};
         return data;
     }
+
+    public static fromFirebaseJson(data:{userID:string, savedUserId:string, savedUserName:string}):UserContactSave{
+        return new UserContactSave(data.userID, data.savedUserId, data.savedUserName);
+    }
+
 }
