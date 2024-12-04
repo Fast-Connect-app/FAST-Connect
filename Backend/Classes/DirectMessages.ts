@@ -7,9 +7,9 @@ export class DirectMessages implements IJSONData{
     public userToUserId:string;
     public messages:Message[] = [];
 
-    constructor(_userToUserId:string, _message:Message){
+    constructor(_userToUserId:string, _messages:Message[]){
         this.userToUserId = _userToUserId;
-        this.messages.push(_message);
+        this.messages = _messages;
     }
 
     public GetDatabaseAdapter() {
@@ -22,5 +22,9 @@ export class DirectMessages implements IJSONData{
             Messages: this.messages.map(message => message.GetJsonData())
         }
         return data;
+    }
+    public static fromFirebaseJson(data:{userToUserId:string, messages:object[]}):DirectMessages{
+        const messages = data.messages.map(message => Message.fromFirebaseJson(message));
+        return new DirectMessages(data.userToUserId, messages);
     }
 }

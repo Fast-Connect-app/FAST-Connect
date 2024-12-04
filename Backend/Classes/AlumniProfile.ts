@@ -50,7 +50,8 @@ export class AlumniProfile implements IJSONData {
     return data;
   }
 
-  public static fromFirebaseJson(data: { userID: string; jobHistory: object[] | null; dateOfGraduation: Date | null }): AlumniProfile {
-    return new AlumniProfile(data.jobHistory ? data.jobHistory.map((job) => Job.fromFirebaseJson(job)) : null, data.dateOfGraduation);
+  public static fromFirebaseJson(data: { userID: string; jobHistory: object[] | null; dateOfGraduation: Timestamp }): AlumniProfile {
+    const newDateOfGraduation= new Date(data.dateOfGraduation.seconds * 1000 + data.dateOfGraduation.nanoseconds / 1000000);
+    return new AlumniProfile(data.jobHistory ? data.jobHistory.map((job) => Job.fromFirebaseJson(job)) : null, newDateOfGraduation);
   }
 }

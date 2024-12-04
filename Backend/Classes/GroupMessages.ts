@@ -7,8 +7,9 @@ export class GroupMessages implements IJSONData {
   public groupID: string;
   public messages: Message[] = [];
 
-  constructor(_groupID: string) {
+  constructor(_groupID: string, _messages: Message[]) {
     this.groupID = _groupID;
+    this.messages = _messages;
   }
 
   public GetDatabaseAdapter() {
@@ -20,7 +21,11 @@ export class GroupMessages implements IJSONData {
       groupID: this.groupID,
       Messages: this.messages.map((message) => message.GetJsonData()),
     };
-
     return data;
+  }
+
+  public static FromFirebaseJson(data: { groupID: string; messages: object[] }): GroupMessages {
+    const messages = data.messages.map((message) => Message.fromFirebaseJson(message));
+    return new GroupMessages(data.groupID, messages);
   }
 }

@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase-admin/firestore";
 import { IJSONData } from "./IDatabaseAdapter";
 
 export class Message implements IJSONData{
@@ -5,24 +6,21 @@ export class Message implements IJSONData{
     public text:string;
     public file : string | null;
     public timeStamp: Date;
-    public parentMessage:Message | undefined;
 
-    constructor(_senderID:string, _content:string, _FileAttachment:string | null, _TimeStamp:Date, _parentMessage ?: Message){
+    constructor(_senderID:string, _content:string, _FileAttachment:string | null, _TimeStamp:Date){
         this.sender = _senderID;
         this.text = _content;
         this.file = _FileAttachment;
         this.timeStamp = _TimeStamp;
-        this.parentMessage = _parentMessage;
     }
     
     public GetJsonData():object{
-        const data = {
-            senderId: this.sender,
-            content: this.text,
-            fileAttachment: this.file,
-            timeStamp: this.timeStamp.toISOString(),
-            parentMessage: this.parentMessage?.GetJsonData()
-        }
+        const data = {...this};
         return data;
+    }
+
+    public static fromFirebaseJson(data:{sender:string, text:string, file:string | null, timeStamp:Timestamp}):Message{
+        const newDate= new Date()
+        return new Message(data.sender, data.text, data.file, newDate);
     }
 }
