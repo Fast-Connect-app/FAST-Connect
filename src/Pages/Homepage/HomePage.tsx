@@ -61,7 +61,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
     const profileData = data as { userName: string; profilePic: string };
     return {
       userName: profileData.userName,
-      avatar: profileData.profilePic || "https://www.w3schools.com/w3images/avatar2.png",
+      avatar: profileData.profilePic,
     };
   }
 
@@ -90,10 +90,13 @@ class HomePage extends AbstractPage<{}, HomePageState> {
             // Destructure after promise resolves
             const { userName, avatar } = profileData;
 
+            // Use a dummy avatar if avatar is null or undefined
+            const finalAvatar = avatar || "https://www.w3schools.com/w3images/avatar2.png";
+
           return {
             postID: postData.id,
             author: userName, // Assign userName to author
-            avatar: avatar, // Assign avatar to avatar
+            avatar: finalAvatar, // Assign avatar to avatar
             likes: postData.likes,
             liked: false,
             content: postData.content,
