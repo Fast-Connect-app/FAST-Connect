@@ -64,8 +64,7 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
 
   async componentDidMount() {
     try {
-      // while (uid == "");
-      uid = "HzColN5mODbXm0nEEZDMhyoHD7x2";
+      while (uid == "");
       let data = await Profile.GetDatabaseAdapter().LoadById(uid);
       let user = Profile.fromFirebaseJson(data);
 
@@ -188,8 +187,8 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
           <ViewProfileCard userProfile={user}></ViewProfileCard>
+          </Grid>
           {/* Social Links Card */}
           <Grid item xs={12} md={4}>
             <Card className={styles.socialLinksCard}>
@@ -256,6 +255,7 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
               </CardContent>
             </Card>
           </Grid>
+          <Box marginTop={3} marginLeft={3}>
           {user.type === "alumni" ? (
             <ViewAlumniProfileCard
               alumniProfile={alumni}
@@ -265,6 +265,7 @@ class ViewProfilePage extends AbstractPage<object, ViewProfilePageState> {
               studentProfile={student}
             ></ViewStudentProfileCard>
           )}
+          </Box>
         </Grid>
         {this.ShowSaving()}
       </Box>
