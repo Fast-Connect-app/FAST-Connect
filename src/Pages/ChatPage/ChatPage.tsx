@@ -14,21 +14,45 @@ import { Send, Settings, Call, VideoCall } from "@mui/icons-material";
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
 import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout";
 import styles from "./ChatPage.module.css";
-import {DirectMessages} from "../../../Backend/Classes/DirectMessages";
-import {UserContactSave} from "../../../Backend/Classes/UserContactSave";
-import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
-import {auth} from "../../../Backend/FirebaseApp";
+
+// Mock chat data
+const chatData = [
+  {
+    id: 1,
+    name: "Abdullah",
+    avatar: "",
+    messages: [
+      { id: 1, text: "Yo wassup lil dude", sender: "Abdullah", timestamp: "10:00 AM" },
+      { id: 2, text: "Well that's the shit for giggles for sure", sender: "You", timestamp: "10:01 AM" },
+      { id: 3, text: "Hey Did you just ......", sender: "Abdullah", timestamp: "10:02 AM" },
+    ],
+  },
+  // Add additional chat data as needed
+  {
+    id : 2,
+    name : "Raef",
+    avatar : "",
+    messages: [{id:1, text: "Hey Babe", sender : "Raef", timestamp : "10:00PM"}]
+  }
+];
+
+interface Message {
+  id: number;
+  text: String;
+  sender: String;
+  timestamp: String;
+}
 
 interface Chat {
-  id: string;
+  id: number;
   name: string;
   avatar: string;
-  messages: DirectMessages;
+  messages: Message[];
 }
 
 interface ChatPageState extends AbstractPageState {
-  selectedChat: Chat | null;
-  directMessages: DirectMessages |null;
+  selectedChat: Chat;
+  messages: Message[];
   newMessage: String;
   chats: Chat[];
 }
@@ -36,53 +60,9 @@ interface ChatPageState extends AbstractPageState {
 class ChatPage extends AbstractPage<{}, ChatPageState> {
   static contextType = PageTitleContext;
 
-  async componentDidMount() {
-    try{
-      const { setPageTitle } = this.context as PageTitleContextType;
-      setPageTitle("Chat Page");
-      auth.onAuthStateChanged(async (user: unknown) => {
-        const userContacts = UserContactSave.GetDatabaseAdapter();
-        const userID = user.uid;
-        if (userID === undefined) throw new Error("User not logged in");
-        const data = await userContacts.LoadByName("userID", userID);
-        if(data === null) throw new Error("No contacts found");
-        const contacts: UserContactSave[] = data.map((contact) => UserContactSave.fromFirebaseJson(contact));
-        console.log(contacts);
-       contacts.forEach(async (contact) => {
-         let userToUserID;
-         if(contact.savedUserId === undefined) throw new Error("No saved user id found");
-        if(userID<contact.savedUserId){
-          userToUserID = userID + contact.savedUserId;
-        }
-        else{
-          userToUserID = contact.savedUserId + userID;
-        }
-        const directMsg:DirectMessages = new DirectMessages(userToUserID, []);
-        const directMessageAdapter = directMsg.GetDatabaseAdapter();
-        const messageData = await directMessageAdapter.LoadAll();
-        if(messageData === null) throw new Error("No messages found");
-        const messages = messageData.map((message) => DirectMessages.fromFirebaseJson(message));
-        const chat: Chat = {
-          id: contact.savedUserId,
-          name: contact.savedUserName,
-          avatar: "",
-          messages: messages[0],
-        };
-        this.setState({
-          chats: [...this.state.chats, chat],
-        });
-          if(data === null) throw new Error("No messages found");
-       });});
-      
-    }
-    catch(e){
-      if (e instanceof Error){
-        console.log(e.message);
-      }
-      else{
-        throw new Error("An error occurred");
-      }
-    }
+  componentDidMount() {
+    const { setPageTitle } = this.context as PageTitleContextType;
+    setPageTitle("Chat Page");
   }
 
   constructor(props: {}) {
@@ -90,42 +70,42 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
     this.state = {
       data: null,
       error: null,
-      selectedChat: null,
-      directMessages: null,
+      selectedChat: chatData[0],
+      messages: chatData[0].messages,
       newMessage: "",
-      chats: [],
+      chats: chatData,
     };
   }
 
   handleChatSelect = (chatId: number) => {
-    const chat = this.state.chats.find((c) => c.id === chatId);
+    const chat = chatData.find((c) => c.id === chatId);
     if (chat) {
       this.setState({
         selectedChat: chat,
-        directMessages: chat.messages,
+        messages: chat.messages,
       });
     }
   };
 
   handleSendMessage = () => {
-    const { newMessage, directMessages } = this.state;
-    if(directMessages === null) return;
+    const { newMessage, messages } = this.state;
     if (newMessage.trim() === "") return;
 
     const newMsg = {
-      id: directMessages.messages.length + 1,
+      id: messages.length + 1,
       text: newMessage,
       sender: "You",
       timestamp: "Just now",
     };
 
     this.setState({
+      messages: [...messages, newMsg],
       newMessage: "",
     });
   };
 
   renderContent() {
-    const { selectedChat, directMessages, newMessage,chats } = this.state;
+    const { selectedChat, messages, newMessage } = this.state;
 
     return (
       <Box className={styles.pageContainer}>
@@ -139,16 +119,11 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
               className={styles.searchInput}
             />
             <List className={styles.chatList}>
-              {
-              (chats!==null && chats.length>0)
-              ?
-              chats.map((chat) => (
+              {chatData.map((chat) => (
                 <ListItem
                   key={chat.id}
                   component="div"
-                  onClick={()=>{
-                    this.handleChatSelect(chat.id);
-                  }}
+                  onClick={() => this.handleChatSelect(chat.id)}
                   className={`${styles.chatItem} ${
                     selectedChat.id === chat.id ? styles.activeChat : ""
                   }`}
@@ -158,28 +133,16 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
                   </ListItemAvatar>
                   <ListItemText
                     primary={chat.name}
-                    secondary={chat.messages.messages[chat.messages.messages.length - 1]?.text || "No messages"}
+                    secondary={chat.messages[chat.messages.length - 1]?.text || "No messages"}
                   />
                 </ListItem>
-              ))
-              : (<ListItem>
-                No Chats
-              </ListItem>)
-              }
+              ))}
             </List>
           </Box>
 
           {/* Chat Area */}
           <Box className={styles.chatArea}>
             {/* Chat Header */}
-            {selectedChat === null ?
-              <Box className={styles.chatHeader}>
-              <Box className={styles.chatHeaderDetails}>
-                <Avatar alt="NoChats"/>
-                <Typography className={styles.chatName}>No chat</Typography>
-              </Box>
-            </Box>
-            :
             <Box className={styles.chatHeader}>
               <Box className={styles.chatHeaderDetails}>
                 <Avatar alt={selectedChat.name} src={selectedChat.avatar} />
@@ -197,11 +160,10 @@ class ChatPage extends AbstractPage<{}, ChatPageState> {
                 </IconButton>
               </Box>
             </Box>
-            }
 
             {/* Chat Messages */}
             <Box className={styles.chatMessages}>
-              {directMessages?.messages.map((msg) => (
+              {messages.map((msg) => (
                 <Box
                   key={msg.id}
                   className={`${styles.messageBubble} ${
