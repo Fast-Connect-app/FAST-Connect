@@ -1,7 +1,16 @@
 import { Component } from "react";
 import { Profile } from "../../Backend/Classes/Profile";
+import { Button } from "@mui/material";
+import { UserAuthentication } from "../../Backend/UserAuth/UserAuthentication";
+import { withMenuNavigation } from "../router";
+import { SetUserId } from "../Pages/ViewProfilePage/ViewProfilePage";
+
+interface UserSearchedProps {
+  handleMenuSelect: (route: string) => void;
+}
 
 interface UserSearchedComponent {
+  userId: string;
   avatar: string;
   name: string;
 }
@@ -12,10 +21,13 @@ interface UserSearchedState {
   dropdownPosition: { top: number; left: number; width: number };
 }
 
-export class UserSearchComponent extends Component<{}, UserSearchedState> {
+class UserSearchComponent extends Component<
+  UserSearchedProps,
+  UserSearchedState
+> {
   profileAdapter = Profile.GetDatabaseAdapter();
 
-  constructor(props: any) {
+  constructor(props: UserSearchedProps) {
     super(props);
     this.state = {
       isOpen: false,
@@ -36,13 +48,28 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
     const data = await this.profileAdapter.LoadByName("userName", name);
 
     if (Array.isArray(data)) {
-      const users = data.map((user) => {
-        const userData = user as { userName: string; profilePic: string };
-        return {
-          avatar: userData.profilePic || "https://via.placeholder.com/50", // Default avatar if empty
-          name: userData.userName,
-        };
-      });
+      const users = data
+        .map((user) => {
+          const userData = user as {
+            userId: string;
+            userName: string;
+            profilePic: string;
+          };
+          if (
+            userData.userId !==
+            UserAuthentication.GetInstance().GetCurrentUserId()
+          ) {
+            return {
+              userId: userData.userId,
+              avatar: userData.profilePic || "https://via.placeholder.com/50", // Default avatar if empty
+              name: userData.userName,
+            };
+          }
+          return undefined;
+        })
+        .filter((user): user is UserSearchedComponent => user !== undefined);
+
+      console.log(users);
 
       // Get position of the input field
       const inputRect = input.getBoundingClientRect();
@@ -66,7 +93,8 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
 
   render() {
     const { UserSearched, isOpen, dropdownPosition } = this.state;
-
+    const { handleMenuSelect } = this.props;
+    // const { setUserId } = this.context as ViewProfileIDtype;
     return (
       <>
         <input
@@ -77,7 +105,14 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
         <button
           id="searchUsersButton"
           onClick={() => this.DisplayUsers("searchUsersInputField")}
-          style={{ backgroundColor: "#007BFF", color: "white", border: "none", padding: "8px 16px", marginLeft : "15px",cursor: "pointer" }}
+          style={{
+            backgroundColor: "#007BFF",
+            color: "white",
+            border: "none",
+            padding: "8px 16px",
+            marginLeft: "15px",
+            cursor: "pointer",
+          }}
         >
           Search
         </button>
@@ -97,11 +132,20 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
           >
             {UserSearched.length > 0 ? (
               UserSearched.map((user, index) => (
-                <div
+                <Button
+                  onClick={() => {
+                    SetUserId(user.userId);
+                    handleMenuSelect("ViewProfile");
+                    this.setState({ isOpen: false });
+                    // setUserId(user.userId);
+                  }}
                   key={index}
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    width: "100%",
+
+                    justifyContent: "flex-start",
                     padding: "8px",
                     cursor: "pointer",
                   }}
@@ -110,14 +154,14 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
                     src={user.avatar}
                     alt={`${user.name}'s Avatar`}
                     style={{
-                      width: "20%",
+                      width: "10%",
                       height: "30px",
                       borderRadius: "50%",
                       marginRight: "10px",
                     }}
                   />
                   <span>{user.name}</span>
-                </div>
+                </Button>
               ))
             ) : (
               <div style={{ padding: "8px" }}>No results found</div>
@@ -128,3 +172,5 @@ export class UserSearchComponent extends Component<{}, UserSearchedState> {
     );
   }
 }
+
+export default withMenuNavigation(UserSearchComponent);
