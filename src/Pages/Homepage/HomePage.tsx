@@ -72,23 +72,31 @@ class HomePage extends AbstractPage<{}, HomePageState> {
       const posts = await Promise.all(
         data.map(async (post) => {
           const postData = post as {
-            postID: string;
-            authorId: string;
+            id: string;
+            authorid: string;
             likes: number;
             content: string;
             base64encoded: string;
           };
 
+          console.log("authorId")
+          console.log(postData.authorid)
           // Await the result of getprofile (ensure it resolves before destructuring)
-          const profileData = await this.getprofile(postData.authorId);
+          const profileData = await this.getprofile(postData.authorid);
 
-          // Destructure after promise resolves
-          const { userName, avatar } = profileData;
+          console.log("profileData");
+          console.log(profileData);
+
+            // Destructure after promise resolves
+            const { userName, avatar } = profileData;
+
+            // Use a dummy avatar if avatar is null or undefined
+            const finalAvatar = avatar || "https://i.pravatar.cc/150?img=3";
 
           return {
-            postID: postData.postID,
+            postID: postData.id,
             author: userName, // Assign userName to author
-            avatar: avatar, // Assign avatar to avatar
+            avatar: finalAvatar, // Assign avatar to avatar
             likes: postData.likes,
             liked: false,
             content: postData.content,
@@ -152,9 +160,6 @@ class HomePage extends AbstractPage<{}, HomePageState> {
   // Add a new post
   handleAddPost = (mediaFile: string | null, content: string) => {
    
-      console.log("adding post");
-      console.log(mediaFile);
-      console.log(content);
       const newPost: Post = {
         postID: this.state.posts.length + "1",
         author: "New User",
@@ -251,7 +256,7 @@ class HomePage extends AbstractPage<{}, HomePageState> {
                     className={styles["homepage-author-avatar"]}
                   />
                   <Typography variant="subtitle1" marginLeft={2}>
-                    {"hello"} 
+                    {post.author} 
                   </Typography>
                   </Box>
                   <Box className={styles["homepage-card-content"]}>

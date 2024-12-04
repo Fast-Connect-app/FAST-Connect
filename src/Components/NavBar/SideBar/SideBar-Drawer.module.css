@@ -8,11 +8,12 @@
 .logoContainer {
   display: flex;
   justify-content: center;
-  padding-bottom: 1rem; /* Adjust as necessary */
+  /*padding-bottom: 1rem; /* Adjust as necessary */
+  padding-bottom: 0px;
 }
 
 .logoContainer img {
-  width: 100px;
+  max-width: 80px;
 }
 
 .sideList {

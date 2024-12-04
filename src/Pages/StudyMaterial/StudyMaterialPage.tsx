@@ -1,7 +1,8 @@
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
-import { Button, Card, Typography } from "@mui/material";
+import { Box,Button, Card, Typography, Icon } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import styles from "./StudyMaterial.module.css";
+import logoimg from "./addItemSign.png";
 import { PageTitleContext, PageTitleContextType } from "../../Layouts/MainLayout";
 import { StudyMaterial } from "../../../Backend/Classes/StudyMaterial";
 import { UserAuthentication } from "../../../Backend/UserAuth/UserAuthentication";
@@ -95,8 +96,9 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
       <div>
         <div className={styles.topContainer}>
           <input name="searchFilter" className={styles.searchBar} placeholder="Search here..." onChange={(e) => this.filterContent(e.target.value)} />
-          <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()} sx={{ backgroundColor : "white", color: "black", marginRight : "1rem" }}>
-            Add File
+          <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()}>
+            <img src={logoimg} className={styles.iconImg} />
+            <Typography sx={{verticalAlign: "center", marginRight: "3px"}}>Add File</Typography>
           </Button>
           <input type="file" id="fileInput" className={styles.hiddenFileInput} onChange={this.handleFileChange} />
         </div>
