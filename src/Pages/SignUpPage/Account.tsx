@@ -2,6 +2,7 @@ import Login from "./Login";
 import Register from "./Signup";
 import styles from "./Account.module.css"; // Import the CSS module
 import AbstractPage, { AbstractPageState } from "../AbstractPages";
+import {Typography} from "@mui/material";
 
 interface AccountState extends AbstractPageState {
   isLoginActive: boolean;
@@ -46,7 +47,7 @@ class Account extends AbstractPage<object, AccountState> {
               zIndex: 2,
             }}
           >
-            <p>Don't have an account? Sign up now!</p>
+            <Typography variant="body1" sx={{color : "white"}}>Don't have an account? Sign up here!</Typography>
             <button onClick={this.toggleActiveComponent} className={styles.button}>
               Go to Sign up
             </button>
@@ -70,7 +71,7 @@ class Account extends AbstractPage<object, AccountState> {
               opacity: isLoginActive ? 0 : 1,
             }}
           >
-            <p>Already have an account? Log in here!</p>
+            <Typography variant="body1" sx={{color : "white"}}>Already have an account? Login here!</Typography>
             <button onClick={this.toggleActiveComponent} className={styles.button}>
               Go to Login
             </button>
