@@ -98,7 +98,7 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
           <input name="searchFilter" className={styles.searchBar} placeholder="Search here..." onChange={(e) => this.filterContent(e.target.value)} />
           <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()}>
             <img src={logoimg} className={styles.iconImg} />
-            <Typography sx={{verticalAlign: "center"}}>Add File</Typography>
+            <Typography sx={{verticalAlign: "center", marginRight: "3px"}}>Add File</Typography>
           </Button>
           <input type="file" id="fileInput" className={styles.hiddenFileInput} onChange={this.handleFileChange} />
         </div>
