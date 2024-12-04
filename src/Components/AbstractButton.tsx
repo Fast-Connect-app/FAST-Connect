@@ -23,7 +23,7 @@ abstract class AbstractButton<
   // Method to handle the click event (you can override this in child classes)
   handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     // Toggle the clicked state
-    this.setState({ isClicked: !this.state.isClicked });
+    this.setState((prevState) => ({ isClicked: !prevState.isClicked }));
 
     // Call the provided onClick handler with the event
     if (this.props.onClick) {

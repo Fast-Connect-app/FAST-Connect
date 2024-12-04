@@ -187,10 +187,10 @@ class ProfilePage extends AbstractPage<object, ProfilePageState> {
                       Message
                     </Button>
                   </Box>
-                  <Button variant="contained" component="label" color="primary" size="small" sx={{ mt: 2 }}>
+                    <Button variant="contained" component="label" color="primary" size="small" sx={{ mt: 2 }}>
                     Upload Profile Picture
                     <input type="file" accept="image/*" hidden onChange={this.handleFileChange} />
-                  </Button>
+                    </Button>
                 </Box>
               </CardContent>{" "}
             </Card>

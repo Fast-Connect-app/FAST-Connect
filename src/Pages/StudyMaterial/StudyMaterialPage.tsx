@@ -95,30 +95,30 @@ class StudyPage extends AbstractPage<object, StudyMaterialsPageState> {
       <div>
         <div className={styles.topContainer}>
           <input name="searchFilter" className={styles.searchBar} placeholder="Search here..." onChange={(e) => this.filterContent(e.target.value)} />
-            <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()} sx={{ backgroundColor : "white", color: "black", marginRight : "1rem" }}>
+          <Button className={styles.addFileButton} onClick={() => document.getElementById("fileInput")?.click()} sx={{ backgroundColor : "white", color: "black", marginRight : "1rem" }}>
             Add File
-            </Button>
+          </Button>
           <input type="file" id="fileInput" className={styles.hiddenFileInput} onChange={this.handleFileChange} />
         </div>
         <Grid container spacing={4}>
           {this.state.filteredStudyMaterialList.map((studyMat: StudyMaterial, index: number) => (
             <Grid sx = {{xs : 3}} key={index}>
-              <Card className={styles.studyItem}>
-                <img src={`data:image/png;base64,${studyMat.fileMaterial}`} className={styles.fileImage} />
+                <Card className={styles.studyItem}>
+                <img src={`data:image/png;base64,${studyMat.fileMaterial}`} alt={studyMat.topic} className={styles.fileImage} />
                 <div className={styles.fileInfo}>
                   <Typography variant="h6" noWrap sx={{ textAlign: "left", marginLeft: "5%", marginTop: "5%" }}>
-                    {studyMat.topic}
+                  {studyMat.topic}
                   </Typography>
                   <Button
-                    sx={{ width: "70%", display: "flex", alignSelf: "flex-end", fontSize: "90%" }}
-                    onClick={() => {
-                      this.handleDownload(index, studyMat.topic);
-                    }}
+                  sx={{ width: "70%", display: "flex", alignSelf: "flex-end", fontSize: "90%" }}
+                  onClick={() => {
+                    this.handleDownload(index, studyMat.topic);
+                  }}
                   >
-                    Download
+                  Download
                   </Button>
                 </div>
-              </Card>
+                </Card>
             </Grid>
           ))}
         </Grid>

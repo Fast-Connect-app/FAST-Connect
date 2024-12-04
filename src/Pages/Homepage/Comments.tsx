@@ -101,10 +101,10 @@ class Comments extends Component<CommentsProps, CommentsState> {
   };
 
   startReply = (index: number) => {
-    this.setState({
+    this.setState((prevState) => ({
       replyIndex: index,
-      newComment: `@${this.state.comments[index].username} `,
-    });
+      newComment: `@${prevState.comments[index].username}`,
+    }));
   };
 
   toggleReplies = (index: number) => {

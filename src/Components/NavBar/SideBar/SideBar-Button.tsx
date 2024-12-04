@@ -16,7 +16,16 @@ class NavButton extends AbstractButton<NavButtonProps, AbstractButtonState> {
   renderButton() {
     const { icon, label, onClick } = this.props;
     return (
-      <div onClick={onClick}>
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={onClick}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              onClick();
+            }
+          }}
+        >
         <span className={styles.sideButtonIcon}>{icon}</span>
         <ListItemText
           primaryTypographyProps={{ fontSize: "0.8vw" }}
