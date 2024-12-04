@@ -90,13 +90,10 @@ class HomePage extends AbstractPage<{}, HomePageState> {
             // Destructure after promise resolves
             const { userName, avatar } = profileData;
 
-            // Use a dummy avatar if avatar is null or undefined
-            const finalAvatar = avatar || "https://i.pravatar.cc/150?img=3";
-
           return {
             postID: postData.id,
             author: userName, // Assign userName to author
-            avatar: finalAvatar, // Assign avatar to avatar
+            avatar: avatar, // Assign avatar to avatar
             likes: postData.likes,
             liked: false,
             content: postData.content,

@@ -50,7 +50,7 @@ class MainLayout extends Component<MainLayoutProps, MainLayoutState> {
           userProfile = userProfile as Profile;
           this.setState({
             username: userProfile.userName,
-            profilePic: userProfile.profilePic,
+            profilePic: userProfile.profilePic || "https://www.w3schools.com/w3images/avatar2.png",
           });
         }
       } else {
