@@ -124,6 +124,7 @@ class GlobalChat extends Component<{}, GlobalChatState> {
           gap="10px"
           height="20%"
           alignItems="center"
+          sx={{backgroundColor: "var(--background-color)"}}
         >
           <TextField
             label="Type your message"
@@ -147,6 +148,7 @@ class GlobalChat extends Component<{}, GlobalChatState> {
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "rgba(0, 0, 0, 0.23)", // Ensure consistent outline color
               },
+              backgroundColor: "white",
             }}
           />
 

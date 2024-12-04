@@ -20,7 +20,6 @@ import {
 import AddPostDialog from "./AddPostDialog";
 import { Post as MyPost } from "../../../Backend/Classes/Post";
 import { Profile } from "../../../Backend/Classes/Profile";
-import { update } from "firebase/database";
 
 // Define the Post interface
 interface Post {
@@ -30,7 +29,7 @@ interface Post {
   content: string;
   likes: number;
   liked: boolean;
-  mediaUrl: string; // URL of the picture or video
+  mediaUrl: string | null; // URL of the picture or video
 }
 
 interface HomePageState extends AbstractPageState {
@@ -152,23 +151,25 @@ class HomePage extends AbstractPage<{}, HomePageState> {
 
   // Add a new post
   handleAddPost = (mediaFile: string | null, content: string) => {
-    if (mediaFile) {
+   
+      console.log("adding post");
+      console.log(mediaFile);
+      console.log(content);
       const newPost: Post = {
         postID: this.state.posts.length + "1",
         author: "New User",
         avatar: "https://i.pravatar.cc/150?img=3",
-        content,
+        content: content,
         likes: 0,
         liked: false,
-        mediaUrl: mediaFile, // Convert file to local URL for preview
+        mediaUrl: mediaFile ? mediaFile : null , // Convert file to local URL for preview
       };
 
       this.setState((prevState) => ({
         posts: [newPost, ...prevState.posts],
         isAddPostOpen: false,
       }));
-    }
-  };
+    };
 
   renderContent() {
     const { posts, selectedPostId, isAddPostOpen } = this.state;
